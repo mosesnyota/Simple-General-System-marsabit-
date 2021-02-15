@@ -133,13 +133,10 @@ Route::get('/expense/{fund}/destroy','ExpensesController@destroy');
 Route::get('/expense/report/{start}/{end}','ExpensesController@report');
 Route::post('/expense/report1','ExpensesController@report1');
 
-
 Route::get('/viewproject/comment/{project}/edit','ProjectsController@comment');
 Route::post('/viewproject/comment/{project}/save','ProjectsController@savecomment');
 
-
 Route::get('/expenseanalytics','AnalyticsController@index');
-
 
 Route::get('/suppliers','SupplierController@index');
 Route::get('/suppliers/{supplier}/edit','SupplierController@edit');
@@ -150,11 +147,7 @@ Route::get('/supplier/destroy/{supplier}','SupplierController@destroy');
 Route::get('/viewsupplier/{supplier}/view','SupplierController@show');
 Route::get('/viewsupplier/viewbills/{supplier}/view','SupplierController@viewBills');
 
-
-
-
 Route::get('/bills','BillsController@index');
-
 
 Route::get('/roles','RolesController@index');
 Route::post('/roles/store','RolesController@store');
@@ -163,7 +156,6 @@ Route::post('/permissions/store','RolesController@storepermission');
 
 Route::get('/roles/{role}/permissions','RolesController@assignpermissions');
 Route::POST('roles/savepermissions/{role}','RolesController@savepermissions');
-
 
 Route::get('/roles/{role}/permissions','RolesController@assignpermissions');
 
@@ -180,23 +172,17 @@ Route::post('/pettycash/pushtransaction/{transaction}/push','PettyCashs@savepush
 Route::get('/viewproject/setexchagerate/{project}/currency','ProjectsController@setExchangeRate');
 Route::get('/viewproject/setcurrency/{project}/currency','ProjectsController@setCurrency');
 
-
-
-
 Route::get('/locations','LocationsController@index');
 Route::post('/locations/store','LocationsController@store');
 Route::get('/locations/{location}/edit','LocationsController@edit');
 Route::get('/locations/{location}/destroy','LocationsController@destroy');
 Route::post('/locations/{location}/update','LocationsController@update');
 
-
 Route::get('/productcategory','ProductCategoryController@index');
 Route::post('/productcategory/store','ProductCategoryController@store');
 Route::get('/productcategory/{category}/edit','ProductCategoryController@edit');
 Route::get('/productcategory/{category}/destroy','ProductCategoryController@destroy');
 Route::post('/productcategory/{category}/update','ProductCategoryController@update');
-
-
 
 Route::get('/products','ProductsController@index');
 Route::post('/products/store','ProductsController@store');
@@ -207,9 +193,6 @@ Route::get('/products/{product}/view','ProductsController@show');
 Route::post('/products/receivestock','ProductsController@receivestock');
 Route::post('/products/issueproduct','ProductsController@issueproduct');
 Route::get('/products/productmovements','ProductsController@productmovements');
-
-
-
 
 Route::get('/catalogue','CatalogueController@index');
 Route::post('/catalogue/store','CatalogueController@store');
@@ -223,16 +206,11 @@ Route::post('/catalogue/receivestock','CatalogueController@receivestock');
 Route::post('/catalogue/issueasset','CatalogueController@issueasset');
 Route::get('/catalogue/catalogmovements','CatalogueController@catalogmovements');
 
-
-
 Route::get('/catalogcategories','AssetCategoriesController@index');
 Route::post('/catalogcategories/store','AssetCategoriesController@store');
 Route::get('/catalogcategories/{category}/edit','AssetCategoriesController@edit');
 Route::get('/catalogcategories/{category}/destroy','AssetCategoriesController@destroy');
 Route::post('/catalogcategories/{category}/update','AssetCategoriesController@update');
-
-
-
 
 Route::get('/customers','CustomersController@index');
 Route::post('/customers/store','CustomersController@store');
@@ -243,13 +221,6 @@ Route::get('/customers/{customer}/view','CustomersController@show');
 
 Route::get('/customers/{customer}/viewpayments','CustomersController@viewpayments');
 Route::get('/customers/{customer}/viewinvoices','CustomersController@viewinvoices');
-
-
-
-
-
-
-
 
 Route::get('/production','InvoicesController@index');
 Route::get('/invoices','InvoicesController@invoice');
@@ -276,7 +247,6 @@ Route::get('/courses/{course}/edit','CourseController@edit');
 Route::post('/courses/{course}/update','CourseController@update');
 Route::get('/courses/{course}/destroy','CourseController@destroy');
 
-
 Route::get('/schoolfees','SchoolFeeController@index');
 Route::post('/feevotehead/store','SchoolFeeController@saveVotehead');
 Route::get('/feevotehead/{votehead}/edit','SchoolFeeController@editvotehead');
@@ -285,7 +255,6 @@ Route::post('/feevotehead/{votehead}/update','SchoolFeeController@updatevotehead
 
 Route::get('/createfeeinvoice','SchoolFeeController@create');
 Route::post('/savefeeinvoice','SchoolFeeController@savefeeinvoice');
-
 
 Route::post('/getclasslists','StudentsController@getclasslists');
 Route::get('/openclasslist/{course_id}/{cur_year}','StudentsController@printClassList');
@@ -304,20 +273,14 @@ Route::get('receipt/{payment}/destroy','SchoolFeeController@deletefee');
 
 Route::get('schoolfees/{student}/viewstatement','SchoolFeeController@viewstatement');
 
-
-
 Route::get('/assetreport','CatalogueController@assetreport');
 Route::get('/openReportAssets','CatalogueController@openReportAssets');
-
 
 Route::post('/products/report1','ProductsController@report1');
 Route::get('/products/printreport1/{start}/{end}/open','ProductsController@printReport1');
 
-
 Route::post('/products/report2','ProductsController@report2');
 Route::get('/products/summaryreport/{start}/{end}/open','ProductsController@summaryReport');
-
-
 
 Route::post('/products/report3','ProductsController@report3');
 Route::get('/products/breakdown/{start}/{end}/open','ProductsController@reasonsReport');
@@ -341,7 +304,6 @@ Route::post('/subjects/{subject}/update','SubjectsController@update');
 Route::get('/subjects/{subject}/destroy','SubjectsController@destroy');
 Route::post('/subjects/store','SubjectsController@store');
 
-
 Route::get('/marks','AcademicsController@marks');
 Route::get('/marks/{marks}/edit','AcademicsController@edit');
 Route::post('/marks/{marks}/update','AcademicsController@update');
@@ -350,10 +312,8 @@ Route::get('/marks/{marks}/destroy','AcademicsController@destroy');
 Route::post('/marks/proceed','AcademicsController@proceed');
 Route::post('/marks/store','AcademicsController@store');
 
-
 Route::post('/reportforms','ReportFormsController@index');
 Route::post('/reportforms/print','ReportFormsController@reportForms');
-
 
 Route::post('/markssheet','ReportFormsController@marksSheet');
 Route::get('/markssheet/{mark1}/{mark2}/{mark3}/{mark4}/print','ReportFormsController@printSheet');
@@ -366,13 +326,9 @@ Route::get('/invoice/{invoice}/{item}/additems','InvoicesController@additems');
 
 Route::post('/invoice/{invoiceid}/{invoicedetailid}/saveediteditem','InvoicesController@saveediteditem');
 
-
 Route::get('/invoice/{invoiceid}/{invoicedetailid}/edit','InvoicesController@editinvoicedetails');
 
 Route::get('invoice/{invoice_id}/payment/{payment_id}/edit','InvoicesController@editpay');
-
-
-
 
 Route::post('/invoice/{invoiceid}/payment/{paymentid}/savepay','InvoicesController@savepayedit');
 
@@ -380,5 +336,7 @@ Route::get('invoice/{invoice_id}/{detailid}/destroy','InvoicesController@deleted
 
 Route::get('customers/{customer_id}/getstatement','CustomersController@getStatement');
 
+Route::get('/catalogue/{asset}/catalogue/{assetcopy}/editcopy', 'CatalogueController@editcopy');
+Route::post('/catalogue/{asset}/catalogue/{assetcopy}/update', 'CatalogueController@updatecopy');
 
 

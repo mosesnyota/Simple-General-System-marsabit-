@@ -11,7 +11,7 @@ use App\Staff;
 use App\IssueAsset;
 use App\AssetCopy;
 
-
+use SweetAlert;
 
 use App\MyPDF;
 
@@ -32,6 +32,31 @@ class CatalogueController extends Controller {
      */
     public function index()
     {
+
+
+        // $Catalogues = Catalogue::all();
+
+        // $counter = 1;
+        // foreach($Catalogues as $catalogue){
+
+        //     $qnty = $catalogue->quantity;
+        //     for ($x = 1; $x <= $qnty; $x++) {
+        //         $input = [];
+        //         $input['asset_id'] = $catalogue->asset_id;
+        //         $input['manufacture_date'] = date('Y-m-d');
+        //         $input['price'] = $catalogue->unit_price;
+        //         $input['location_id'] = 1;
+        //         $input['serial_no'] = $counter;
+        //         $counter += 1;
+        //         AssetCopy::create( $input);
+
+        //     }
+
+        //     $counter = 1;
+        // }
+
+
+
         $assets =  DB::select('SELECT catalogue.asset_id,`asset_name`, asset_category,
         COUNT(asset_copy.`asset_id`) AS totalassets, COUNT( `issued_id` ) AS issued 
         FROM `asset_categories` JOIN catalogue ON `asset_categories`.`category_id` = catalogue.`category_id`
@@ -106,11 +131,43 @@ class CatalogueController extends Controller {
         
     }
 
+    public function editcopy($assetid, $assetcopyid){
+        //catalogue/1/catalogue/4/editcopy
+        $product = AssetCopy::find($assetcopyid);
+        $locations = Locations::All();
+        return view('catalogue.editcopy',compact('product','locations'));
+    }
+
+    public function updatecopy(Request $request){
+        $input = $request->all();
+        $product = AssetCopy::find( $input['asset_copy_id']);
+        $product->serial_no = $input['serial_no'];
+        $product->price = $input['price'];
+        $product->manufacture_date = date('Y-m-d', strtotime($input['manufacture_date'])); 
+        $product->location_id = $input['location_id'];  
+        
+        try {
+            $product->save();
+        } catch (Exception $e) {
+                       
+            alert()->error('Error', 'An Error occured'.$e);
+           
+        }
+        
+
+        return redirect()->action(
+            'CatalogueController@index'
+        );
+
+    }
+
+
+
+
+
     public function viewAssetCopies($asset_id)
     {
-
         return view('catalogue.viewassetcopies',compact('assetcopies'));
-        
     }
 
     public function issueasset(Request $request){
@@ -222,6 +279,8 @@ class CatalogueController extends Controller {
         WHERE catalogue.`deleted_at` IS NULL AND
         asset_copy.`deleted_at` IS NULL
         GROUP BY `asset_id`');
+
+
  
 
         $issuedassets = DB::select("SELECT `asset_copy`.`asset_id`, COUNT(`issued_assets`.`asset_copy_id`) AS givend
@@ -273,6 +332,15 @@ class CatalogueController extends Controller {
         foreach($assetvalue as $valued){
             $stockvalue = $valued->totalvalue;
         }
+
+        $asstVal = DB::select("SELECT asset_id, SUM(price) AS total FROM `asset_copy` 
+        WHERE asset_copy.`deleted_at` IS NULL GROUP BY asset_id");
+
+        $cumulativeValue = [];
+        foreach($asstVal as $vld){  
+            $cumulativeValue[$vld->asset_id] = $vld->total;
+           
+        }
        
 
         $pdf = new MyPDF();
@@ -288,17 +356,18 @@ class CatalogueController extends Controller {
         $pdf->SetX(10);
         $pdf->SetFont('Times','',11);
         $pdf-> Cell(10, 10, "#",1, 0, 'C', 1, '');
-        $pdf-> Cell(50, 10, "Category",1, 0, 'C', 1, '');
-        $pdf-> Cell(60, 10, "Asset",1, 0, 'C', 1, '');
+        $pdf-> Cell(60, 10, "Category",1, 0, 'C', 1, '');
+        $pdf-> Cell(70, 10, "Asset",1, 0, 'C', 1, '');
         $pdf-> Cell(30, 10, "No.Copies",1, 0, 'C', 1, '');
-        $pdf-> Cell(50, 10, "Assigned",1, 0, 'C', 1, '');
+        $pdf-> Cell(30, 10, "Assigned",1, 0, 'C', 1, '');
+        $pdf-> Cell(30, 10, "In Store",1, 0, 'C', 1, '');
         $pdf-> Cell(40, 10, "Purchase Value",1, 0, 'C', 1, '');
-        $pdf-> Cell(40, 10, "Depreciated Value",1, 0, 'C', 1, '');
+       
         $pdf->Ln();
         $pdf->SetFont('Times','',10);
         $counter = 1;
-        $pdf->SetWidths(array(10,50,60,30,50,40,40));
-        $aligns = array('L','L','L','R','L','R','R');
+        $pdf->SetWidths(array(10,60,70,30,30,30,40));
+        $aligns = array('L','L','L','R','R','R','R');
         $pdf->SetAligns($aligns );
         $pdf->SetFillColor(224, 235, 255);
         
@@ -310,16 +379,30 @@ class CatalogueController extends Controller {
             $counter,
             $assetSS->asset_category,
             $assetSS->asset_name,
-            $assetSS->asset_name,
-            $assetSS->asset_name,
-            $assetSS->asset_name,
-            $assetSS->asset_name
+            $assetSS->totalassets,
+            $assetSS->issued,
+            $assetSS->totalassets - $assetSS->issued,
+            number_format($cumulativeValue[$assetSS->asset_id],2)
          ), $fill);
             $counter++;
             
         }
+
+
+       
+                                                // <tr id="{{$asset ->asset_id}}">
+                                                //     <td style="line-height: 10px;">{{ $counter }}</td>
+                                                   
+                                                //     <td>{{ $asset->asset_category }}</td>
+                                                //     <td data-target="asset_name">{{ $asset->asset_name }}</td>
+                                                   
+                                                //     <td>{{ $asset->totalassets }}</td>
+                                                //     <td>{{  $asset->issued }}</td>
+
+
+
    
-        $pdf-> Cell(240, 10, "Asset Value",1, 0, 'C', 1, '');
+        $pdf-> Cell(230, 10, "Asset Value",1, 0, 'C', 1, '');
         $pdf-> Cell(40, 10,  number_format($stockvalue,2),1, 0, 'R', 1, '');
         $pdf->Output();
         exit;

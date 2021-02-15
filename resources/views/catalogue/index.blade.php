@@ -70,7 +70,7 @@
 
         </div>
 
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl-4 col-md-6">
             <div class="card bg-info mini-stat text-white">
                 <div class="p-3 mini-stat-desc">
                     <div class="clearfix">
@@ -121,9 +121,9 @@
                                             <th style="width: 6%">#</th>
                                             <th>Category</th>
                                             <th >Asset </th>
-                                            <th style="width: 15%">Copies</th>
+                                            <th style="width: 10%">Copies</th>
                                             <th style="width: 15%">Assigned</th>
-                                            <th ></th>
+                                            <th style="width: 25%"></th>
                                            
                                         </tr>
                                     </thead>
