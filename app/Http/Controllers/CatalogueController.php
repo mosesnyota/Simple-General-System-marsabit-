@@ -64,11 +64,8 @@ class CatalogueController extends Controller {
         $locations = Locations::All();
         $categories = AssetCategories::All();
 
-        $assetvalue =  DB::select('SELECT SUM(price * total) AS totalvalue FROM (
-            SELECT `catalogue`.`asset_id`,price, COUNT(`asset_copy_id`)  AS total FROM 
-            `catalogue` JOIN `asset_copy` ON `catalogue`.`asset_id` = asset_copy.`asset_id`
-            WHERE catalogue.`deleted_at` IS NULL AND asset_copy.`deleted_at` IS NULL
-            GROUP BY asset_id) AS D ');
+        $assetvalue =  DB::select('SELECT SUM(price) AS totalvalue FROM `asset_copy` 
+            WHERE  asset_copy.`deleted_at` IS NULL');
 
 
         $assetscopies =  DB::table('catalogue')
@@ -247,11 +244,8 @@ class CatalogueController extends Controller {
         }
 
         
-        $assetvalue =  DB::select('SELECT SUM(price * total) AS totalvalue FROM (
-            SELECT `catalogue`.`asset_id`,price, COUNT(`asset_copy_id`)  AS total FROM 
-            `catalogue` JOIN `asset_copy` ON `catalogue`.`asset_id` = asset_copy.`asset_id`
-            WHERE catalogue.`deleted_at` IS NULL AND asset_copy.`deleted_at` IS NULL
-            GROUP BY asset_id) AS D ');
+        $assetvalue =  DB::select('SELECT SUM(price ) AS totalvalue FROM `asset_copy`
+            WHERE  asset_copy.`deleted_at` IS NULL');
 
 
         $assetscopies =  DB::table('catalogue')
@@ -386,9 +380,8 @@ class CatalogueController extends Controller {
         $product = Catalogue::find($id) ;
         $input = $request->all();
         $product ->barcode = $input['barcode'];
-        $product ->serial_no = $input['serial_no'];
         $product ->asset_name = $input['asset_name'];
-        $product ->price = $input['price'];
+       
         $product ->manufacture_date = date('Y-m-d', strtotime($input['manufacture_date']));
 
         $product ->category_id = $input['category_id'];

@@ -40,7 +40,7 @@ class MyController extends Controller
             $year2 = date('Y') - 2;
             $year3 = date('Y') - 3;
     
-           $invoice_payments =   DB::select("SELECT YEAR(payment_date) AS expenyear , SUM(amount) AS total FROM invoice_payments
+           $invoice_payments =   DB::select("SELECT YEAR(payment_date) AS expenyear , SUM(amount) AS total FROM invoice_payment
            WHERE deleted_at IS NULL AND YEAR(payment_date)  >= (YEAR(CURDATE()) - 3) GROUP BY expenyear");
     
             $totalIncomethisYear = 0 ;
@@ -167,7 +167,7 @@ class MyController extends Controller
             $expense = array();
     
             $expenseFor4Years = DB::SELECT("SELECT YEAR(`expense_date`) AS expenyear, SUM(`expense_amount`) AS total FROM `expenses`
-            WHERE YEAR(`expense_date`) >= (YEAR(CURDATE()) - 3) GROUP BY expenyear");
+            WHERE YEAR(`expense_date`) >= (YEAR(CURDATE()) - 3) and deleted_at is null  GROUP BY expenyear");
             $expensesPerYear = [];
             $expensesPerYear[ $year0] = 0;
             $expensesPerYear[ $year1] = 0;
@@ -220,10 +220,13 @@ class MyController extends Controller
             ->orderBy('payment_date','DESC')
             ->limit(5)
             ->get();
+
+
     
             $paymentsInvoice = DB::select("SELECT `invoice_payment`.*, `customer_names`, `narration` FROM `invoice_payment`
             JOIN `invoices` ON invoices.`invoice_id` = invoice_payment.`invoice_id`
-            JOIN `customers` ON invoices.`customer_id` = `customers`.`customer_id` order by payment_date desc LIMIT 5");
+            JOIN `customers` ON invoices.`customer_id` = `customers`.`customer_id` 
+            WHERE invoices.deleted_at is null and invoice_payment.deleted_at is null order by payment_date desc LIMIT 5");
     
     
             

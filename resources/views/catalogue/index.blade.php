@@ -147,8 +147,8 @@
                                                                
    
                       
-                                                <button type="button" class="btn btn-info btn-sm"> <a  data-role="addcopy"  data-id="{{$asset->asset_id}}"> <i class="fa fa-plus-circle" >ADD COPY </i></a>  </button>  
-                                                <a class="btn btn-info btn-sm" href="catalogue/{{$asset->asset_id}}/view"><i class="fas fa-eye">VIEW COPIES</i></a>   
+                                                <button type="button" class="btn btn-info btn-sm"> <a  data-role="addcopy"  data-id="{{$asset->asset_id}}"> <i class="fa fa-plus-circle" >ADD </i></a>  </button>  
+                                                <a class="btn btn-info btn-sm" href="catalogue/{{$asset->asset_id}}/view"><i class="fas fa-eye">VIEW</i></a>   
                                                     <?php $counter += 1; ?>
                                                 </tr>
                                             @endforeach
