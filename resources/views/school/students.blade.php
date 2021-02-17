@@ -56,6 +56,7 @@
                                                                               <th>Admn</th>
                                                                               <th>Names</th>
                                                                               <th>Course</th>
+                                                                              <th>Status</th>
                                                                               <th></th>
                                                                               
                                                                             </tr>
@@ -68,7 +69,7 @@
                                                                               <td><a>{{$student->student_no}}</a></td>
                                                                               <td>{{$student->first_name." ".$student->middle_name." ".$student->surname}}</td>
                                                                               <td>{{$student->course_name}}</td>
-                                                                             
+                                                                              <td>{{$student->cur_status}}</td>
 
                                                                               <td>
                                                                                 <a class="btn btn-info btn-sm" href="students/{{$student ->student_id}}/view"><i class="fas fa-eye"></i></a>

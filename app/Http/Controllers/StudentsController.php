@@ -7,7 +7,7 @@ use App\Student;
 use DB;
 use App\Course;
 use App\StudentCourses;
-use App\PettyCashPDF;
+use App\ClassListPDF;
 
 
 class StudentsController extends Controller
@@ -26,8 +26,7 @@ class StudentsController extends Controller
     public function index()
     {
         $students  = DB::select( DB::raw("SELECT students.*, course_name FROM students
-        LEFT JOIN student_course ON students.student_id = student_course.student_id
-        LEFT JOIN courses ON student_course.course_id = courses.course_id
+        LEFT JOIN courses ON students.course_id = courses.course_id
         WHERE students.cur_status = 'active'
         AND students.deleted_at IS NULL") );
         $courses =Course::all();
@@ -41,20 +40,16 @@ class StudentsController extends Controller
     }
 
     public function printClassList($course_id,$cur_year ){
-        $students =  DB::table('students')
-        ->leftjoin('student_course', 'students.student_id', '=', 'student_course.student_id')
-        ->select(DB::raw('students.*'))
-        ->where('students.cur_status', '=', 'active')
-        ->where('students.deleted_at', '=', NULL)
-        ->where('student_course.course_id', '=',  $course_id)
-        ->where('students.cur_year', '=',  $cur_year)
-        ->get();
+        $students =  DB::select("SELECT students.* FROM `students`
+        WHERE deleted_at IS NULL AND (cur_status = 'Active' OR cur_status = 'Suspended')
+        and course_id = $course_id
+        ORDER BY first_name ASC ");
 
 
         $course =  Course::find($course_id); 
 
 
-        $pdf = new PettyCashPDF();
+        $pdf = new ClassListPDF();
         
         $pdf->AddPage();
         $pdf->SetFont('Arial','',12);
@@ -87,7 +82,7 @@ class StudentsController extends Controller
             $counter++;
             
         }
-   
+        $counter--;
         $pdf-> Cell(110, 10, "Total Students : ",1, 0, 'C', 1, '');
         $pdf-> Cell(85, 10, $counter,1, 0, 'R', 1, '');
         $pdf->Output("","Class_List_$cours.pdf");

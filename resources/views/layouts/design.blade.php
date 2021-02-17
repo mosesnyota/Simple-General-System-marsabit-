@@ -9,37 +9,24 @@
         <meta content="Admin Dashboard" name="description" />
         <meta content="ThemeDesign" name="author" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
         <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
-
         <!-- morris css -->
         <link rel="stylesheet" href="{{asset('plugins/morris/morris.css')}}">
-
         <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css">
-
-
         <!-- DataTables -->
         <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
-
         <!-- Responsive datatable examples -->
         <link href="{{asset('plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
-
         <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css">
-
         <link href="{{asset('modalheader.css')}}" rel="stylesheet" type="text/css">
-
-
         <script src="{{asset('sweetaleart/sweetalert.min.js')}}"></script>
         <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-
-
         <link href="{{asset('sweetaleart/sweetalert.min.css')}}" rel="stylesheet" type="text/css">
-        
          <!-- Plugins css -->
          <link href="{{asset('plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')}}" rel="stylesheet">
          <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
@@ -184,7 +171,7 @@ function getValues() {
         </div>
 
         <!-- Begin page -->
-        <div id="wrapper">
+        <div id="wrapper" class="toggled" class="button-menu-mobile open-left waves-effect">
 
             <!-- ========== Left Sidebar Start ========== -->
             @include('layouts.leftmenu')
@@ -198,11 +185,11 @@ function getValues() {
                     <!-- Top Bar Start -->
         <div class="topbar">
 
-            <div class="topbar-left	d-none d-lg-block">
-                <div class="text-center">
-                    
-                </div>
-            </div>
+        <div class="topbar-left	d-none d-lg-block">
+                            <div class="text-center">
+                               
+                            </div>
+                        </div>
 
             <nav class="navbar-custom">
 
@@ -355,6 +342,12 @@ function getValues() {
 
 <!-- page script -->
 <script>
+
+$( document ).ready(function() {
+    $("#wrapper").toggleClass("toggle");
+});
+
+
   $(function () {
     /* jQueryKnob */
 
