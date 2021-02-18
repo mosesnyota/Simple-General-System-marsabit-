@@ -340,3 +340,6 @@ Route::get('/catalogue/{asset}/catalogue/{assetcopy}/editcopy', 'CatalogueContro
 Route::post('/catalogue/{asset}/catalogue/{assetcopy}/update', 'CatalogueController@updatecopy');
 
 
+Route::get('/students/{student}/remove', 'StudentsController@remove');
+
+

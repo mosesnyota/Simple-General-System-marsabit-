@@ -8,7 +8,7 @@ use DB;
 use App\Course;
 use App\StudentCourses;
 use App\ClassListPDF;
-
+use SweetAlert;
 
 class StudentsController extends Controller
 {
@@ -101,6 +101,16 @@ class StudentsController extends Controller
       
         $courses =Course::all();
        return view('school.newstudent',compact('courses'));
+    }
+
+    public function remove($id){
+        $student = Student::find($id);
+        $student -> cur_status = 'Completed';
+        $student ->save();
+        alert()->success('Success', 'Student Has been marked as Completed/Left');
+        return redirect()->action(
+            'StudentsController@index'
+        );
     }
 
     /**

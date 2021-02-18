@@ -1040,6 +1040,24 @@ $('.delete-confirm').on('click', function (event) {
         }
     });
 });
+
+
+$('.remove-confirm').on('click', function (event) {
+    event.preventDefault();
+    const url = $(this).attr('href');
+    swal({
+        title: 'Are you sure?',
+        text: 'The Student Will be set as Completed/Left!',
+        icon: 'warning',
+        buttons: ["Cancel", "Yes!"],
+    }).then(function(value) {
+        if (value) {
+            window.location.href = url;
+        }
+    });
+});
+
+
 </script>
 
 
