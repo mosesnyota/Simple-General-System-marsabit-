@@ -193,7 +193,10 @@ class StudentsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $input = $request->all();
+     
+        
         $course_id = $input['course_id'];
         unset($input["course_id"]);
         $input['dob'] = date('Y-m-d', strtotime($input['dob']));
@@ -209,7 +212,8 @@ class StudentsController extends Controller
         $student->date_joined = $input['date_joined'];
         $student->phone = $input['phone'];
         $student->residence = $input['residence'];
-        
+
+        $student->course_id = $course_id;
 
         $student->gender = $input['gender'];
         //$student->parent_names = $input['parent_names'];
