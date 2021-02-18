@@ -67,7 +67,7 @@
                             <tr>
                                 <td><a>Current Year</a></td>
                                
-                                <td><span class="badge badge-primary">{{0}}</span></td>
+                                <td><span class="badge badge-primary">{{$student->cur_year}}</span></td>
                             </tr>
                            
                            
@@ -139,13 +139,20 @@
                         </tr>
 
                         <tr>
-                            <td><a>Next of Kin</a></td>
-                            <td><a>{{$student->parent_names}}</a></td>
+                            <td><a>Education</a></td>
+                            <td><a>{{$student->level_of_edu."    (".$student->year_completed.")"}}</a></td>
+                            
+                        </tr>
+
+
+                        <tr>
+                            <td><a>Father</a></td>
+                            <td><a>{{$student->father_name ."        : ".$student->father_phone}}</a></td>
                             
                         </tr>
                         <tr>
-                            <td><a>Kin Phone</a></td>
-                            <td><a>{{$student->parents_phone}}</a></td>
+                            <td><a>Mother</a></td>
+                            <td><a>{{$student->mother_name."  :  ". $student->mother_phone}}</a></td>
                             
                         </tr>
                       
@@ -180,15 +187,15 @@
                               </tr>
                               </thead>
                               <tbody>
-                            @foreach($courses as $course) 
+                           
                             <tr>
                                 <td><span class="badge badge-success">Course Name</span></td>
                                 
-                                <td><span class="badge badge-success">{{$course->course_name}}</span></td>
+                                <td><span class="badge badge-success">{{$student->course_name}}</span></td>
                             </tr>
                             
       
-                           @endforeach
+                         
                            
                           
                               

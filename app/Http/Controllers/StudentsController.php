@@ -98,8 +98,7 @@ class StudentsController extends Controller
      */
     public function create()
     {
-      
-        $courses =Course::all();
+       $courses =Course::all();
        return view('school.newstudent',compact('courses'));
     }
 
@@ -177,8 +176,8 @@ class StudentsController extends Controller
        
 
         $student =  DB::table('students')
-        ->leftjoin('student_course', 'students.student_id', '=', 'student_course.student_id')
-        ->select(DB::raw('students.*, course_id'))
+        ->leftjoin('courses', 'students.course_id', '=', 'courses.course_id')
+        ->select(DB::raw('students.*, course_name'))
         ->where('students.student_id', '=', $id)
         ->get();
 
@@ -213,8 +212,8 @@ class StudentsController extends Controller
         
 
         $student->gender = $input['gender'];
-        $student->parent_names = $input['parent_names'];
-        $student->parents_phone = $input['parents_phone'];
+        //$student->parent_names = $input['parent_names'];
+        //$student->parents_phone = $input['parents_phone'];
         $student->save();
         
         $studentCourse = StudentCourses::where('student_id', '=', $id)
