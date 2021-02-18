@@ -245,6 +245,16 @@ class StudentsController extends Controller
 
     }
 
+
+    public function old(){
+        $students  = DB::select( DB::raw("SELECT students.*, course_name FROM students
+        LEFT JOIN courses ON students.course_id = courses.course_id
+        WHERE students.cur_status != 'active'
+        AND students.deleted_at IS NULL") );
+       
+        return view('school.oldstudents',compact('students'));
+    }
+
     /**
      * Remove the specified resource from storage.
      *

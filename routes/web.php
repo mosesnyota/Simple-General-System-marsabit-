@@ -342,4 +342,4 @@ Route::post('/catalogue/{asset}/catalogue/{assetcopy}/update', 'CatalogueControl
 
 Route::get('/students/{student}/remove', 'StudentsController@remove');
 
-
+Route::get('/students/old', 'StudentsController@old');
