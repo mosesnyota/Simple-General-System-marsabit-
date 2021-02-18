@@ -86,6 +86,19 @@
                     </div>
                     
                    
+
+                    <div class="form-group row">
+                        <label for="sponsor_id" class="col-sm-2 col-form-label">Department</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" name="course_id" style="width: 100%;"  required>
+                                <option value="">----Select Department-----</option>
+                                @foreach ($departments as $department)
+                                  <option value="{{$department -> course_id}}">{{$department -> course_name}}</option>
+                                @endforeach
+                                
+                            </select>
+                        </div>
+                    </div>
                   
                
                

@@ -26,7 +26,7 @@
                                 <button type="button"  class="btn btn-warning btn-md float-right mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-classlists" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Print Class List </b></button>
                                      
                                     <a href="{{URL::to('/')}}/students/create" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-plus-circle"> New Student </b></a>
-                                    <a href="{{URL::to('/')}}/students/old" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-plus-circle"> Old Student </b></a>
+                                    <a href="{{URL::to('/')}}/students/old" class="btn btn-primary btn-md float-right mr-1"   role="button"><b class="fa fa-check"> Old Students </b></a>
                                     <a href="{{URL::to('/')}}/school" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-undo"> Back</b></a>
                                    
                              

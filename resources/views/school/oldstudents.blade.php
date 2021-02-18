@@ -23,9 +23,8 @@
                                 </div>
                                 <div class="col-md-7">
                                   
-                                <button type="button"  class="btn btn-warning btn-md float-right mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-classlists" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Print Class List </b></button>
-                                     
-                                   <a href="{{URL::to('/')}}/school" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-undo"> Back</b></a>
+                               
+                                   <a href="{{URL::to('/')}}/students" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-undo"> Back</b></a>
                                    
                              
                                     

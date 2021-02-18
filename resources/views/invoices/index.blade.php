@@ -16,7 +16,7 @@
                     <div class="col-md-9">
                         <div class="float-right d-none d-md-block">
                         <button type="button"  class="btn btn-secondary btn-md float-right mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-report" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Invoices Report </b></button>
-
+                        
 
                         <a href="{{URL::to('/')}}/invoice/payments" class="btn btn-primary btn-md float-right mr-1"   role="button"><b class="fas fa-dollar-sign"> View Payments </b></a>
                         <a href="{{URL::to('/')}}/invoice" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-plus-circle"> New Invoice </b></a>
@@ -159,11 +159,12 @@
                       <tr>
                       <th>#</th>
                       <th width="13%">Date</th>
-                        <th width="30%">Narration</th>
+                        <th>Department</th>
+                        <th>Narration</th>
                         <th>Customer</th>
                         <th>Amount</th>
                         <th class="d-none">Balance</th>
-                        <th>Status</th>
+                        
                         <th width="13%"></th>
                       </tr>
                       </thead>
@@ -183,6 +184,7 @@
                       <tr id="{{$invoice ->invoice_id}}">
                         <td><a>{{$counter}}</a></td>
                         <td><a>{{date_format(date_create($invoice->invoice_date),'d-m-Y')}}</a></td>
+                        <td data-target="narration2" ><a>{{$invoice->department}}</a></td>
                         <td data-target="narration2" ><a>{{$invoice->narration}}</a></td>
                         <td data-target="customer_names2"><a>{{$invoice->customer_names}}</a></td>
                         <td data-target="amount2"><a>{{number_format($invoice->amount,2)}}</a></td>

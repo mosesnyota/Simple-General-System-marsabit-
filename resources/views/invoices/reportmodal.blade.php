@@ -187,3 +187,74 @@
   </div>
 
 
+
+
+  <div class="modal fade bs-example-modal-lg" id="modal-payinvoice2" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header modal-header-info">
+          <h4 class="modal-title">COLLECT INVOICE PAYMENT </h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form role="form" method="post" action="invoice/pay" enctype="multipart/form-data" >
+                {{ csrf_field() }}
+                <div class="box-body"> 
+                    
+                    <div class="form-group row">
+                    <label for="budget" class="col-sm-2 col-form-label"> Date Paid: </label>
+                    <div class="col-sm-10">
+                      <div class="input-group">
+                        <input type="text" class="form-control" autocomplete="off" id="datepicker-deadline" name="payment_date" required>
+                        <div class="input-group-append bg-custom b-0"><span class="input-group-text"><i class="mdi mdi-calendar"></i></span></div>
+                    </div><!-- input-group -->
+                    </div>
+                </div> 
+
+
+                <div class="form-group row">
+                        <label for="amount" class="col-sm-2 col-form-label"> Amount:</label>
+                        <div class="col-sm-10">
+                            <input type="text" autocomplete="off" class="form-control" id="amount" name="amount" required>
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <label for="sponsor_id" class="col-sm-2 col-form-label">Payment Method</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" name="payment_method" style="width: 100%;"  required>
+                            <option value="">----Select Payment Method-----</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Mpesa Paybill">Mpesa Paybill</option>
+                                <option value="Bank Deposit">Bank Deposit</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="reference" class="col-sm-2 col-form-label"> Reference:</label>
+                        <div class="col-sm-10">
+                            <input type="text" autocomplete="off" class="form-control" id="reference" name="reference" required>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- /.card-body -->
+                <div class="modal-footer">
+                    <input type="hidden" id="invoice_id" name="invoice_id" >
+                    <button type="submit" class="btn btn-primary">SAVE</button>
+                </div>
+            </form>           
+        </div>
+        
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+

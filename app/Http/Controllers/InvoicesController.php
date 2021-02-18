@@ -9,7 +9,7 @@ use App\Bill;
 use App\InvoiceDetails;
 use DB;
 use App\PDF;
-
+use App\Course;
 
 
 use App\MyPDF;
@@ -33,7 +33,8 @@ class InvoicesController extends Controller
         $invoice4  =  DB::table('invoices')
         ->join('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
         ->join('customers', 'customers.customer_id', '=', 'invoices.customer_id')
-        ->select(DB::raw('customers.*,invoices.*,SUM(unit_cost * quantity) AS amount'))
+        ->join('courses', 'invoices.course_id','=','courses.course_id')
+        ->select(DB::raw('customers.*,invoices.*,course_name as department,SUM(unit_cost * quantity) AS amount'))
         ->where('invoices.deleted_at', '=', NULL)
         ->where('invoice_details.deleted_at', '=', NULL)
         ->where('invoices.invoice_id', '=', $id)
@@ -266,15 +267,20 @@ class InvoicesController extends Controller
 
         
 
+       
+
         $invoices  =  DB::table('invoices')
-        ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
+        ->join('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
         ->join('customers', 'customers.customer_id', '=', 'invoices.customer_id')
-        ->select(DB::raw('customer_names,narration,invoice_date,invoices.invoice_id, cur_status,SUM(unit_cost * quantity) AS amount'))
+        ->join('courses', 'invoices.course_id','=','courses.course_id')
+        ->select(DB::raw('customers.*,invoices.*,course_name as department,SUM(unit_cost * quantity) AS amount'))
         ->where('invoices.deleted_at', '=', NULL)
         ->where('invoice_details.deleted_at', '=', NULL)
         ->groupBy('invoice_id')
         ->orderBy('invoice_date','DESC')
         ->get();
+
+
 
 
         $paymentsD =   DB::select("SELECT invoice_payment.invoice_id, SUM(invoice_payment.amount) AS paid FROM `invoice_payment` 
@@ -592,6 +598,56 @@ class InvoicesController extends Controller
     }
 
 
+
+
+    public function saveInvoicePayment2(Request $request,$incoice_id){
+        $input = $request->all();
+        $input['invoice_id'] = $incoice_id;
+        $input['payment_date'] =  date('Y-m-d', strtotime($input['payment_date'])); 
+        $input['amount'] =    str_replace( ',', '', $input['amount'] );
+        $id = ProductionInvoicePayment::create($input)->payment_id;
+        $invoice_id  =  $incoice_id;
+      
+
+        $invoice4  =  DB::table('invoice_details')
+        ->select(DB::raw('SUM(unit_cost * quantity) AS amount'))
+        ->where('invoice_details.deleted_at', '=', NULL)
+        ->where('invoice_details.invoice_id', '=', $invoice_id)
+        ->get();
+        $invoice = null;
+        foreach($invoice4 as $env){
+            $invoice = $env;
+        }
+
+        $invoiceTotal = $invoice->amount;
+        $open3=  DB::select("SELECT SUM(invoice_payment.amount) AS paid FROM `invoice_payment` 
+        WHERE deleted_at IS NULL AND invoice_id = $invoice_id");
+        $totalpaid = 0 ;
+        foreach ($open3 as $totald){ 
+            $totalpaid = $totald->paid;
+        }
+
+
+         $INVC = Invoice::find($invoice_id);
+        //Check if fully paid
+        if($totalpaid >= $invoiceTotal ){
+            $INVC->cur_status = 'Paid';
+        }else if($totalpaid < $invoiceTotal){
+            $INVC->cur_status = 'Patially Paid';
+        }
+        $INVC->save();
+        return view('invoices.paymentreceipt',compact('id'));
+    }
+
+
+    public function printReceipt($invoice,$paymentid){
+        return redirect()->action(
+            'InvoicesController@receipt2',$paymentid
+        );
+
+    }
+
+
     public function receipt2($id){
         $transactiond = DB::select("SELECT `invoice_payment`.*, `customer_names`, `narration` FROM `invoice_payment`
         JOIN `invoices` ON invoices.`invoice_id` = invoice_payment.`invoice_id`
@@ -859,7 +915,8 @@ class InvoicesController extends Controller
 
     public function newinvoice(){
         $customers = Customer::all();
-        return view('invoices.invoice',compact('customers'));
+        $departments = Course::all();
+        return view('invoices.invoice',compact('customers','departments'));
     }
 
     public function showdetails(Request $request){

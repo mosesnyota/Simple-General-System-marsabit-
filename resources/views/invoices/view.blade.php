@@ -19,14 +19,16 @@
                         <div class="page-title-box">
                             <div class="row align-items-center">
                                 
-                                <div class="col-md-8">
+                        <div class="col-md-6">
                         <h4 class="page-title m-0">Invoice Details </h4>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="float-right d-none d-md-block">
                         <a href="{{URL::to('/')}}/production" class="btn btn-success btn-md float-right mr-1"  role="button"><b class="fa fa-undo"> Back </b></a>
                         <a href="{{URL::to('/')}}/jobestimate/{{$invoice->invoice_id}}" class="btn btn-info btn-md float-right mr-1"  role="button"><b class="fa fa-plus"> Add Items </b></a>
-                        
+                        <button type="button"  class="btn btn-secondary btn-md float-right mr-1"  data-toggle="modal" data-target="#modal-payinvoice2" data-backdrop="static" data-keyboard="false" href="#"> <b class="fa fa-euro-sign" aria-hidden="true"> Pay </b></button>
+ 
+                      
                         <a href="{{URL::to('/')}}/invoice/{{$invoice->invoice_id}}/printpdf" class="btn btn-warning btn-md float-right mr-1" target="_blank"  role="button"><b class="fa fa-file-pdf"> Print PDF </b></a>
 
                         </div> 
@@ -89,7 +91,7 @@
                  <div class="card-body p-0">
                     <!-- .table-responsive -->
                     <div class="table-responsive">
-                        <table class="table m-0">
+                        <table  class="table m-0">
                           <thead>
                           <tr>
                             <th></th>
@@ -98,13 +100,13 @@
                           </thead>
                           <tbody>
                            
-                            <tr>
+                            <tr id="{{$invoice ->invoice_id}}">
                             <td><a>Narration</a></td>
-                            <td><a>{{$invoice->narration}}</a></td>
+                            <td data-target="narration2"><a>{{$invoice->narration}}</a></td>
                             </tr>
                         <tr>
                             <td><a>Customer</a></td>
-                            <td><a>{{$invoice->customer_names}}</a></td>
+                            <td data-target="customer_names2"><a>{{$invoice->customer_names}}</a></td>
                         </tr>
                         <tr>
                             <td><a>Invoice Date</a></td>
@@ -114,16 +116,16 @@
                        
                         <tr>
                             <td><a>Total Amount</a></td>
-                            <td><a>{{number_format($invoice->amount,2)}}</a></td>
+                            <td data-target="amount2"><a>{{number_format($invoice->amount,2)}}</a></td>
                             
                         </tr>
                         <tr>
                                 <td><a>Paid</a></td>
-                                <td><span class="badge badge-warning">{{number_format($details['paid'],2)}}</span></td>
+                                <td ><span class="badge badge-warning">{{number_format($details['paid'],2)}}</span></td>
                             </tr>
                             <tr>
                                 <td><a>Balance </a></td>
-                                <td><span class="badge badge-primary">{{number_format($invoice->amount - $details['paid'],2)}}</span></td>
+                                <td data-target="balance33"><span class="badge badge-primary">{{number_format($invoice->amount - $details['paid'],2)}}</span></td>
                             </tr>
                       
                           
@@ -262,5 +264,5 @@
 
     
 
-
+@include('invoices.reportmodal')
 @endsection

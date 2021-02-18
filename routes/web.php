@@ -343,3 +343,10 @@ Route::post('/catalogue/{asset}/catalogue/{assetcopy}/update', 'CatalogueControl
 Route::get('/students/{student}/remove', 'StudentsController@remove');
 
 Route::get('/students/old', 'StudentsController@old');
+
+
+Route::post('/invoice/{invoice}/invoice/pay','InvoicesController@saveInvoicePayment2');
+
+
+
+Route::get('invoice/{invoice}/invoice/production/{receipt}/receipt','InvoicesController@printReceipt');

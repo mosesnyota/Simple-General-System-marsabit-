@@ -50,7 +50,6 @@ class LocationsController extends Controller
     {
         $input = $request->all();
         Locations::create($input);
-      
         return redirect()->action(
             'LocationsController@index'
         );
