@@ -270,9 +270,9 @@ class InvoicesController extends Controller
        
 
         $invoices  =  DB::table('invoices')
-        ->join('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
-        ->join('customers', 'customers.customer_id', '=', 'invoices.customer_id')
-        ->join('courses', 'invoices.course_id','=','courses.course_id')
+        ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
+        ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
+        ->leftjoin('courses', 'invoices.course_id','=','courses.course_id')
         ->select(DB::raw('customers.*,invoices.*,course_name as department,SUM(unit_cost * quantity) AS amount'))
         ->where('invoices.deleted_at', '=', NULL)
         ->where('invoice_details.deleted_at', '=', NULL)

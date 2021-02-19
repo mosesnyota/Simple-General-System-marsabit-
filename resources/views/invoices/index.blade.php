@@ -164,7 +164,7 @@
                         <th>Customer</th>
                         <th>Amount</th>
                         <th class="d-none">Balance</th>
-                        
+                        <th></th>
                         <th width="13%"></th>
                       </tr>
                       </thead>
