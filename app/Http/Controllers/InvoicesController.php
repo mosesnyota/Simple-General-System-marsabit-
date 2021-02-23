@@ -157,7 +157,7 @@ class InvoicesController extends Controller
         $pdf->Ln();
         $pdf-> Cell(120, 6, "    the order; Balance payment against delivery",0, 0, 'L', 0, '');
         $pdf->Ln();
-        $pdf-> Cell(120, 6, "2. All cheques payable to DON BOSCO EMBU-PRODUCTION",0, 0, 'L', 0, '');
+        $pdf-> Cell(120, 6, "2. All cheques payable to DON BOSCO MARSABIT",0, 0, 'L', 0, '');
         $pdf->Ln();
         $pdf-> Cell(120, 6, "3. This Invoice/Quotation is valid for one month",0, 0, 'L', 0, '');
         $pdf->Output();

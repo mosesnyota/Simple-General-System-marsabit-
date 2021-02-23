@@ -43,7 +43,7 @@ class MyController extends Controller
            $invoice_payments =   DB::select("SELECT YEAR(payment_date) AS expenyear , SUM(amount) AS total FROM invoice_payment
            WHERE deleted_at IS NULL AND YEAR(payment_date)  >= (YEAR(CURDATE()) - 3) GROUP BY expenyear");
     
-            $totalIncomethisYear = 0 ;
+            $totalIncomethisYear = 0 ; 
             $feeLastYear  = 0 ;
     
             //Declare array, initialize years with values to avoid 
