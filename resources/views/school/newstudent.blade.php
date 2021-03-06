@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="col-sm-5">
-                      <input type="text" class="form-control" id="idno" name="idno" placeholder="National ID ">
+                      <input type="text" class="form-control" id="idno" name="idno" placeholder="National ID : Optional">
                     </div>
                   </div> 
 
@@ -82,27 +82,25 @@
                   </div> 
 
                     
-
                   <div class="form-group row">
-                    <label for="project_name" class="col-sm-2 col-form-label">Dates: </label>
-                    <div class="col-sm-5">
-                    <div class="input-group">
-                        <input type="text" class="form-control" autocomplete="off" id="datepicker-startdate" placeholder="D. O. B" name="dob">
+                    <label for="budget" class="col-sm-2 col-form-label">DOB</label>
+                    <div class="col-sm-10">
+                      <div class="input-group">
+                        <input type="text" class="form-control" autocomplete="off" id="datepicker-startdate" name="dob">
                         <div class="input-group-append bg-custom b-0"><span class="input-group-text"><i class="mdi mdi-calendar"></i></span></div>
                     </div><!-- input-group -->
                     </div>
-
-                    <div class="col-sm-5">
+                </div>
+                    
+                <div class="form-group row">
+                  <label for="budget" class="col-sm-2 col-form-label"> Date Joined</label>
+                  <div class="col-sm-10">
                     <div class="input-group">
-                      <input type="text" class="form-control" autocomplete="off" id="datepicker-deadline"  placeholder="Date Joined this school" name="date_joined" >
+                      <input type="text" class="form-control" autocomplete="off" id="datepicker-deadline" name="date_joined" >
                       <div class="input-group-append bg-custom b-0"><span class="input-group-text"><i class="mdi mdi-calendar"></i></span></div>
                   </div><!-- input-group -->
-                    </div>
-                  </div> 
-
-
-
-                  
+                  </div>
+                </div>
 
                 <div class="form-group row">
                     <label for="project_name" class="col-sm-2 col-form-label">Contact Details: </label>
@@ -111,19 +109,9 @@
                     </div>
 
                     <div class="col-sm-5">
-                      <input type="text" class="form-control" id="residence" name="residence" placeholder="Home Area or Place of birth">
+                      <input type="text" class="form-control" id="residence" name="residence" placeholder="Home Area">
                     </div>
                   </div> 
-
-                  <div class="form-group row">
-                    <label for="project_name" class="col-sm-2 col-form-label">Postal Address: </label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="phone" name="phone" placeholder="Address" required>
-                    </div>
-
-                   
-                  </div>
-
 
 
 
@@ -157,124 +145,28 @@
 
                     <div class="form-group row">
                         <label for="sponsor_id" class="col-sm-2 col-form-label">Gender</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-10">
                             <select class="form-control select2" name="gender" style="width: 100%;"  required>
                                 <option value="">----Select Gender-----</option>
-                                  <option value="Male">Male</option>
+                                  <option value="Male">Male</option>\
                                   <option value="Female">Female</option>
                             </select>
                         </div>
-
-                        <div class="col-sm-5">
-                            <select class="form-control select2" name="denomination" style="width: 100%;"  required>
-                                <option value="">----Select Denomination-----</option>
-                                  <option value="Christian">Christian</option>
-                                  <option value="Muslim">Muslim</option>
-                            </select>
-                        </div>
-
                     </div>
                     
                    
-                  <div class="form-group row">
-                    <label for="project_name" class="col-sm-2 col-form-label">Father's Details</label>
-                    <div class="col-sm-3">
-                      <input type="text" class="form-control" id="father_name" name="father_name" placeholder="Father Name" >
-                    </div>
-
-                    <div class="col-sm-2">
-                      <input type="text" class="form-control" id="father_phone" name="father_phone" placeholder="Father Phone" >
-                    </div>
-
-                    <div class="col-sm-3">
-                      <input type="text" class="form-control" id="father_occupation" name="father_occupation" placeholder="father_occupation" >
-                    </div>
-                    <div class="col-sm-2">
-                    <select class="form-control select2" name="father_status" style="width: 100%;"  required>
-                                <option value="">--Status-----</option>
-                                  <option value="Alive">Alive</option>
-                                  <option value="Dead">Dead</option>
-                                  <option value="N/A">N/A</option>
-                            </select>
-                    </div>
-                  </div> 
-
-
-                  <div class="form-group row">
-                    <label for="project_name" class="col-sm-2 col-form-label">Mother's Details</label>
-                    <div class="col-sm-3">
-                      <input type="text" class="form-control" id="mother_name" name="mother_name" placeholder="mother Name" >
-                    </div>
-
-                    <div class="col-sm-2">
-                      <input type="text" class="form-control" id="mother_phone" name="mother_phone" placeholder="mother Phone" >
-                    </div>
-
-                    <div class="col-sm-3">
-                      <input type="text" class="form-control" id="mother_occupation" name="mother_occupation" placeholder="mother_occupation" >
-                    </div>
-                    <div class="col-sm-2">
-                    <select class="form-control select2" name="mother_status" style="width: 100%;"  required>
-                                <option value="">--Status-----</option>
-                                  <option value="Alive">Alive</option>
-                                  <option value="Dead">Dead</option>
-                                  <option value="N/A">N/A</option>
-                            </select>
-                    </div>
-                  </div> 
-
-
-                  <div class="form-group row">
-                    <label for="project_name" class="col-sm-2 col-form-label">Guardian/Sponsor: </label>
-                    <div class="col-sm-5">
-                      <input type="text" class="form-control" id="guardian_name" name="guardian_name" placeholder="Guardian Name" required>
-                    </div>
-
-                    <div class="col-sm-5">
-                      <input type="text" class="form-control" id="guardian_phone" name="guardian_phone" placeholder="Guardian Phone">
-                    </div>
-                  </div> 
-
-                  
-                
-                  <div class="form-group row">
-                    <label for="project_name" class="col-sm-2 col-form-label">Postal Address: </label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="phone" name="phone" placeholder="Address" required>
-                    </div>
-                  </div>
-
-
-
-
-
-                  <div class="form-group row">
-                    <label for="project_name" class="col-sm-2 col-form-label">Student Status: </label>
-                    <div class="col-sm-10">
-                    <select class="form-control select2" name="cur_status" style="width: 100%;"  required>
-                                  <option value="">----Current Status-----</option>
-                                  <option value="Active">Active</option>
-                                  <option value="Dropout">Dropout</option>
-                                  <option value="Completed">Completed</option>
-                                  <option value="Suspended">Suspended</option>
-                            </select>
-                    </div>
-                    </div>
-
-
-
                     <div class="form-group row">
-                    <label for="project_name" class="col-sm-2 col-form-label">Comment: </label>
-                    <div class="col-sm-10">
-                    <textarea class="form-control" rows="5" name="comment" id="comment" placeholder="Comment"></textarea>
+                    <label for="project_name" class="col-sm-2 col-form-label">Next of Kin</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="parent_names" name="parent_names" placeholder="Parent/Kin Name" >
                     </div>
-                  </div>
 
-
-
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" id="parents_phone" name="parents_phone" placeholder="Parent/Kin Phone" >
+                    </div>
+                  </div> 
                
-
-
+                
                  
                 </div>
                 <!-- /.card-body -->

@@ -7,8 +7,8 @@ use App\Student;
 use DB;
 use App\Course;
 use App\StudentCourses;
-use App\ClassListPDF;
-use SweetAlert;
+use App\PettyCashPDF;
+
 
 class StudentsController extends Controller
 {
@@ -26,7 +26,8 @@ class StudentsController extends Controller
     public function index()
     {
         $students  = DB::select( DB::raw("SELECT students.*, course_name FROM students
-        LEFT JOIN courses ON students.course_id = courses.course_id
+        LEFT JOIN student_course ON students.student_id = student_course.student_id
+        LEFT JOIN courses ON student_course.course_id = courses.course_id
         WHERE students.cur_status = 'active'
         AND students.deleted_at IS NULL") );
         $courses =Course::all();
@@ -40,16 +41,20 @@ class StudentsController extends Controller
     }
 
     public function printClassList($course_id,$cur_year ){
-        $students =  DB::select("SELECT students.* FROM `students`
-        WHERE deleted_at IS NULL AND (cur_status = 'Active' OR cur_status = 'Suspended')
-        and course_id = $course_id
-        ORDER BY first_name ASC ");
+        $students =  DB::table('students')
+        ->leftjoin('student_course', 'students.student_id', '=', 'student_course.student_id')
+        ->select(DB::raw('students.*'))
+        ->where('students.cur_status', '=', 'active')
+        ->where('students.deleted_at', '=', NULL)
+        ->where('student_course.course_id', '=',  $course_id)
+        ->where('students.cur_year', '=',  $cur_year)
+        ->get();
 
 
         $course =  Course::find($course_id); 
 
 
-        $pdf = new ClassListPDF();
+        $pdf = new PettyCashPDF();
         
         $pdf->AddPage();
         $pdf->SetFont('Arial','',12);
@@ -82,7 +87,7 @@ class StudentsController extends Controller
             $counter++;
             
         }
-        $counter--;
+   
         $pdf-> Cell(110, 10, "Total Students : ",1, 0, 'C', 1, '');
         $pdf-> Cell(85, 10, $counter,1, 0, 'R', 1, '');
         $pdf->Output("","Class_List_$cours.pdf");
@@ -98,18 +103,9 @@ class StudentsController extends Controller
      */
     public function create()
     {
-       $courses =Course::all();
+      
+        $courses =Course::all();
        return view('school.newstudent',compact('courses'));
-    }
-
-    public function remove($id){
-        $student = Student::find($id);
-        $student -> cur_status = 'Completed';
-        $student ->save();
-        alert()->success('Success', 'Student Has been marked as Completed/Left');
-        return redirect()->action(
-            'StudentsController@index'
-        );
     }
 
     /**
@@ -176,8 +172,8 @@ class StudentsController extends Controller
        
 
         $student =  DB::table('students')
-        ->leftjoin('courses', 'students.course_id', '=', 'courses.course_id')
-        ->select(DB::raw('students.*, course_name'))
+        ->leftjoin('student_course', 'students.student_id', '=', 'student_course.student_id')
+        ->select(DB::raw('students.*, course_id'))
         ->where('students.student_id', '=', $id)
         ->get();
 
@@ -193,10 +189,7 @@ class StudentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
         $input = $request->all();
-     
-        
         $course_id = $input['course_id'];
         unset($input["course_id"]);
         $input['dob'] = date('Y-m-d', strtotime($input['dob']));
@@ -212,12 +205,11 @@ class StudentsController extends Controller
         $student->date_joined = $input['date_joined'];
         $student->phone = $input['phone'];
         $student->residence = $input['residence'];
-
-        $student->course_id = $course_id;
+        
 
         $student->gender = $input['gender'];
-        //$student->parent_names = $input['parent_names'];
-        //$student->parents_phone = $input['parents_phone'];
+        $student->parent_names = $input['parent_names'];
+        $student->parents_phone = $input['parents_phone'];
         $student->save();
         
         $studentCourse = StudentCourses::where('student_id', '=', $id)
@@ -243,16 +235,6 @@ class StudentsController extends Controller
         'StudentsController@index'
     );
 
-    }
-
-
-    public function old(){
-        $students  = DB::select( DB::raw("SELECT students.*, course_name FROM students
-        LEFT JOIN courses ON students.course_id = courses.course_id
-        WHERE students.cur_status != 'active'
-        AND students.deleted_at IS NULL") );
-       
-        return view('school.oldstudents',compact('students'));
     }
 
     /**

@@ -64,14 +64,15 @@
                     </div>
                 </div> 
 
-
+               
+                @can('CAN_EDIT_PAYMENT_AMOUNT')
                 <div class="form-group row">
                         <label for="amount" class="col-sm-2 col-form-label"> Amount:</label>
                         <div class="col-sm-10">
                             <input type="text" autocomplete="off" class="form-control" id="amount" name="amount" value = "{{$payment->amount}}" required>
                         </div>
                 </div>
-
+                @endcan
                 <div class="form-group row">
                         <label for="sponsor_id" class="col-sm-2 col-form-label">Payment Method</label>
                         <div class="col-sm-10">

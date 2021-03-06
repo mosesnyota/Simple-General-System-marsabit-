@@ -15,12 +15,15 @@
                     </div>
                     <div class="col-md-9">
                         <div class="float-right d-none d-md-block">
-                        <button type="button"  class="btn btn-secondary btn-md float-right mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-report" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Invoices Report </b></button>
+                        <a href="{{URL::to('/')}}/quotations" class="btn btn-primary btn-md float-right mr-1"   role="button"><b class="fa fa-plus-circle"> Quotations </b></a>
                         
+                        <button type="button"  class="btn btn-secondary btn-md float-right mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-report" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Report </b></button>
+                        <button type="button"  class="btn btn-secondary btn-md float-right mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-departreport" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Depart Report </b></button>
 
                         <a href="{{URL::to('/')}}/invoice/payments" class="btn btn-primary btn-md float-right mr-1"   role="button"><b class="fas fa-dollar-sign"> View Payments </b></a>
                         <a href="{{URL::to('/')}}/invoice" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-plus-circle"> New Invoice </b></a>
-                        
+
+                      
                         </div> 
                     </div>
                     <!-- end col -->
@@ -32,7 +35,7 @@
     </div> 
     <!-- end page title -->
     @php
-    $lastyear = date('Y') - 1;
+    $lastyear = date('Y') - 1; 
   
 
   
@@ -159,12 +162,11 @@
                       <tr>
                       <th>#</th>
                       <th width="13%">Date</th>
-                        <th>Department</th>
-                        <th>Narration</th>
+                        <th width="30%">Narration</th>
                         <th>Customer</th>
                         <th>Amount</th>
                         <th class="d-none">Balance</th>
-                        <th></th>
+                        <th>Status</th>
                         <th width="13%"></th>
                       </tr>
                       </thead>
@@ -184,7 +186,6 @@
                       <tr id="{{$invoice ->invoice_id}}">
                         <td><a>{{$counter}}</a></td>
                         <td><a>{{date_format(date_create($invoice->invoice_date),'d-m-Y')}}</a></td>
-                        <td data-target="narration2" ><a>{{$invoice->department}}</a></td>
                         <td data-target="narration2" ><a>{{$invoice->narration}}</a></td>
                         <td data-target="customer_names2"><a>{{$invoice->customer_names}}</a></td>
                         <td data-target="amount2"><a>{{number_format($invoice->amount,2)}}</a></td>
@@ -203,8 +204,16 @@
                      
                      <a class="btn btn-info btn-sm" href="invoice/{{$invoice ->invoice_id}}/open"><i class="fas fa-eye"></i></a>
 
+           
+                 @if($bal != 0)
                      <button type="button" class="btn btn-secondary btn-sm"> <a  data-role="payinvoice"  data-id="{{$invoice ->invoice_id}}"> <i class="fa fa-euro-sign" > PAY </i></a>  </button>  
-                                                                                                             
+                 @endif 
+
+
+                 @if($invoice->amount == 0)
+                  <button type="button" class="btn btn-danger btn-sm mr-1 delete-confirm"  href="invoice/{{$invoice ->invoice_id}}/destroy/"> <a  data-role="deletedisburse"  > <i class="fa fa-trash" > </i></a>  </button>  
+                 @endif
+
                     </td>  
                       </tr>
                       <?php $counter += 1 ; ?>

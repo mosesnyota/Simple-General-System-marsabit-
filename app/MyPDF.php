@@ -11,8 +11,8 @@ var $aligns;
 function Header()
 {
     // Logo
-	$this->Image('logo.png',10,6,37);
-	$this->Image('donbosco.png',250,6,38);
+	$this->Image('logo.png',10,6,30);
+	$this->Image('donbosco.png',250,6,40);
     // Arial bold 15
     $this->SetFont('Arial','B',14);
     // Move to the right

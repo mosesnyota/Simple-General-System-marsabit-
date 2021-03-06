@@ -81,8 +81,8 @@
                 @can('VIEW_PRODUCTION')<li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-money-check-alt"></i> <span> Production </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
-                        <li><a href="{{URL::to('/')}}/production"><b class="fas fa-money-check-alt" aria-hidden="true"> Production Dashboard </b></a></li>
-                        <li><a href="{{URL::to('/')}}/invoices"><b class="fas fa-money-check-alt" aria-hidden="true"> Manage Invoices </b></a></li>
+                        <li><a href="{{URL::to('/')}}/production"><b class="fas fa-money-check-alt" aria-hidden="true"> Production Invoices </b></a></li>
+                        <li><a href="{{URL::to('/')}}/quotations"><b class="fas fa-money-check-alt" aria-hidden="true"> Manage Quotations </b></a></li>
 
                     </ul>
                 </li>

@@ -5,28 +5,41 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-        <title>Don Technical Institute Marsabit</title>
+        <title>Don Bosco Embu</title>
         <meta content="Admin Dashboard" name="description" />
         <meta content="ThemeDesign" name="author" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
         <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
+
         <!-- morris css -->
         <link rel="stylesheet" href="{{asset('plugins/morris/morris.css')}}">
+
         <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css">
+
+
         <!-- DataTables -->
         <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('plugins/datatables/buttons.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+
         <!-- Responsive datatable examples -->
         <link href="{{asset('plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css" />
+
         <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css">
+
         <link href="{{asset('modalheader.css')}}" rel="stylesheet" type="text/css">
+
+
         <script src="{{asset('sweetaleart/sweetalert.min.js')}}"></script>
         <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+
+
         <link href="{{asset('sweetaleart/sweetalert.min.css')}}" rel="stylesheet" type="text/css">
+        
          <!-- Plugins css -->
          <link href="{{asset('plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')}}" rel="stylesheet">
          <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
@@ -171,7 +184,7 @@ function getValues() {
         </div>
 
         <!-- Begin page -->
-        <div id="wrapper" class="toggled" class="button-menu-mobile open-left waves-effect">
+        <div id="wrapper">
 
             <!-- ========== Left Sidebar Start ========== -->
             @include('layouts.leftmenu')
@@ -185,11 +198,11 @@ function getValues() {
                     <!-- Top Bar Start -->
         <div class="topbar">
 
-        <div class="topbar-left	d-none d-lg-block">
-                            <div class="text-center">
-                               
-                            </div>
-                        </div>
+            <div class="topbar-left	d-none d-lg-block">
+                <div class="text-center">
+                    
+                </div>
+            </div>
 
             <nav class="navbar-custom">
 
@@ -242,23 +255,19 @@ function getValues() {
                         </button>
                     </li>
                     
-                    @can('VIEW_SCHOOL')
-                      <a href="{{URL::to('/')}}/school" class="btn btn-info btn-md"   role="button"><b class="fas fa-school"> SCHOOL </b></a>
-                      @endcan
+                
                       @can('VIEW_INVENTORY')
-                      <a href="{{URL::to('/')}}/products" class="btn btn-success btn-md"   role="button"><b class="fa fa-briefcase"> INVENTORY </b></a>
+                      <a href="{{URL::to('/')}}/products" class="btn btn-success btn-md"   role="button"><b class="fa fa-briefcase">  INVENTORY </b></a>
                       @endcan
                       @can('VIEW_PRODUCTION')
                       <a href="{{URL::to('/')}}/production" class="btn btn-warning btn-md"   role="button"><b class="fas fa-industry"> PRODUCTION </b></a>
                       @endcan
                       @can('VIEW PETTY CASH')
-                      <a href="{{URL::to('/')}}/pettycash" class="btn btn-secondary btn-md"   role="button"><b class="fas fa-piggy-bank"> CASH </b></a>
+                      <a href="{{URL::to('/')}}/pettycash" class="btn btn-secondary btn-md"   role="button"><b class="fas fa-piggy-bank"> PETTY CASH </b></a>
                       @endcan
-                      @can('VIEW_EXPENSES')
-                      <a href="{{URL::to('/')}}/expense" class="btn btn-success btn-md"   role="button"><b class="fas fa-money-bill-alt"> EXPENSES </b></a>
-                      @endcan
+                      
                       @can('VIEW_ASSETS')
-                      <a href="{{URL::to('/')}}/catalogue" class="btn btn-primary btn-md"   role="button"><b class="fa fa-bank"> ASSETS </b></a>
+                      <a href="{{URL::to('/')}}/catalogue" class="btn btn-primary btn-md"   role="button"><b class="fa fa-  "> ASSETS INVENTORY </b></a>
                       @endcan
 
                 </ul>
@@ -342,12 +351,6 @@ function getValues() {
 
 <!-- page script -->
 <script>
-
-$( document ).ready(function() {
-    $("#wrapper").toggleClass("toggle");
-});
-
-
   $(function () {
     /* jQueryKnob */
 
@@ -1040,15 +1043,18 @@ $('.delete-confirm').on('click', function (event) {
         }
     });
 });
+</script>
 
 
-$('.remove-confirm').on('click', function (event) {
+
+<script>
+$('.accept-confirm').on('click', function (event) {
     event.preventDefault();
     const url = $(this).attr('href');
     swal({
         title: 'Are you sure?',
-        text: 'The Student Will be set as Completed/Left!',
-        icon: 'warning',
+        text: 'This Quotation Will be turned into an invoice!',
+        icon: 'success',
         buttons: ["Cancel", "Yes!"],
     }).then(function(value) {
         if (value) {
@@ -1056,9 +1062,9 @@ $('.remove-confirm').on('click', function (event) {
         }
     });
 });
-
-
 </script>
+
+
 
 
 <script>

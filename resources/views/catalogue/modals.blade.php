@@ -42,7 +42,12 @@
               </div>
                   
 
-              
+              <div class="form-group row">
+                <label for="buying_price" class="col-sm-2 col-form-label">Asset Price:</label>
+                <div class="col-sm-10">
+                    <input type="number" autocomplete="off" class="form-control" id="price" name="price"  required>
+                </div>
+              </div>
   
                 </div>
                 <!-- /.card-body -->
@@ -114,13 +119,6 @@
                           </select>
                       </div>
                   </div>
-
-                  <div class="form-group row">
-                <label for="buying_price" class="col-sm-2 col-form-label">Asset Price:</label>
-                <div class="col-sm-10">
-                    <input type="number" autocomplete="off" class="form-control" id="price" name="price"  required>
-                </div>
-              </div>
 
             
                 </div>

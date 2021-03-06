@@ -35,204 +35,151 @@ class MyController extends Controller
      */
     public function index()
     {
-            $year0 = date('Y');
-            $year1 = date('Y') - 1;
-            $year2 = date('Y') - 2;
-            $year3 = date('Y') - 3;
-    
-           $invoice_payments =   DB::select("SELECT YEAR(payment_date) AS expenyear , SUM(amount) AS total FROM invoice_payment
-           WHERE deleted_at IS NULL AND YEAR(payment_date)  >= (YEAR(CURDATE()) - 3) GROUP BY expenyear");
-    
-            $totalIncomethisYear = 0 ; 
-            $feeLastYear  = 0 ;
-    
-            //Declare array, initialize years with values to avoid 
-            //array out of bound error
-            $incomePerYear = [];
-            $incomePerYear[$year0] =  0 ;
-            $incomePerYear[$year1] =  0 ;
-            $incomePerYear[$year2] =  0 ;
-            $incomePerYear[$year3] =  0 ;
-    
-            $incomeLastYear = 0  ;
-            foreach ($invoice_payments as $totald){ 
-                if( $year0 == $totald->expenyear){
-                    $totalIncomethisYear = $totald->total;
-                }
-    
-                if( $year1 == $totald->expenyear){
-                    $incomeLastYear = $totald->total;
-                }
-              
-                
-                $incomePerYear[$totald->expenyear] = $totald->total;
-            }
-            
-    
-    
-            //PROCESS FEE PAYMENTS FOR THE YEARS
-           $feepayments =   DB::select('SELECT YEAR(payment_date) AS payyear, SUM(amount) AS total FROM fee_payments
-           WHERE deleted_at IS NULL AND YEAR(payment_date) >= (YEAR(CURDATE()) - 3) GROUP BY payyear ');
-    
-            $feesPerYears = [];
-            $totalFee = 0 ;
-            $feeThisYear = 0;
-            $feeLastYear = 0;
-    
-            foreach ($feepayments as $totald){ 
-                
-    
-                if( $year0 == $totald->payyear){
-                    $totalFee = $totald->total;
-                }
-    
-                if( $year1 == $totald->payyear){
-                    $feeLastYear  = $totald->total;
-                }
-                $incomePerYear[$totald->payyear] = $incomePerYear[$totald->payyear] + $totald->total;
-            }
-    
-           
-             if($feeLastYear == 0){
-                $feePercent = 100;
-             }else{
-                $feePercent = (($feeThisYear - $feeLastYear)/$feeLastYear ) * 100;
-             }
-            
-            
-            if($incomeLastYear == 0){
-                $percentage = 100;
-            }else{
-                $percentage = (($totalIncomethisYear - $incomeLastYear)/$incomeLastYear ) * 100;
-            }
-            
-    
-            $activestudents =  DB::table('students')
-            ->select(DB::raw('count(*) AS total'))
-            ->where('cur_status', '=', 'active')
-            ->where('deleted_at', '=', NULL)
-            ->get();
-    
-            $totalStudents = 0 ;
-            foreach ($activestudents as $totald){ 
-                $totalStudents = $totald->total;
-            }
-    
-            
-           
-    
-            $activestudentsGender =  DB::table('students')
-            ->select(DB::raw('gender, count(gender) AS total'))
-            ->where('cur_status', '=', 'active')
-            ->where('deleted_at', '=', NULL)
-            ->groupBy('gender')
-            ->get();
-    
-            $male = 0 ;
-            $female = 0 ;
-            foreach ($activestudentsGender as $totald){ 
-               
-                if( $totald->gender == 'Male'){
-                    $male = $totald->total; ;
-                }else{
-                    $female = $totald->total;
-                }
-               
-            }
-    
-    
-            $activeInvoices =  DB::table('invoices')
-            ->select(DB::raw('count(*) AS total'))
-            ->where('cur_status' ,'!=','paid')
-            ->where('deleted_at' ,'=',null)
-            ->get();
-    
-    
-            $totalInvoices = 0 ;
-            foreach ($activeInvoices as $totald){ 
-                $totalInvoices = $totald->total;
-            }
-    
-            $studentDetails = [];
-            $studentDetails['male'] =  $male;
-            $studentDetails['female'] = $female;
-            $studentDetails['totalFees'] = $feeThisYear;
-            $studentDetails['feePercent'] =  $feePercent;
-            $studentDetails['totalInvoices'] =  $totalInvoices;
-    
-    
-    
-    
-            //SECTION TO GET EXPENSES
-            $expense = array();
-    
-            $expenseFor4Years = DB::SELECT("SELECT YEAR(`expense_date`) AS expenyear, SUM(`expense_amount`) AS total FROM `expenses`
-            WHERE YEAR(`expense_date`) >= (YEAR(CURDATE()) - 3) and deleted_at is null  GROUP BY expenyear");
-            $expensesPerYear = [];
-            $expensesPerYear[ $year0] = 0;
-            $expensesPerYear[ $year1] = 0;
-            $expensesPerYear[ $year2] = 0;
-            $expensesPerYear[ $year3] = 0;
-    
-            $expense['thisyear'] =  0;
-            $expense['expelastyear'] =  0;
-    
-            foreach( $expenseFor4Years as $expeY4){
-                $expensesPerYear[$expeY4 ->expenyear ] =  $expeY4->total;
-                if( $year0 == $expeY4->expenyear){
-                    $expense['thisyear']  = $expeY4->total;
-                }
-                if( $year1 == $expeY4->expenyear){
-                    $expense['expelastyear']  = $expeY4->total;
-                }
-    
-            }
-    
-    
-            $pettyCashExpenses = DB::select("SELECT YEAR(`transaction_date`) AS expenyear, SUM(amount) AS total FROM `petty_cashes`
-            WHERE `transactiontype` = 'Withdraw' AND deleted_at IS NULL AND YEAR(transaction_date) >= (YEAR(CURDATE()) - 3) GROUP BY expenyear ");
-            
-            foreach( $pettyCashExpenses as $expeY4){
-                $expensesPerYear[$expeY4 ->expenyear ] = $expensesPerYear[$expeY4 ->expenyear ] + $expeY4->total;
-                if( $year0 == $expeY4->expenyear){
-                    $expense['thisyear']  = $expense['thisyear'] + $expeY4->total;
-                }
-                if( $year1 == $expeY4->expenyear){
-                    $expense['expelastyear']  = $expense['expelastyear'] + $expeY4->total;
-                }
-    
-            }
-    
-    
-            $pecentChange = 0;
-            if($expense['expelastyear'] == 0){
-                $pecentChange = 100  ;
-            }else{
-                $pecentChange = (($expense['thisyear'] - $expense['expelastyear']) /  $expense['expelastyear'] ) * 100;
-    
-            }
-    
-        
-            $payments =  DB::table('fee_payments')
-            ->join('students', 'fee_payments.student_id', '=', 'students.student_id')
-            ->select(DB::raw('fee_payments.*,first_name,middle_name,surname'))
-            ->where('fee_payments.deleted_at', '=', NULL)
-            ->orderBy('payment_date','DESC')
-            ->limit(5)
-            ->get();
+       
+        $year0 = date('Y');
+        $year1 = date('Y') - 1;
+        $year2 = date('Y') - 2;
+        $year3 = date('Y') - 3;
+
+  
+        $invoice_payments =   DB::select("SELECT `YearID` as expenyear, SUM(`Amount_LC`) AS total
+        FROM
+    `tech_epr`.`voucherdetail`
+    INNER JOIN `tech_epr`.`voucher` 
+        ON (`voucherdetail`.`VoucherID` = `voucher`.`VoucherID`)
+    INNER JOIN `tech_epr`.`ledger` 
+        ON (`voucherdetail`.`LedgerID` = `ledger`.`LedgerID`)
+    INNER JOIN `tech_epr`.`costcentre` 
+        ON (`voucherdetail`.`CostCentreID` = `costcentre`.`CostCentreID`)
+                WHERE VoucherType = 'RC'  AND YearID  >= (YEAR(CURDATE()) - 3)
+                and isbank = 0 AND category = 'Educational Income'
+                AND  ledgerhead NOT IN ('Depreciation expense')
+                    AND VoucherType != 'OP' AND MODE = -1 
+                GROUP BY YearID");
 
 
-    
-            $paymentsInvoice = DB::select("SELECT `invoice_payment`.*, `customer_names`, `narration` FROM `invoice_payment`
-            JOIN `invoices` ON invoices.`invoice_id` = invoice_payment.`invoice_id`
-            JOIN `customers` ON invoices.`customer_id` = `customers`.`customer_id` 
-            WHERE invoices.deleted_at is null and invoice_payment.deleted_at is null order by payment_date desc LIMIT 5");
-    
-    
+
+        $totalIncomethisYear = 0 ;
+        $feeLastYear  = 0 ;
+
+        //Declare array, initialize years with values to avoid 
+        //array out of bound error
+        $incomePerYear = [];
+        $incomePerYear[$year0] =  0 ;
+        $incomePerYear[$year1] =  0 ;
+        $incomePerYear[$year2] =  0 ;
+        $incomePerYear[$year3] =  0 ;
+
+        $incomeLastYear = 0  ;
+        foreach ($invoice_payments as $totald){ 
+            if( $year1 == $totald->expenyear){
+                $totalIncomethisYear = $totald->total;
+            }
+
+            if( $year2 == $totald->expenyear){
+                $incomeLastYear = $totald->total;
+            }
+          
             
-            return view('home', compact('totalFee','payments','paymentsInvoice','totalIncomethisYear','totalStudents','percentage',
-                  'studentDetails','expense','pecentChange','incomePerYear','expensesPerYear'));
+            $incomePerYear[$totald->expenyear] = $totald->total;
+        }
         
+
+        
+      
+
+
+        $activeInvoices =  DB::table('invoices')
+        ->select(DB::raw('count(*) AS total'))
+        ->where('cur_status' ,'!=','paid')
+        ->where('deleted_at' ,'=',null)
+        ->get();
+
+
+        $totalInvoices = 0 ;
+        foreach ($activeInvoices as $totald){ 
+            $totalInvoices = $totald->total;
+        }
+
+        $studentDetails = [];
+        $studentDetails['male'] =  StudentNumber::find(1)->std_num;
+        $studentDetails['female'] = 0;
+        $studentDetails['totalFees'] = 40;
+        $studentDetails['feePercent'] =  10;
+        $studentDetails['totalInvoices'] =  $totalInvoices;
+
+
+        $percentage = 100;
+        $totalStudents = $studentDetails['male']  ;
+        $totalFee = 0 ;
+
+        //SECTION TO GET EXPENSES
+        $expense = array();
+
+        // $expenseFor4Years = DB::SELECT("SELECT YEAR(`expense_date`) AS expenyear, SUM(`expense_amount`) AS total FROM `expenses`
+        // WHERE YEAR(`expense_date`) >= (YEAR(CURDATE()) - 3) GROUP BY expenyear");
+
+        $expenseFor4Years = DB::SELECT("SELECT `YearID` as expenyear, SUM(`Amount_LC`) AS total
+        FROM
+    `tech_epr`.`voucherdetail`
+    INNER JOIN `tech_epr`.`voucher` 
+        ON (`voucherdetail`.`VoucherID` = `voucher`.`VoucherID`)
+    INNER JOIN `tech_epr`.`ledger` 
+        ON (`voucherdetail`.`LedgerID` = `ledger`.`LedgerID`)
+    INNER JOIN `tech_epr`.`costcentre` 
+        ON (`voucherdetail`.`CostCentreID` = `costcentre`.`CostCentreID`)
+                WHERE VoucherType = 'PY'  AND YearID  >= (YEAR(CURDATE()) - 3)
+                and isbank = 0 AND category = 'Educational Expenses'
+                AND  ledgerhead NOT IN ('Depreciation expense')
+                    AND VoucherType != 'OP' AND MODE = 1 
+                GROUP BY YearID");
+
+
+        $expensesPerYear = [];
+        $expensesPerYear[ $year0] = 0;
+        $expensesPerYear[ $year1] = 0;
+        $expensesPerYear[ $year2] = 0;
+        $expensesPerYear[ $year3] = 0;
+
+        $expense['thisyear'] =  1;
+        $expense['expelastyear'] =  0;
+
+        foreach( $expenseFor4Years as $expeY4){
+            $expensesPerYear[$expeY4 ->expenyear ] =  $expeY4->total;
+            if( $year1 == $expeY4->expenyear){
+                $expense['thisyear']  = $expeY4->total;
+            }
+            if( $year2 == $expeY4->expenyear){
+                $expense['expelastyear']  = $expeY4->total;
+            }
+
+        }
+
+
+        
+
+
+        $pecentChange = 0;
+        if($expense['expelastyear'] == 0){
+            $pecentChange = 100  ;
+        }else{
+            $pecentChange = (($expense['thisyear'] - $expense['expelastyear']) /  $expense['expelastyear'] ) * 100;
+
+        }
+
+    
+        $payments =  DB::table('fee_payments')
+        ->join('students', 'fee_payments.student_id', '=', 'students.student_id')
+        ->select(DB::raw('fee_payments.*,first_name,middle_name,surname'))
+        ->where('fee_payments.deleted_at', '=', NULL)
+        ->orderBy('payment_date','DESC')
+        ->limit(5)
+        ->get();
+
+
+
+
+
         
 
         $paymentsInvoice = DB::select("SELECT `invoice_payment`.*, `customer_names`, `narration` FROM `invoice_payment`
@@ -240,9 +187,9 @@ class MyController extends Controller
         JOIN `customers` ON invoices.`customer_id` = `customers`.`customer_id` order by payment_date desc LIMIT 5");
 
 
-
-
-
+        
+        return view('home', compact('totalFee','payments','paymentsInvoice','totalIncomethisYear','totalStudents','percentage',
+              'studentDetails','expense','pecentChange','incomePerYear','expensesPerYear'));
     }
 //END OF FUNCTION INDEX
 

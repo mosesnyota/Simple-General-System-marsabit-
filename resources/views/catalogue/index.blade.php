@@ -70,7 +70,7 @@
 
         </div>
 
-        <div class="col-xl-4 col-md-6">
+        <div class="col-xl-3 col-md-6">
             <div class="card bg-info mini-stat text-white">
                 <div class="p-3 mini-stat-desc">
                     <div class="clearfix">
@@ -121,9 +121,9 @@
                                             <th style="width: 6%">#</th>
                                             <th>Category</th>
                                             <th >Asset </th>
-                                            <th style="width: 10%">Copies</th>
+                                            <th style="width: 15%">Copies</th>
                                             <th style="width: 15%">Assigned</th>
-                                            <th style="width: 25%"></th>
+                                            <th ></th>
                                            
                                         </tr>
                                     </thead>
@@ -147,8 +147,8 @@
                                                                
    
                       
-                                                <button type="button" class="btn btn-info btn-sm"> <a  data-role="addcopy"  data-id="{{$asset->asset_id}}"> <i class="fa fa-plus-circle" >ADD </i></a>  </button>  
-                                                <a class="btn btn-info btn-sm" href="catalogue/{{$asset->asset_id}}/view"><i class="fas fa-eye">VIEW</i></a>   
+                                                <button type="button" class="btn btn-info btn-sm"> <a  data-role="addcopy"  data-id="{{$asset->asset_id}}"> <i class="fa fa-plus-circle" >ADD COPY </i></a>  </button>  
+                                                <a class="btn btn-info btn-sm" href="catalogue/{{$asset->asset_id}}/view"><i class="fas fa-eye">VIEW COPIES</i></a>   
                                                     <?php $counter += 1; ?>
                                                 </tr>
                                             @endforeach

@@ -14,11 +14,11 @@
                                     <div class="float-right d-none d-md-block">
                                         <div class="dropdown">
                                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="ti-settings mr-1"></i> RECORD PRODUCTION PAYMENT
+                                                <i class="ti-settings mr-1"></i> Pull DBAMS Data
                                             </button>
                                            
                                             <div class="dropdown-menu dropdown-menu-animated">
-                                                <a class="dropdown-item" href="newpayment"><i class="dripicons-user text-muted"></i> Record Payment</a>
+                                                <a class="dropdown-item" href="importdbams"><i class="dripicons-user text-muted"></i> Pull DBAMS</a>
                                                 
                                             </div>
                                         </div>

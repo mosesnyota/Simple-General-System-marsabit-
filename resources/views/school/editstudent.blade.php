@@ -49,7 +49,7 @@
                                
                             
                   <div class="form-group row">
-                    <label for="project_name" class="col-sm-2 col-form-label">Admn No: </label>
+                    <label for="project_name" class="col-sm-2 col-form-label">Identifier: </label>
                     <div class="col-sm-5">
                       <input type="text" class="form-control" id="student_no" name="student_no" value="{{$stdent ->student_no}}" >
                     </div>
@@ -150,7 +150,16 @@
                     </div>
                     
                    
-                    
+                    <div class="form-group row">
+                    <label for="project_name" class="col-sm-2 col-form-label">Parent/Next of Keen</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="parent_names" name="parent_names" value="{{$stdent->parent_names}}" >
+                    </div>
+
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" id="parents_phone" name="parents_phone" value="{{$stdent->parents_phone}}" >
+                    </div>
+                  </div> 
                  
                     
                         </div>

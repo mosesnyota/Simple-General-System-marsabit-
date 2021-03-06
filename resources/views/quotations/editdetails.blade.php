@@ -14,7 +14,7 @@
                 <div class="page-title-box">
                     <div class="row align-items-center">
                         <div class="col-md-8">
-                            <h4 class="page-title m-0">Edit Invoice Item</h4>
+                            <h4 class="page-title m-0">Edit Quotation Item</h4>
                         </div>
                         <div class="col-md-4">
                             
@@ -44,7 +44,7 @@
                               </div>
                             </div> 
 
-                            @can('CAN_EDIT__INVOICE_AMOUNT')
+                           
                             <div class="form-group row">
                               <label for="location" class="col-sm-2 col-form-label">Unit Price</label>
                               <div class="col-sm-10">
@@ -59,7 +59,7 @@
                                 <input type="text" class="form-control" id="quantity" name="quantity" value="{{$details ->quantity}}">
                               </div>
                           </div>
-                          @endcan
+                         
                               
                           </div>
                           <!-- /.card-body -->

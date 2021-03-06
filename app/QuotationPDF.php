@@ -2,7 +2,7 @@
 namespace App;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use App\SystemSetting;
-class PDF extends FPDF
+class QuotationPDF extends FPDF
 
 {
 var $widths;
@@ -10,19 +10,15 @@ var $aligns;
 var $invID = 0 ;
 var $invdate;
 var $amount;
-var $discount;
 
-public function setValues($id,$date,$amnt, $dis)
+public function setValues($id,$date,$amnt)
 {
 	global $invID;
 	global $invdate;
 	global $amount;
-	global $discount;
-
 	$invdate = $date;
 	$invID = $id;
 	$amount = $amnt;
-	$discount = $dis;
 	
 }
 
@@ -31,11 +27,10 @@ function Header()
 	global $invID;
 	global $invdate;
 	global $amount;
-	global $discount;
 	// Logo
 	$this->SetFont('Times','B',13);
 	$this->SetFillColor(237, 228, 226);
-	$this-> Cell(195, 10, "INVOICE " ,1, 0, 'C', 1, '');
+	$this-> Cell(195, 10, "QUOTATION" ,1, 0, 'C', 1, '');
 	$this->Ln();
 	$this-> Cell(195, 40, " " ,1, 0, 'C', 0, '');
 	$this->Ln(1);
@@ -57,23 +52,18 @@ function Header()
 	
 	$this->Cell(40,0,'',0,0,'C');
 	$this->Cell(115,0,strtoupper($title),0,0,'L');
-	$this-> Cell(45, 0, "Invoice No. : "."INV0".$invID,0, 0, 'L', 0, '');
+	$this-> Cell(45, 0, "Quotation No. : "."INV0".$invID,0, 0, 'L', 0, '');
 	$this->Ln(7);
 	$this->Cell(40,0,'',0,0,'C');
 	$this->Cell(115,0,strtoupper($address),0,0,'L');
-	$this-> Cell(45, 0, "Date : ".$invdate,0, 0, 'L', 0, '');
+	$this-> Cell(45, 0, "Date : ".date('d-m-Y', strtotime($invdate)),0, 0, 'L', 0, '');
 	$this->Ln(7);
 	$this->Cell(40,0,'',0,0,'C');
 	$this->Cell(115,0,strtolower($email),0,0,'L');
-	$this-> Cell(45, 0, "Amount : ".number_format($amount,0),0, 0, 'L', 0, '');
+	$this-> Cell(45, 0, "Amount : ".number_format($amount,2),0, 0, 'L', 0, '');
 	$this->Ln(7);
-	
 	$this->Cell(40,0,'',0,0,'C');
-	$this->Cell(115,0,strtoupper('Phone : '.$phone),0,0,'L');
-	if($discount > 0){
-		$this-> Cell(45, 0, "Discount : ".number_format($discount,0),0, 0, 'L', 0, '');
-	}
-	
+	$this->Cell(160,0,strtoupper('Phone : '.$phone),0,0,'L');
 
     // Line break
     $this->Ln(6);
