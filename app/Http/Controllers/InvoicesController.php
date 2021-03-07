@@ -11,7 +11,7 @@ use DB;
 use App\PDF;
 use App\Course;
 
-
+use App\MyPDFPortrait;
 use App\MyPDF;
 use App\ProductionInvoicePayment;
 
@@ -26,6 +26,84 @@ class InvoicesController extends Controller
     }
 
 
+    public function discount(Request $request, $id){
+        $input = $request->all();
+        $invoice = Invoice::find($id);
+        $invoice['discount'] = $input['discount_amount'];
+        $invoice->save();
+        return redirect()->action(
+            "InvoicesController@index"
+        );
+    }
+    public function departreport(Request $request){
+        $input = $request->all();
+        $startdate =   date('Y-m-d',strtotime( $input['start']));
+        $enddate =   date('Y-m-d',strtotime( $input['end']));
+        $input['start'] = $startdate;
+        $input['end'] = $enddate;
+        return view('invoices.opendepartreport',compact('input'));
+    }
+    public function opendepartreport($start,$end){
+        $startdate =   date('Y-m-d',strtotime( $start));
+        $enddate   =   date('Y-m-d',strtotime( $end));
+      
+  
+        $pdf = new MyPDFPortrait();
+        $pdf->AddPage();
+        $pdf->SetFont('Arial','',12);
+        //Table with 20 rows and 4 columns
+        $pdf->SetX(5);
+        $pdf->SetFillColor(237, 228, 226);
+        
+        $pdf->Ln(7);
+        $pdf-> Cell(195, 10, "Summary of Invoices between ".date('d-M-Y',strtotime( $start))." and ".date('d-M-Y',strtotime( $end)),0, 0, 'C', 1, '');
+        $pdf->Ln(15);
+        $pdf->SetX(10);
+        
+        $pdf->SetFont('Times','',10); 
+        $pdf-> Cell(15, 10, "#",1, 0, 'C', 1, '');
+       
+        $pdf-> Cell(100, 10, "Department",1, 0, 'C', 1, '');
+        $pdf-> Cell(80, 10, "Total Amount",1, 0, 'C', 1, '');
+       
+      
+        
+        $pdf->Ln();
+        $counter = 1;
+        $pdf->SetWidths(array(15,100,80));
+        $aligns = array('L','L','R');
+        $pdf->SetAligns($aligns );
+        $pdf->SetFillColor(224, 235, 255);
+        
+        $invoices =  DB::select(" SELECT courses.`course_name`, SUM(unit_cost * quantity) AS amount FROM invoices
+        JOIN invoice_details ON invoices.invoice_id = invoice_details.invoice_id
+        JOIN courses ON invoices.course_id = courses.course_id
+        WHERE invoices.deleted_at IS NULL
+        AND invoice_details.deleted_at IS NULL
+        AND invoice_date >= '$startdate'
+        AND invoice_date <= '$enddate'
+        GROUP BY course_name ");
+        $fill = 1 ;
+        $total = 0 ;
+        foreach($invoices as $transaction){
+            $fill =  !$fill;
+            $total += $transaction->amount;
+            $pdf->Row(array( 
+                $counter,
+                $transaction->course_name, 
+                number_format($transaction->amount,2)
+        ), $fill);
+            $counter++;
+            
+        }
+   
+        $pdf-> Cell(115, 10, "Total  ",1, 0, 'R', 1, '');
+        $pdf-> Cell(80, 10,   number_format($total,2),1, 0, 'R', 1, '');
+       
+        
+        $pdf->Output('I','Invoice Summary');
+        exit;
+    }
 
 
     public function printpdf($id){
@@ -1020,6 +1098,17 @@ class InvoicesController extends Controller
 
         $details['paid'] = $totalpaid;
 
+        $invTotal = $invoice -> amount;
+        $balanceR = $invTotal - $totalpaid;
+        if($totalpaid > 0 && $balanceR > 0){
+            $invoice->cur_status = 'Patially Paid';
+            $InvoiceReal = Invoice::find($invoice->invoice_id);
+            $InvoiceReal->cur_status = 'Patially Paid';
+            $InvoiceReal->save();
+            
+        }
+
+
         $payments = DB::select("SELECT `invoice_payment`.*
         FROM `invoice_payment`
         where deleted_at is null and invoice_id = $id
@@ -1152,4 +1241,18 @@ class InvoicesController extends Controller
     {
         //
     }
+
+
+    //CHANGES
+
+    public function completedelete($id){
+        $invoice = Invoice::find($id);
+        $invoice->forceDelete();
+        return redirect()->action(
+            "InvoicesController@index"
+        );
+    }
+
+
+
 }

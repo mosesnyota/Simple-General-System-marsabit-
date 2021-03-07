@@ -43,13 +43,15 @@
                                 <input type="text" class="form-control" id="description" name="description" value="{{$details ->description}}">
                               </div>
                             </div> 
+
+                            @can('CAN_EDIT__INVOICE_AMOUNT')
                             <div class="form-group row">
                               <label for="location" class="col-sm-2 col-form-label">Unit Price</label>
                               <div class="col-sm-10">
                                 <input type="number" class="form-control" id="unit_cost" name="unit_cost" value="{{$details ->unit_cost}}">
                               </div>
                             </div>
-                              
+                           
                           
                           <div class="form-group row">
                               <label for="budget" class="col-sm-2 col-form-label">Quantity</label>
@@ -57,7 +59,7 @@
                                 <input type="text" class="form-control" id="quantity" name="quantity" value="{{$details ->quantity}}">
                               </div>
                           </div>
-                         
+                          @endcan
                               
                           </div>
                           <!-- /.card-body -->
