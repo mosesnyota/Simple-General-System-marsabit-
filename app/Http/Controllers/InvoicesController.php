@@ -26,6 +26,134 @@ class InvoicesController extends Controller
     }
 
 
+    public function index()
+    {
+        $invoice_details = [];
+        $currDate = date("Y");
+        $selectd =  DB::select("SELECT SUM(unit_cost * quantity) AS income FROM `invoices` JOIN 
+        `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id`
+        WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL
+        AND YEAR(invoice_date) = $currDate ");
+
+        $selectd2 =  DB::select(" SELECT count(invoice_id) as total from invoices
+        where invoices.deleted_at IS NULL  AND YEAR(invoice_date) = $currDate ");
+
+        $total = 0 ;
+        $income = 0;
+        foreach ($selectd as $totald){ 
+          
+            $income = $totald->income;
+        }
+
+        foreach ($selectd2 as $totald){ 
+            $total = $totald->total;
+            
+        }
+
+
+        $LASTYEAR = $currDate - 1;
+
+        $selectdLASTYEAR =  DB::select("SELECT SUM(unit_cost * quantity) AS income 
+        FROM `invoices` JOIN 
+        `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id`
+        WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL
+        AND YEAR(invoice_date) = $LASTYEAR ");
+
+        $selectdLASTYEAR2 =  DB::select(" SELECT count(invoice_id) as total from invoices
+        where invoices.deleted_at IS NULL  AND YEAR(invoice_date) = $LASTYEAR ");
+        $totalLASTYEAR  = 0;
+        $incomeLASTYEAR = 0;
+        foreach ($selectdLASTYEAR as $totaldLAST){ 
+           
+            $incomeLASTYEAR = $totaldLAST->income;
+        }
+
+        foreach ($selectdLASTYEAR2 as $totaldLAST){ 
+           
+            $totalLASTYEAR = $totaldLAST->total;
+        }
+        
+
+        $open = DB::select("SELECT COUNT(invoices.invoice_id) AS total FROM INVOICES
+        WHERE invoices.deleted_at IS NULL AND cur_status !='paid'");
+
+      
+        $totalopen = 0 ;
+        $totalUnpaid = 0 ;
+
+
+
+        foreach ($open as $totald){ 
+            $totalopen = $totald->total;
+            
+        }
+
+       
+        $open2 =  DB::select("SELECT SUM(unit_cost * quantity) AS unpaid FROM `invoices` JOIN 
+        `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id`
+        WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL
+        AND cur_status !='paid' ");
+
+        $open3=  DB::select("SELECT SUM(invoice_payment.amount) AS paid FROM `invoices` JOIN 
+        `invoice_payment` ON `invoices`.`invoice_id` = `invoice_payment`.`invoice_id`
+        WHERE invoices.deleted_at IS NULL AND invoice_payment.`deleted_at` IS NULL
+        AND cur_status !='paid' ");
+
+
+
+        foreach ($open2 as $totald){ 
+           
+            $totalUnpaid = $totald->unpaid;
+        }
+
+        $totalpaid = 0 ;
+        foreach ($open3 as $totald){ 
+            $totalpaid = $totald->paid;
+        }
+
+
+
+        $invoice_details['total_invoices'] =  $total;
+        $invoice_details['open_invoices'] = $totalopen;
+        $invoice_details['unpaid'] = $totalUnpaid - $totalpaid ;
+        $invoice_details['income'] = $income;
+
+        $invoice_details['totalLASTYEAR'] = $totalLASTYEAR;
+        $invoice_details['incomeLASTYEAR'] = $incomeLASTYEAR;
+
+        
+
+       
+
+        $invoices  =  DB::table('invoices')
+        ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
+        ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
+        ->leftjoin('courses', 'invoices.course_id','=','courses.course_id')
+        ->select(DB::raw('customers.*,invoices.*,course_name as department,SUM(unit_cost * quantity) AS amount'))
+        ->where('invoices.deleted_at', '=', NULL)
+        ->where('invoice_details.deleted_at', '=', NULL)
+        ->groupBy('invoice_id')
+        ->orderBy('invoice_date','DESC')
+        ->get();
+
+
+
+
+        $paymentsD =   DB::select("SELECT invoice_payment.invoice_id, SUM(invoice_payment.amount) AS paid FROM `invoice_payment` 
+            join invoices on invoices.invoice_id = invoice_payment.invoice_id
+            WHERE invoice_payment.deleted_at IS NULL  group by invoice_payment.invoice_id");
+
+                $paidVals = [];
+                foreach($paymentsD as $pyd){
+                    $paidVals[$pyd->invoice_id] = $pyd->paid;
+                    
+                }
+
+
+        return view('invoices.index',compact('invoice_details','invoices','bills','paidVals'));
+    }
+    
+
     public function discount(Request $request, $id){
         $input = $request->all();
         $invoice = Invoice::find($id);
@@ -248,132 +376,7 @@ class InvoicesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $invoice_details = [];
-        $currDate = date("Y");
-        $selectd =  DB::select("SELECT SUM(unit_cost * quantity) AS income FROM `invoices` JOIN 
-        `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id`
-        WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL
-        AND YEAR(invoice_date) = $currDate ");
-
-        $selectd2 =  DB::select(" SELECT count(invoice_id) as total from invoices
-        where invoices.deleted_at IS NULL  AND YEAR(invoice_date) = $currDate ");
-
-        $total = 0 ;
-        $income = 0;
-        foreach ($selectd as $totald){ 
-          
-            $income = $totald->income;
-        }
-
-        foreach ($selectd2 as $totald){ 
-            $total = $totald->total;
-            
-        }
-
-
-        $LASTYEAR = $currDate - 1;
-
-        $selectdLASTYEAR =  DB::select("SELECT SUM(unit_cost * quantity) AS income 
-        FROM `invoices` JOIN 
-        `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id`
-        WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL
-        AND YEAR(invoice_date) = $LASTYEAR ");
-
-        $selectdLASTYEAR2 =  DB::select(" SELECT count(invoice_id) as total from invoices
-        where invoices.deleted_at IS NULL  AND YEAR(invoice_date) = $LASTYEAR ");
-        $totalLASTYEAR  = 0;
-        $incomeLASTYEAR = 0;
-        foreach ($selectdLASTYEAR as $totaldLAST){ 
-           
-            $incomeLASTYEAR = $totaldLAST->income;
-        }
-
-        foreach ($selectdLASTYEAR2 as $totaldLAST){ 
-           
-            $totalLASTYEAR = $totaldLAST->total;
-        }
-        
-
-        $open = DB::select("SELECT COUNT(invoices.invoice_id) AS total FROM INVOICES
-        WHERE invoices.deleted_at IS NULL AND cur_status !='paid'");
-
-      
-        $totalopen = 0 ;
-        $totalUnpaid = 0 ;
-
-
-
-        foreach ($open as $totald){ 
-            $totalopen = $totald->total;
-            
-        }
-
-       
-        $open2 =  DB::select("SELECT SUM(unit_cost * quantity) AS unpaid FROM `invoices` JOIN 
-        `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id`
-        WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL
-        AND cur_status !='paid' ");
-
-        $open3=  DB::select("SELECT SUM(invoice_payment.amount) AS paid FROM `invoices` JOIN 
-        `invoice_payment` ON `invoices`.`invoice_id` = `invoice_payment`.`invoice_id`
-        WHERE invoices.deleted_at IS NULL AND invoice_payment.`deleted_at` IS NULL
-        AND cur_status !='paid' ");
-
-
-
-        foreach ($open2 as $totald){ 
-           
-            $totalUnpaid = $totald->unpaid;
-        }
-
-        $totalpaid = 0 ;
-        foreach ($open3 as $totald){ 
-            $totalpaid = $totald->paid;
-        }
-
-
-
-        $invoice_details['total_invoices'] =  $total;
-        $invoice_details['open_invoices'] = $totalopen;
-        $invoice_details['unpaid'] = $totalUnpaid - $totalpaid ;
-        $invoice_details['income'] = $income;
-
-        $invoice_details['totalLASTYEAR'] = $totalLASTYEAR;
-        $invoice_details['incomeLASTYEAR'] = $incomeLASTYEAR;
-
-        
-
-       
-
-        $invoices  =  DB::table('invoices')
-        ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
-        ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
-        ->leftjoin('courses', 'invoices.course_id','=','courses.course_id')
-        ->select(DB::raw('customers.*,invoices.*,course_name as department,SUM(unit_cost * quantity) AS amount'))
-        ->where('invoices.deleted_at', '=', NULL)
-        ->where('invoice_details.deleted_at', '=', NULL)
-        ->groupBy('invoice_id')
-        ->orderBy('invoice_date','DESC')
-        ->get();
-
-
-
-
-        $paymentsD =   DB::select("SELECT invoice_payment.invoice_id, SUM(invoice_payment.amount) AS paid FROM `invoice_payment` 
-            join invoices on invoices.invoice_id = invoice_payment.invoice_id
-            WHERE invoice_payment.deleted_at IS NULL  group by invoice_payment.invoice_id");
-
-                $paidVals = [];
-                foreach($paymentsD as $pyd){
-                    $paidVals[$pyd->invoice_id] = $pyd->paid;
-                    
-                }
-
-
-        return view('invoices.index',compact('invoice_details','invoices','bills','paidVals'));
-    }
+   
 
         /**
          * This function enables editing of the payment

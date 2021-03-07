@@ -1042,6 +1042,9 @@ $('.delete-confirm').on('click', function (event) {
 });
 
 
+
+
+
 $('.remove-confirm').on('click', function (event) {
     event.preventDefault();
     const url = $(this).attr('href');
@@ -1059,6 +1062,25 @@ $('.remove-confirm').on('click', function (event) {
 
 
 </script>
+
+
+<script>
+$('.accept-confirm').on('click', function (event) {
+    event.preventDefault();
+    const url = $(this).attr('href');
+    swal({
+        title: 'Are you sure?',
+        text: 'This Quotation Will be turned into an invoice!',
+        icon: 'success',
+        buttons: ["Cancel", "Yes!"],
+    }).then(function(value) {
+        if (value) {
+            window.location.href = url;
+        }
+    });
+});
+</script>
+
 
 
 <script>

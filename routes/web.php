@@ -341,12 +341,29 @@ Route::post('/catalogue/{asset}/catalogue/{assetcopy}/update', 'CatalogueControl
 
 
 Route::get('/students/{student}/remove', 'StudentsController@remove');
-
 Route::get('/students/old', 'StudentsController@old');
-
-
 Route::post('/invoice/{invoice}/invoice/pay','InvoicesController@saveInvoicePayment2');
-
-
-
 Route::get('invoice/{invoice}/invoice/production/{receipt}/receipt','InvoicesController@printReceipt');
+
+
+
+//NEW CHANGES
+
+Route::get('invoice/{invoice_id}/destroy','InvoicesController@completedelete');
+Route::get('quotations','QuotationsController@index');
+Route::get('newquotation','QuotationsController@create');
+Route::post('quotation/store','QuotationsController@store');
+Route::get('/quotationestimates/{job}','QuotationsController@quotationestimates');
+Route::post('/savequotation','QuotationsController@savejobestimate');
+Route::get('/quotations/{qut}/open','QuotationsController@openquotation');
+Route::get('/quotations/{qt}/printpdf','QuotationsController@printpdf');
+Route::get('/quotations/{qt}/edit','QuotationsController@edit');
+Route::post('/quotations/{qt}/update','QuotationsController@update');
+Route::get('/quotations/{qt}/{item}/edit','QuotationsController@itemedit'); 
+Route::post('/quotations/{qt}/{item}/saveediteditem','QuotationsController@saveediteditem'); 
+Route::get('quotations/{qt}/{item}/destroy','QuotationsController@destroyitem');
+Route::get('quotations/{qt}/destroy','QuotationsController@destroy');
+Route::get('quotations/{qt}/accept','QuotationsController@makeinvoice');
+Route::post('invoice/{qt}/discount','InvoicesController@discount');
+Route::post('invoices/departreport','InvoicesController@departreport');
+Route::get('invoices/departreport/{start}/{end}/print','InvoicesController@opendepartreport');
