@@ -163,7 +163,7 @@
                       <th>#</th>
                       <th width="13%">Date</th>
                         <th width="30%">Narration</th>
-                        <th>Customer</th>
+                        <th>Department</th>
                         <th>Amount</th>
                         <th class="d-none">Balance</th>
                         <th>Status</th>
@@ -187,7 +187,7 @@
                         <td><a>{{$counter}}</a></td>
                         <td><a>{{date_format(date_create($invoice->invoice_date),'d-m-Y')}}</a></td>
                         <td data-target="narration2" ><a>{{$invoice->narration}}</a></td>
-                        <td data-target="customer_names2"><a>{{$invoice->customer_names}}</a></td>
+                        <td data-target="customer_names2"><a>{{$invoice->department}}</a></td>
                         <td data-target="amount2"><a>{{number_format($invoice->amount,2)}}</a></td>
                         <td class="d-none" data-target="balance33"><a>{{number_format( $bal,2)}}</a></td>
                        

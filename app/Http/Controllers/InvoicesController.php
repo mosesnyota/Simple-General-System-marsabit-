@@ -30,7 +30,8 @@ class InvoicesController extends Controller
     {
         $invoice_details = [];
         $currDate = date("Y");
-        $selectd =  DB::select("SELECT SUM(unit_cost * quantity) AS income FROM `invoices` JOIN 
+        $selectd =  DB::select("SELECT SUM(unit_cost * quantity) AS income 
+        FROM `invoices` JOIN 
         `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id`
         WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL
         AND YEAR(invoice_date) = $currDate ");
