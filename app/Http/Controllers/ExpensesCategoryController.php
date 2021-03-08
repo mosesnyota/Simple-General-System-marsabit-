@@ -14,8 +14,9 @@ class ExpensesCategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $categories = ExpenseCategory::all();
+        return view('expensecategory.index', compact('categories'));
+    } 
 
     /**
      * Show the form for creating a new resource.
@@ -35,7 +36,11 @@ class ExpensesCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        ExpenseCategory::create($input);
+        return redirect()->action(
+            'ExpensesCategoryController@index'
+           );
     }
 
     /**
@@ -57,7 +62,8 @@ class ExpensesCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = ExpenseCategory::find($id);
+        return view('expensecategory.edit', compact('category'));
     }
 
     /**
@@ -69,7 +75,13 @@ class ExpensesCategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+       $input = $request->all();
+       $category = ExpenseCategory::find($id);
+       $category->expense_category = $input['expense_category'];
+       $category->save();
+       return redirect()->action(
+        'ExpensesCategoryController@index'
+       );
     }
 
     /**
@@ -80,6 +92,7 @@ class ExpensesCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        ExpenseCategory::where('category_id',$id)->delete();
+        return back();
     }
 }

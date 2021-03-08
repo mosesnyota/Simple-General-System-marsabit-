@@ -65,10 +65,11 @@
 
                 @can('VIEW_EXPENSES')
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-money-check-alt"></i> <span> Finance </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-money-check-alt"></i> <span> Expenses </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/expense"><b class="fa fa-dollar-sign" aria-hidden="true"> Manage Expenses </b></a></li>
+                        <li><a href="{{URL::to('/')}}/expensecategory"><b class="fa fa-dollar-sign" aria-hidden="true"> Expenses Category</b></a></li>
   
                         
                     </ul>

@@ -153,6 +153,7 @@ class InvoicesController extends Controller
         return view('invoices.index',compact('invoice_details','invoices','bills','paidVals'));
     }
     
+    
 
     public function discount(Request $request, $id){
         $input = $request->all();
@@ -213,6 +214,8 @@ class InvoicesController extends Controller
         GROUP BY course_name ");
         $fill = 1 ;
         $total = 0 ;
+
+        
         foreach($invoices as $transaction){
             $fill =  !$fill;
             $total += $transaction->amount;

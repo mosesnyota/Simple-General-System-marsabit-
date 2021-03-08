@@ -48,7 +48,7 @@
                             <div class="form-group row">
                               <label for="location" class="col-sm-2 col-form-label">Unit Price</label>
                               <div class="col-sm-10">
-                                <input type="number" class="form-control" id="unit_cost" name="unit_cost" value="{{$details ->unit_cost}}">
+                                <input type="text" class="form-control" id="unit_cost" name="unit_cost" value="{{$details ->unit_cost}}">
                               </div>
                             </div>
                            

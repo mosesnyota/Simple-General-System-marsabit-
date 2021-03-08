@@ -367,3 +367,13 @@ Route::get('quotations/{qt}/accept','QuotationsController@makeinvoice');
 Route::post('invoice/{qt}/discount','InvoicesController@discount');
 Route::post('invoices/departreport','InvoicesController@departreport');
 Route::get('invoices/departreport/{start}/{end}/print','InvoicesController@opendepartreport');
+
+
+Route::get('/expensecategory', 'ExpensesCategoryController@index');
+Route::get('/expencategory/{exp}/edit', 'ExpensesCategoryController@edit');
+Route::post('/expencategory/{PDO}/update', 'ExpensesCategoryController@update');
+Route::get('/expencategory/{pd}/destroy', 'ExpensesCategoryController@destroy');
+Route::post('/expensecategory/store', 'ExpensesCategoryController@store');
+
+Route::post('/expense/report2', 'ExpensesController@report2');
+Route::get('/expense/{startdate}/{enddate}/summaryreport', 'ExpensesController@report3');

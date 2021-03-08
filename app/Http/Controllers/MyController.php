@@ -10,7 +10,7 @@ use App\Votehead;
 use DB;
 use App\Student;
 use App\FeePayment;
-use PDF;
+use PDF; 
 
 
 use App\StudentNumber;
@@ -40,8 +40,10 @@ class MyController extends Controller
             $year2 = date('Y') - 2;
             $year3 = date('Y') - 3;
     
-           $invoice_payments =   DB::select("SELECT YEAR(payment_date) AS expenyear , SUM(amount) AS total FROM invoice_payment
-           WHERE deleted_at IS NULL AND YEAR(payment_date)  >= (YEAR(CURDATE()) - 3) GROUP BY expenyear");
+           $invoice_payments =   DB::select("SELECT YEAR(invoice_date) AS expenyear, SUM(unit_cost * quantity) AS total FROM `invoices` JOIN 
+           `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id`
+           WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL
+            AND YEAR(invoice_date)  >= (YEAR(CURDATE()) - 3) GROUP BY expenyear");
     
             $totalIncomethisYear = 0 ; 
             $feeLastYear  = 0 ;

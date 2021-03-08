@@ -15,10 +15,9 @@
                     </div>
                     <div class="col-md-9">
                         <div class="float-right d-none d-md-block">
-                        <button type="button"  class="btn btn-primary btn-md float-right mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-report" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Generate Report </b></button>
-                                                
-                        <button type="button"  class="btn btn-warning btn-md float-right mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-report" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Print Report </b></button>
-                                    <button type="button"  class="btn btn-info btn-md float-right mr-1"  data-toggle="modal" data-target="#modal-recordExpense" data-backdrop="static" data-keyboard="false" href="#"> <b class="fa fa-plus-circle"> Record Expense </b></button>
+                        <button type="button"  class="btn btn-primary btn-md float-right mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-report" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Generate Report </b></button>                 
+                        <button type="button"  class="btn btn-warning btn-md float-right mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-report2" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Depart Report </b></button>
+                        <button type="button"  class="btn btn-info btn-md float-right mr-1"  data-toggle="modal" data-target="#modal-recordExpense" data-backdrop="static" data-keyboard="false" href="#"> <b class="fa fa-plus-circle"> Record Expense </b></button>
                                   
                         </div> 
                     </div>
@@ -80,7 +79,7 @@
                     </div>
                     <div>
                         
-                    <span class="badge badge-light text-primary"> {{"A/c Payables Ksh. ".number_format($expense['thisyear'],2)}}  </span> <span class="ml-2"></span>
+                    <span class="badge badge-light text-primary"> {{"A/c Payables Ksh. ".number_format($expense['unpaid'],2)}}  </span> <span class="ml-2"></span>
                     </div>
                 </div>
                 
@@ -111,6 +110,7 @@
                                                                               <th>Narration</th>
                                                                              
                                                                               <th>Supplier</th>
+                                                                              <th>Department</th>
                                                                               <th>Amount</th>
                                                                               <th>Status</th>
                                                                               <th>Action</th>
@@ -125,13 +125,14 @@
                                                                               <td>{{$expen->expense_date}}</td>
                                                                               <td>{{$expen->narration}}</td>
                                                                               <td>{{$expen->supplier_name}}</td>
+                                                                              <td>{{$expen->department}}</td>
                                                                               <td>{{number_format($expen ->expense_amount,2)}}</td>
                                                                               <td>  <?php if($expen->cur_status == 'Paid'){ ?>
                           <span class="badge badge-success">Paid</span>
                           <?php }
                              else if($expen->cur_status == 'Partial'){?>
                               <span class="badge badge-warning">Partially</span> 
-                              <?php } else if($expen->cur_status == 'unpaid'){?>
+                              <?php } else if($expen->cur_status == 'Unpaid'){?>
                                 <span class="badge badge-danger">Unpaid</span> 
                               <?php } ?>
                       </td>
@@ -154,10 +155,7 @@
                   <!-- /.table-responsive -->
                 </div>
                 <!-- /.card-body -->
-                <div class="card-footer clearfix">
-                  <a href="{{URL::to('/')}}/invoices" class="btn btn-sm btn-info float-left">Create Invoice</a>
-                  <a href="{{URL::to('/')}}/invoices" class="btn btn-sm btn-secondary float-right">View All Invoices</a>
-                </div>
+              
                 <!-- /.card-footer -->
               </div>
         </div>
