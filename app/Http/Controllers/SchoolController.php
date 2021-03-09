@@ -67,7 +67,12 @@ class SchoolController extends Controller
         $studentDetails['female'] = $female;
         $studentDetails['totalopen'] = $totalopen;
 
-        $students_totals = [];
+        $feepaid = DB::SELECT('SELECT SUM(`amount`) AS total FROM `fee_payments` WHERE YEAR(`payment_date`) = YEAR(CURDATE())');
+        $totalFeePaid = 0 ;
+        foreach($feepaid as $paid){
+            $totalFeePaid = $paid -> total;
+        }
+        $studentDetails['paid'] = $totalFeePaid;
         return view('school.index',compact('students','studentDetails','payments'));
     }
 
