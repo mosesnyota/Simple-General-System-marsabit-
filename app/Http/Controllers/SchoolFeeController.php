@@ -31,11 +31,12 @@ class SchoolFeeController extends Controller
     public function index()
     {
         $voteheads = FeeVotehead::all();
-        $students  = DB::select( DB::raw("SELECT A.*,
+        $students  = DB::select( DB::raw("SELECT A.*,course_name as department,
         ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id and fees_invoice.deleted_at is null)
         -
         (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id and fee_payments.deleted_at is null )) AS balance
-        FROM students A 
+        FROM students A   join courses B on A.course_id = B.course_id
+        WHERE A.`cur_status` = 'Active'
         GROUP BY A.student_id") );
         return view('fee.index', compact('students','voteheads')); 
     }
@@ -259,7 +260,6 @@ foreach($bal as $bal2){
         $input = $request->all();
         $course_id = $input['course_id'];
         $students =  DB::table('students')
-        ->leftJoin('student_course', 'student_course.student_id', '=', 'students.student_id')
         ->select(DB::raw('students.student_id'))
         ->whereNull('students.deleted_at')
         ->where('course_id','=', $course_id)->get();

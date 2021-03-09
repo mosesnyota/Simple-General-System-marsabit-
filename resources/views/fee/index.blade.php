@@ -57,6 +57,7 @@
                                             <th width="10%" data-visible="false">#</th>
                                             <th width="10%">Admn</th>
                                             <th  style="width: 30%">Student Name</th>
+                                            <th >Course</th>
                                             <th>Fee Balance</th>
                                             <th></th>
                                            
@@ -76,7 +77,7 @@
                                                     <td data-target="student_id" >{{ $student->student_id   }}</td>
                                                     <td data-target="student_no" >{{ $student->student_no   }}</td>
                                                     <td data-target="student_name">{{$student->first_name." ".$student->middle_name." ".$student->surname}}</td>
-                                             
+                                                    <td data-target="department" >{{ $student->department   }}</td> 
                                                     <td data-target="balance" > <?php if ( $balance  > 1000) { ?>
                                                         <span class="badge badge-warning"><b> {{number_format($balance ,2)}}</b></span>
                                                         <?php } else { ?>
@@ -86,7 +87,7 @@
                                                     <td>
 
                                                     
-                                                    <a class="btn btn-primary btn-sm" href="schoolfees/{{$student->student_id}}/viewstatement"><i class="fas fa-eye"> View Statement</i></a>
+                                                    <a class="btn btn-primary btn-sm" href="schoolfees/{{$student->student_id}}/viewstatement"><i class="fas fa-eye"> Statement</i></a>
                                                     <button type="button" class="btn btn-warning btn-sm"> <a  data-role="payfee"  data-id="{{$student->student_id}}"> <i class="fa fa-euro-sign" > Pay Fee </i></a>  </button>  
                                                                 
                                                             
