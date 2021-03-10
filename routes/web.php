@@ -377,3 +377,11 @@ Route::post('/expensecategory/store', 'ExpensesCategoryController@store');
 
 Route::post('/expense/report2', 'ExpensesController@report2');
 Route::get('/expense/{startdate}/{enddate}/summaryreport', 'ExpensesController@report3');
+
+Route::get('/schoolfees/{student_id}/viewinvoices/{year}/{term}/view', 'SchoolFeeController@viewinvoices')->name('viewinvoices');;
+
+Route::get('/schoolfees/{student}/editfee/{id}/edit', 'SchoolFeeController@editFeeInvoice');
+Route::post('/schoolfees/{student}/editfee/{invoice}/update', 'SchoolFeeController@updatefeeinvoice');
+
+Route::post('/schoolfees/{student_id}/viewinvoices/{year}/{term}/savenewfee', 'SchoolFeeController@savenewfee')->name('savenewfee');;
+

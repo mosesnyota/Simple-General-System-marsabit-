@@ -16,6 +16,7 @@ use App\MyPDF;
 use App\ProductionInvoicePayment;
 
 use App\PettyCashReceipt;
+use SweetAlert;
 
 class InvoicesController extends Controller
 {
@@ -62,6 +63,7 @@ class InvoicesController extends Controller
 
         $selectdLASTYEAR2 =  DB::select(" SELECT count(invoice_id) as total from invoices
         where invoices.deleted_at IS NULL  AND YEAR(invoice_date) = $LASTYEAR ");
+        
         $totalLASTYEAR  = 0;
         $incomeLASTYEAR = 0;
         foreach ($selectdLASTYEAR as $totaldLAST){ 
@@ -427,10 +429,8 @@ class InvoicesController extends Controller
 
     public function deletedetail($invoice_id,$detailid){
         $details =  InvoiceDetails::find($detailid) ;
-
-        
-        InvoiceDetails::where('detail_id',$detailid)->delete();
-        
+        $details->forceDelete();
+       // InvoiceDetails::where('detail_id',$detailid)->delete();
         return redirect()->action(
             "InvoicesController@openinvoice", $details->invoice_id
         ); 
@@ -1079,16 +1079,14 @@ class InvoicesController extends Controller
         
     }
     public function openinvoice($id){
+        
         $invoicedetails = InvoiceDetails::where("invoice_id","=",$id)->get();
-        $invoice4  =  DB::table('invoices')
-        ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
-        ->join('customers', 'customers.customer_id', '=', 'invoices.customer_id')
-        ->select(DB::raw('customer_names,invoices.*,SUM(unit_cost * quantity) AS amount'))
-        ->where('invoices.deleted_at', '=', NULL)
-        ->where('invoice_details.deleted_at', '=', NULL)
-        ->where('invoices.invoice_id', '=', $id)
-        ->groupBy('invoice_id')
-        ->get();
+        $invoice4  =  DB::SELECT("SELECT customer_names,invoices.*
+        FROM invoices
+        LEFT JOIN customers ON customers.customer_id = invoices.customer_id
+        WHERE  invoices.invoice_id = '$id'
+        GROUP BY invoice_id");
+
         $invoice = null;
         foreach($invoice4 as $env){
             $invoice = $env;
@@ -1105,7 +1103,16 @@ class InvoicesController extends Controller
 
         $details['paid'] = $totalpaid;
 
-        $invTotal = $invoice -> amount;
+        
+        $invoice5  =  DB::SELECT("SELECT SUM(unit_cost * quantity) AS amount FROM invoice_details
+        WHERE invoice_id = $id AND deleted_at IS NULL");
+
+         $invTotal = 0;
+        foreach($invoice5 as $env){
+            $invTotal = $env -> amount;
+        }
+       
+       
         $balanceR = $invTotal - $totalpaid;
         if($totalpaid > 0 && $balanceR > 0){
             $invoice->cur_status = 'Patially Paid';
@@ -1114,7 +1121,7 @@ class InvoicesController extends Controller
             $InvoiceReal->save();
             
         }
-
+    
 
         $payments = DB::select("SELECT `invoice_payment`.*
         FROM `invoice_payment`
@@ -1123,7 +1130,7 @@ class InvoicesController extends Controller
 
 
 
-        return view("invoices.view",compact("invoice","invoicedetails","details","payments"));
+        return view("invoices.view",compact("invoice","invoicedetails","details","payments",'invTotal'));
     }
     /**
      * Store a newly created resource in storage.
@@ -1254,10 +1261,20 @@ class InvoicesController extends Controller
 
     public function completedelete($id){
         $invoice = Invoice::find($id);
-        $invoice->forceDelete();
-        return redirect()->action(
-            "InvoicesController@index"
-        );
+        $payments = ProductionInvoicePayment::where('invoice_id','=',$id);
+
+        if($payments){
+            alert()->error('Error', 'Cannot Delete an Invoice that has already been paid for');
+            return redirect()->action(
+                "InvoicesController@index"
+            );
+        }else{
+            $invoice->forceDelete();
+            return redirect()->action(
+                "InvoicesController@index"
+            );
+        }
+       
     }
 
 

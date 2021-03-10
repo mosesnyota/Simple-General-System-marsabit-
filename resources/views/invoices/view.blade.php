@@ -66,7 +66,7 @@
                             <tr>
                                 <td>Total Invoice</td>
                                 
-                                <td><span class="badge badge-success">{{number_format($invoice->amount,2)}}</span></td>
+                                <td><span class="badge badge-success">{{number_format($invTotal,2)}}</span></td>
                             </tr>
                             
                             
@@ -116,7 +116,7 @@
                        
                         <tr>
                             <td><a>Total Amount</a></td>
-                            <td data-target="amount2"><a>{{number_format($invoice->amount,2)}}</a></td>
+                            <td data-target="amount2"><a>{{number_format($invTotal,2)}}</a></td>
                             
                         </tr>
                         <tr>
@@ -125,7 +125,7 @@
                             </tr>
                             <tr>
                                 <td><a>Balance </a></td>
-                                <td data-target="balance33"><span class="badge badge-primary">{{number_format($invoice->amount - $details['paid'],2)}}</span></td>
+                                <td data-target="balance33"><span class="badge badge-primary">{{number_format($invTotal - $details['paid'],2)}}</span></td>
                             </tr>
                       
                           

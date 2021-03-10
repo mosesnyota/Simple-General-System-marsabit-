@@ -19,13 +19,14 @@
                         <div class="page-title-box">
                             <div class="row align-items-center">
                                 <div class="col-md-6">
-                                    <h4 class="page-title m-0">FEE STATEMENT FOR {{$studentname}}</h4>
+                                    <h4 class="page-title m-0">FEE INVOICE:  {{$termyear."  For ".$studentname}}</h4>
                                 </div>
                                 <div class="col-md-6">
                                   
                                    
-                                   
-                                    <a href="{{ redirect()->getUrlGenerator()->previous() }}" class="btn btn-info btn-lg float-right mr-1"   role="button"><b class="fa fa-undo"> Back </b></a>
+                                <button type="button"  class="btn btn-primary btn-md float-right mr-1"  data-toggle="modal" data-target="#modal-addfee" data-backdrop="static" data-keyboard="false" href="#"> <b class="fa fa-plus" aria-hidden="true"> Add Fee </b></button>
+                        
+                                    <a href="{{ redirect()->action('schoolfees')}}" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-undo"> Back </b></a>
                                    
                              
                                     
@@ -52,12 +53,11 @@
                         <thead>
                         <tr>
                         <th>#</th>
-                        <th>Type</th>
-                      
-                        <th>Narration</th>
+                        <th>Votehead</th>
+                       
                         
-                        <th width="7%">Paid</th>
-                        <th width="7%">Invoiced</th>
+                        <th>Amount</th>
+                     
                         <th></th>
                        
                                                                               
@@ -68,34 +68,12 @@
                                         @foreach ($payments as $payment)
                                             <tr>
                                                 <td><a>{{$counter}}</a></td>
-                                                <td><a>{{$payment->paytype}}</a></td>
-                      
+                        <td><a>{{$payment->votehead}}</a></td>
                         
-                        @if($payment ->paytype == 'Invoice')
-                            <td><a>{{"Fee Invoice : ".$payment->term." ".$payment->inv_year}}</a></td>
-                        @else
-                        <td><a>{{date_format(date_create($payment->payment_date),'d-m-Y')}}</a></td>
-
-                        @endif
-                    
-
-                      @if($payment ->paytype == 'Invoice')
-                      <td> </td>
-                      <td>  <?php if($payment->total > 1000){ ?>
-                          <span class="badge badge-success">{{number_format($payment ->total,2)}}</span>
-                          <?php }
-                             else {?>
-                              <span class="badge badge-warning">{{number_format($payment ->total,2)}}</span> 
-                              <?php } ?>
-                                
-                      </td>
-                      
-                      <td> 
-                          <a class="btn btn-primary btn-sm" href="viewinvoices/{{$payment ->inv_year}}/{{$payment->term}}/view"><i class="fas fa-eye"> View Invoice</i></a>
-                      
-                      </td>  
-                      @else
-                      
+                       
+                 
+                     
+                     
                       <td>  <?php if($payment->amount > 1000){ ?>
                           <span class="badge badge-success">{{number_format($payment ->amount,2)}}</span>
                           <?php }
@@ -104,10 +82,12 @@
                               <?php } ?>
                                 
                       </td>
-                      <td> </td>
-
-                      @endif
-                                                                 
+                      
+                      
+                      <td> 
+                          <a class="btn btn-primary btn-sm" href="../../../editfee/{{$payment ->fee_invoice_id }}/edit"><i class="fa fa-edit"> Edit</i></a>
+                      
+                      </td>                                             
 
                                                                              
  
@@ -137,5 +117,5 @@
 
    
 
-
+    @include('fee.addfeemodal')
 @endsection

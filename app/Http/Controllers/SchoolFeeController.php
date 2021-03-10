@@ -11,7 +11,6 @@ use SweetAlert;
 use App\Student;
 use App\FeePayment;
 use Illuminate\Support\Facades\Auth;
-
 use App\PettyCashReceipt;
 
 
@@ -61,25 +60,136 @@ class SchoolFeeController extends Controller
 
 
     public function viewstatement($id){
-        $payments =  DB::select('SELECT * FROM (
-            SELECT "Payment" AS paytype,CONCAT(first_name," ",middle_name) AS studentname,
-            student_no,payment_id,payment_date,amount,payment_method 
+
+        $PYS =  DB::table('students')
+        ->select(DB::RAW("CONCAT(first_name,' ',middle_name,' ',surname,'  Admn: ',student_no) AS studentname"))
+        ->where('students.student_id', '=', $id)
+        ->get();
+
+        $pt = null;
+        foreach($PYS  as $py){
+            $pt = $py;
+        }
+        $studentname = $pt->studentname;
+
+
+        $payments =  DB::select("SELECT * FROM (
+            SELECT 'Payment' AS paytype,student_no,students.student_id,payment_date
+            ,SUM(amount) AS total,'-' AS term, '-' AS inv_year
             FROM fee_payments
             JOIN students ON students.student_id = fee_payments.student_id
-            WHERE students.deleted_at IS NULL AND fee_payments.deleted_at IS NULL AND fee_payments.student_id = 1
+            WHERE students.deleted_at IS NULL AND fee_payments.deleted_at IS NULL 
+            AND fee_payments.student_id = $id GROUP BY payment_date
             UNION
-            SELECT "Invoice" AS paytype, CONCAT(first_name," ",middle_name) AS studentname ,
-            student_no, fee_invoice_id AS payment_id, fees_invoice.created_at AS payment_date , amount, "-" AS payment_method 
+            SELECT 'Invoice' AS paytype ,student_no, students.student_id,  '-' AS payment_date
+             , SUM(amount) AS total,  `term`,`inv_year`
             FROM fees_invoice 
             JOIN students ON students.student_id = fees_invoice.student_id
-            WHERE students.deleted_at IS NULL AND fees_invoice.deleted_at IS NULL AND fees_invoice.student_id = 1
+            WHERE students.deleted_at IS NULL AND fees_invoice.deleted_at IS NULL 
+            AND fees_invoice.student_id = $id
+            GROUP BY inv_year, term
             ) AS A
-            ORDER BY A.payment_date');
-        return view('fee.feestatement',compact('payments'));
+            ORDER BY A.payment_date");
+        return view('fee.feestatement',compact('payments','studentname'));
     }
 
 
 
+    public function viewinvoices($student_id,$year,$term){
+        
+        $PYS =  DB::table('students')
+        ->select(DB::RAW("CONCAT(first_name,' ',middle_name) AS studentname"))
+        ->where('students.student_id', '=', $student_id)
+        ->get();
+
+        $pt = null;
+        foreach($PYS  as $py){
+            $pt = $py;
+        }
+        $studentname = $pt->studentname;
+
+        $payments =  DB::select( DB::raw(" SELECT `votehead`, fees_invoice.created_at as payment_date ,  `fee_invoice_id`,`term`,`inv_year`,`fees_invoice`.`amount`   FROM `fees_invoice`
+        JOIN `fees_voteheads` ON `fees_invoice`.`votehead_id` = `fees_voteheads`.`votehead_id` WHERE student_id = $student_id 
+        and term = '$term' and inv_year = '$year'"));
+
+        $term = 0;
+        $year = 0;
+        $termyear = "";
+        foreach($payments  as $pd){
+            $term = $pd -> term;
+            $year = $pd -> inv_year;
+
+        }
+        $termyear = $term."  ".$year;
+        $voteheads  = FeeVotehead::all();
+        return view('fee.invoicestatement',compact('voteheads','payments','studentname','termyear'));
+    }
+
+
+    public function savenewfee(Request $request,$student_id,$year,$term){
+        $inputs = $request->all();
+       
+        $inputs['student_id'] = $student_id;
+        $inputs['term'] = $term;
+        $inputs['course_id'] = Student::find($student_id)->course_id;
+        $inputs['inv_year'] = $year;
+
+        $id = FeeInvoice::create($inputs)->fee_invoice_id;
+       
+       
+        return redirect()->action(
+            'SchoolFeeController@viewstatement',$student_id
+        );
+    }
+
+    public function editFeeInvoice($student_id,$invoice_id){
+        $PYS =  DB::table('students')
+        ->select(DB::RAW("CONCAT(first_name,' ',middle_name) AS studentname"))
+        ->where('students.student_id', '=', $student_id)
+        ->get();
+
+        $pt = null;
+        foreach($PYS  as $py){
+            $pt = $py;
+        }
+        $studentname = $pt->studentname;
+
+        $payments =  DB::select( DB::raw(" SELECT fees_voteheads.votehead_id, `votehead`, fees_invoice.created_at as payment_date ,  `fee_invoice_id`,`term`,`inv_year`,`fees_invoice`.`amount`   FROM `fees_invoice`
+        JOIN `fees_voteheads` ON `fees_invoice`.`votehead_id` = `fees_voteheads`.`votehead_id` WHERE fee_invoice_id = $invoice_id "));
+
+        $term = 0;
+        $year = 0;
+        $termyear = "";
+        $invoice = null;
+        foreach($payments  as $pd){
+            $term = $pd -> term;
+            $year = $pd -> inv_year;
+            $invoice =  $pd;
+        }
+        $termyear = $term."  ".$year;
+        $voteheads = FeeVotehead::all();
+        return view('fee.editinvoice',compact('voteheads','invoice','studentname','termyear'));
+    }
+
+
+
+    public function updatefeeinvoice(Request $request, $student_id, $invoice_id){
+        $inputs = $request->all();
+        $fee_invoice_id = $inputs['fee_invoice_id'];
+        $votehead_id = $inputs['votehead_id'];
+        $amount = $inputs['amount'];
+        $invc = FeeInvoice::find($fee_invoice_id);
+        $invc -> amount =  $amount;
+        $invc -> votehead_id =  $votehead_id;
+        $invc->save();
+        return redirect()->action(
+            'SchoolFeeController@viewstatement',$student_id
+        );
+
+       // return \Redirect::route('viewinvoices',array('fee_invoice_id'=>$fee_invoice_id,'year'=>$invc->inv_year,'term'=>$invc->term));
+
+        
+    }
     /**
      * Show the form for creating a new resource.
      *
