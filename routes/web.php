@@ -247,7 +247,7 @@ Route::get('/courses/{course}/edit','CourseController@edit');
 Route::post('/courses/{course}/update','CourseController@update');
 Route::get('/courses/{course}/destroy','CourseController@destroy');
 
-Route::get('/schoolfees','SchoolFeeController@index');
+Route::get('/schoolfees','SchoolFeeController@index')->name('schoolfees');
 Route::post('/feevotehead/store','SchoolFeeController@saveVotehead');
 Route::get('/feevotehead/{votehead}/edit','SchoolFeeController@editvotehead');
 Route::get('/feevotehead/{votehead}/destroy','SchoolFeeController@destroyvotehead');
@@ -384,4 +384,9 @@ Route::get('/schoolfees/{student}/editfee/{id}/edit', 'SchoolFeeController@editF
 Route::post('/schoolfees/{student}/editfee/{invoice}/update', 'SchoolFeeController@updatefeeinvoice');
 
 Route::post('/schoolfees/{student_id}/viewinvoices/{year}/{term}/savenewfee', 'SchoolFeeController@savenewfee')->name('savenewfee');;
+
+
+
+Route::post('/schoolfees/{student}/addfeeinvoice', 'SchoolFeeController@addfeeinvoice')->name('addfeeinvoice');;
+
 

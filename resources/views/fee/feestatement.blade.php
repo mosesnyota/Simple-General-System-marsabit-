@@ -24,8 +24,8 @@
                                 <div class="col-md-6">
                                   
                                    
-                                   
-                                    <a href="{{ redirect()->getUrlGenerator()->previous() }}" class="btn btn-info btn-lg float-right mr-1"   role="button"><b class="fa fa-undo"> Back </b></a>
+                                <button type="button"  class="btn btn-primary btn-md float-right mr-1"  data-toggle="modal" data-target="#modal-addfeeinv" data-backdrop="static" data-keyboard="false" href="#"> <b class="fa fa-plus" aria-hidden="true"> Add Fee Invoice </b></button>
+                                <a href="../../schoolfees" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-undo"> Back </b></a>
                                    
                              
                                     
@@ -135,7 +135,5 @@
 
     </div> <!-- content -->
 
-   
-
-
+       @include('fee.addfeemodal')
 @endsection

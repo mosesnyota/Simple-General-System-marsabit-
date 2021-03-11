@@ -57,14 +57,27 @@ class SchoolFeeController extends Controller
       return view('fee.editreceipt',compact('payment'));
         
     }
+    
 
+
+    public function addfeeinvoice(Request $request , $id){
+        $inputs = $request->all();
+       
+        $inputs['student_id'] = $id;
+        $inputs['course_id'] = Student::find($id)->course_id;
+
+        FeeInvoice::create($inputs)->fee_invoice_id;
+        return redirect()->action(
+            'SchoolFeeController@viewstatement',$id
+        );
+
+    }
 
     public function viewstatement($id){
+       
 
-        $PYS =  DB::table('students')
-        ->select(DB::RAW("CONCAT(first_name,' ',middle_name,' ',surname,'  Admn: ',student_no) AS studentname"))
-        ->where('students.student_id', '=', $id)
-        ->get();
+        $PYS =  DB::select("SELECT CONCAT(first_name,' ',middle_name,
+        '  Admn: ',student_no) AS studentname from students WHERE  student_id = '$id' ");
 
         $pt = null;
         foreach($PYS  as $py){
@@ -90,12 +103,16 @@ class SchoolFeeController extends Controller
             GROUP BY inv_year, term
             ) AS A
             ORDER BY A.payment_date");
-        return view('fee.feestatement',compact('payments','studentname'));
+
+        $voteheads  = FeeVotehead::all();
+        return view('fee.feestatement',compact('payments','studentname','voteheads'));
     }
 
 
 
     public function viewinvoices($student_id,$year,$term){
+
+      
         
         $PYS =  DB::table('students')
         ->select(DB::RAW("CONCAT(first_name,' ',middle_name) AS studentname"))
@@ -122,6 +139,7 @@ class SchoolFeeController extends Controller
         }
         $termyear = $term."  ".$year;
         $voteheads  = FeeVotehead::all();
+
         return view('fee.invoicestatement',compact('voteheads','payments','studentname','termyear'));
     }
 
