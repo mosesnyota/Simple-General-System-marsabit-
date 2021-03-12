@@ -12,7 +12,7 @@
 
         <div class="page-content-wrapper ">
 
-            <div class="container-fluid">  
+            <div class="container-fluid">   
 
                 <div class="row">
                     <div class="col-sm-12">
@@ -54,6 +54,8 @@
                                                                               <th>#</th>
                                                                               <th>Narration</th>
                                                                               <th>Customer</th>
+                                                                              <th>Department</th>
+                                                                              
                                                                               <th>Date</th>
                                                                               <th>Amount</th>
                                                                               <th>Status</th>
@@ -68,7 +70,8 @@
                                                                             <td><a>{{$counter}}</a></td>
                                                                               <td><a>{{$invoice->narration}}</a></td>
                                                                               <td>{{$invoice->customer_names}}</td>
-                                                                           
+                                                                              <td>{{$invoice->course_name}}</td>
+                                                                              
                                                                               <td>{{ date('d-m-Y', strtotime($invoice->invoice_date)) }} </td>
                                                                               <td>{{number_format($invoice ->amount,2)}}</td>
                                                                               <td>  <?php if($invoice->cur_status == 'Pending'){ ?>
