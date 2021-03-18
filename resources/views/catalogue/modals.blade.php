@@ -147,8 +147,6 @@
 
 
 
-
-
   <div class="modal fade bs-example-modal-lg" id="modal-receive" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">

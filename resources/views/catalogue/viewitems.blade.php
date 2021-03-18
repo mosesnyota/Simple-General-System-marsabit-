@@ -19,18 +19,18 @@
             <div class="page-title-box">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <h4 class="page-title m-0"> Assets Copies Details: {{$assetname}}</h4>
+                        <h4 class="page-title m-0"> Items in: {{$assetfull->asset_name}} </h4>
                     </div>
                    
                     <div class="col-md-6">
 
-                    <a class="btn btn-info btn-md float-right mr-1" href="../"><i class="fas fa-undo">Back to Catalogue</i></a>
+                    <a class="btn btn-info btn-md float-right mr-1" href="../../"><i class="fas fa-undo">Back to Catalogue</i></a>
                    
                     <button type="button" class="btn btn-warning btn-md float-right mr-1"
-                                                data-toggle="modal" data-target="#modal-additem2" data-backdrop="static"
-                                                data-keyboard="false" href="#"> <b class="fa fa-plus-circle"> DEFINE ITEMS CONTAINED IN A PACKAGE
-                    </b></button>  
-                   
+                                                data-toggle="modal" data-target="#modal-additem" data-backdrop="static"
+                                                data-keyboard="false" href="#"> <b class="fa fa-plus-circle"> ADD ITEM
+                                                </b></button>                              
+
                     </div>
                     </div>
                     <!-- end col -->
@@ -64,12 +64,11 @@
                                     <thead>
                                         <tr >
                                             <th style="width: 6%">#</th>
-                                            <th >Asset Name </th>
-                                            <th style="width: 15%">Serial No</th>
-                                            <th style="width: 15%">Price</th>
+                                            <th >Item Name </th>
+                                            <th style="width: 15%">Quantity</th>
+                                            
                                            
-                                            <th style="width: 15%">Assigned to</th>
-                                            <th style="width: 15%">Location</th>
+                                         
                                             
                                             <th ></th>
                                            
@@ -77,23 +76,20 @@
                                     </thead>
                                     <tbody>
                                         <?php $counter = 1; ?>
-                                            @foreach ($assetcopies as $asset)
-                                                <tr id="{{$asset ->asset_copy_id}}">
+                                            @foreach ($copies as $asset)
+                                                <tr id="{{$asset ->asset_item_id}}">
                                                     <td style="line-height: 10px;">{{ $counter }}</td>
-                                                    <td data-target="asset_name">{{ $asset->asset_name }}</td>
+                                                    <td data-target="asset_name">{{ $asset->name }}</td>
                                                    
-                                                    <td>{{ $asset->serial_no }}</td>
-                                                    <td>{{ number_format($asset->price ,2)}}</td>
-                                                    <td>{{  $asset->firstname." ".$asset->othernames }}</td>
-                                                    <td>{{ $asset->store_name }}</td>
+                                                    <td>{{ $asset->quantity }}</td>
+                                                   
                                              
                                                     <td>
                                                         
-                                                        <a class="btn btn-primary btn-sm" href="catalogue/{{$asset->asset_copy_id}}/editcopy"><i class="fas fa-edit"></i></a>
-                                                        <button type="button" class="btn btn-danger btn-sm mr-1 delete-confirm"  href="catalogue/{{$asset->asset_copy_id}}/destroycopy"> <a  data-role="deletepetty"> <i class="fa fa-trash" > </i></a>  </button>  
+                                                        <a class="btn btn-primary btn-sm" href="asetitem/{{$asset->asset_item_id}}/edit"><i class="fas fa-edit"></i></a>
+                                                        <button type="button" class="btn btn-danger btn-sm mr-1 delete-confirm"  href="catalogue/{{$asset->asset_item_id}}/destroy"> <a  data-role="deletepetty"> <i class="fa fa-trash" > </i></a>  </button>  
                                                                
-                                                        <a class="btn btn-info btn-sm" href="{{$asset->asset_copy_id}}/view"><i class="fas fa-eye">VIEW</i></a> 
-                      
+                                                        
                                                 
                                                     <?php $counter += 1; ?>
                                                 </tr>
@@ -118,6 +114,5 @@
 
     </div> <!-- content -->
     <!-- End Right content here -->
-
     @include('catalogue.modal_item')
 @endsection

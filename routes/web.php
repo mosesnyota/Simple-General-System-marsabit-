@@ -379,14 +379,22 @@ Route::post('/expense/report2', 'ExpensesController@report2');
 Route::get('/expense/{startdate}/{enddate}/summaryreport', 'ExpensesController@report3');
 
 Route::get('/schoolfees/{student_id}/viewinvoices/{year}/{term}/view', 'SchoolFeeController@viewinvoices')->name('viewinvoices');;
-
 Route::get('/schoolfees/{student}/editfee/{id}/edit', 'SchoolFeeController@editFeeInvoice');
 Route::post('/schoolfees/{student}/editfee/{invoice}/update', 'SchoolFeeController@updatefeeinvoice');
-
 Route::post('/schoolfees/{student_id}/viewinvoices/{year}/{term}/savenewfee', 'SchoolFeeController@savenewfee')->name('savenewfee');;
 
 
 
 Route::post('/schoolfees/{student}/addfeeinvoice', 'SchoolFeeController@addfeeinvoice')->name('addfeeinvoice');;
+Route::get('/catalogue/{asset}/{assetcopy}/view','AssetCopyItemsController@openCopiesItems');
+
+Route::post('/catalogue/{asset}/{assetcopy}/saveitem','AssetCopyItemsController@store');
+
+Route::get('/catalogue/{asset}/{assetcopy}/asetitem/{itemid}/edit', 'AssetCopyItemsController@edit');
+
+Route::post('/catalogue/{asset}/{assetcopy}/asetitem/{itemid}/update','AssetCopyItemsController@update');
+
+Route::get('/catalogue/{asset}/{assetcopy}/catalogue/{item}/destroy','AssetCopyItemsController@destroy');
 
 
+Route::post('/catalogue/{asset}/saveitem','AssetCopyItemsController@saveitems');

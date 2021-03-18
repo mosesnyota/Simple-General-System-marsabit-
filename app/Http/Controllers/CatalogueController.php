@@ -32,13 +32,9 @@ class CatalogueController extends Controller {
      */
     public function index()
     {
-
-
         // $Catalogues = Catalogue::all();
-
         // $counter = 1;
         // foreach($Catalogues as $catalogue){
-
         //     $qnty = $catalogue->quantity;
         //     for ($x = 1; $x <= $qnty; $x++) {
         //         $input = [];
@@ -65,8 +61,6 @@ class CatalogueController extends Controller {
         WHERE catalogue.`deleted_at` IS NULL AND
         asset_copy.`deleted_at` IS NULL
         GROUP BY `asset_id`');
- 
-
         $issuedassets = DB::select("SELECT `asset_copy`.`asset_id`, COUNT(`issued_assets`.`asset_copy_id`) AS givend
         FROM `asset_copy` JOIN `issued_assets` ON `asset_copy`.`asset_copy_id` =
         `issued_assets`.`asset_copy_id`
@@ -120,6 +114,8 @@ class CatalogueController extends Controller {
         }
         return view('catalogue.index', compact('totalAssets','assets','assetscopies','locations','categories','stockvalue','employees')); 
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -434,7 +430,10 @@ class CatalogueController extends Controller {
         WHERE catalogue.`deleted_at` IS NULL 
         AND asset_copy.`deleted_at` IS NULL
         AND catalogue.`asset_id` = $id ");
-         return view('catalogue.viewassetcopies',compact('assetcopies'));
+
+      $assetname = Catalogue::find($id)->asset_name;
+
+         return view('catalogue.viewassetcopies',compact('assetcopies','assetname'));
     }
 
     /**
