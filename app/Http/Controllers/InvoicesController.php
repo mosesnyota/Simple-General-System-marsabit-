@@ -94,13 +94,11 @@ class InvoicesController extends Controller
        
         $open2 =  DB::select("SELECT SUM(unit_cost * quantity) AS unpaid FROM `invoices` JOIN 
         `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id`
-        WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL
-        AND cur_status !='paid' ");
+        WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL ");
 
         $open3=  DB::select("SELECT SUM(invoice_payment.amount) AS paid FROM `invoices` JOIN 
         `invoice_payment` ON `invoices`.`invoice_id` = `invoice_payment`.`invoice_id`
-        WHERE invoices.deleted_at IS NULL AND invoice_payment.`deleted_at` IS NULL
-        AND cur_status !='paid' ");
+        WHERE invoices.deleted_at IS NULL AND invoice_payment.`deleted_at` IS NULL");
 
 
 
@@ -125,10 +123,7 @@ class InvoicesController extends Controller
         $invoice_details['incomeLASTYEAR'] = $incomeLASTYEAR;
 
         
-
-       
-
-        $invoices  =  DB::table('invoices')
+       $invoices  =  DB::table('invoices')
         ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
         ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
         ->leftjoin('courses', 'invoices.course_id','=','courses.course_id')
@@ -136,7 +131,9 @@ class InvoicesController extends Controller
         ->where('invoices.deleted_at', '=', NULL)
         ->where('invoice_details.deleted_at', '=', NULL)
         ->groupBy('invoice_id')
+        ->orderBy('cur_status','desc')
         ->orderBy('invoice_date','DESC')
+        
         ->get();
 
 
