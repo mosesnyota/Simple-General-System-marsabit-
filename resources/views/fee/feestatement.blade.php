@@ -96,11 +96,11 @@
                       </td>  
                       @else
                       
-                      <td>  <?php if($payment->amount > 1000){ ?>
-                          <span class="badge badge-success">{{number_format($payment ->amount,2)}}</span>
+                      <td>  <?php if($payment->total > 1000){ ?>
+                          <span class="badge badge-success">{{number_format($payment ->total,2)}}</span>
                           <?php }
                              else {?>
-                              <span class="badge badge-warning">{{number_format($payment ->amount,2)}}</span> 
+                              <span class="badge badge-warning">{{number_format($payment ->total,2)}}</span> 
                               <?php } ?>
                                 
                       </td>
