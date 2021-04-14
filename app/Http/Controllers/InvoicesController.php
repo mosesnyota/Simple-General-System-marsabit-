@@ -150,7 +150,7 @@ class InvoicesController extends Controller
                 }
 
 
-        return view('invoices.index',compact('invoice_details','invoices','bills','paidVals'));
+        return view('invoices.index',compact('invoice_details','invoices','paidVals'));
     }
     
     
@@ -1258,9 +1258,8 @@ class InvoicesController extends Controller
 
     public function completedelete($id){
         $invoice = Invoice::find($id);
-        $payments = ProductionInvoicePayment::where('invoice_id','=',$id);
-
-        if($payments){
+        $payments = ProductionInvoicePayment::where('invoice_id','=',$id)->get();
+        if(count($payments) != 0 ){
             alert()->error('Error', 'Cannot Delete an Invoice that has already been paid for');
             return redirect()->action(
                 "InvoicesController@index"

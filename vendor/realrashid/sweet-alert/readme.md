@@ -36,11 +36,11 @@ composer require realrashid/sweet-alert
 </h3>
 <br>
 
-[[Become a backer](https://opencollective.com/sweet-alert#backer)]
-<a href="https://opencollective.com/sweet-alert#backers" target="_blank"><img src="https://opencollective.com/sweet-alert/backers.svg?width=890"></a>
 ## Sponsors
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/sweet-alert#sponsor)]
-<a href="https://opencollective.com/sweet-alert/sponsor/0/website" target="_blank"><img src="https://opencollective.com/sweet-alert/sponsor/0/avatar.svg"></a>
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website.
+[[Become a sponsor](https://opencollective.com/sweet-alert#sponsor)]
+
+<a href="https://www.git-zen.com/?utm_source=https://github.com/realrashid/sweet-alert&utm_medium=github&utm_campaign=sweet-alert" target="_blank"><img src="https://www.git-zen.com/images/logo-small-trans.png"></a>
 
 ## ❤️ Open-Source Software - Give ⭐️
 
@@ -56,6 +56,6 @@ live environment.)
 
 SweetAlert2 is open-sourced software licensed under the MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-<p align="center"> <b>Made ❤️ with Pakistan<b> </p>
+<p align="center"> <b>Made with ❤️ from Pakistan<b> </p>
 
 > note: if you are using sweet-alert v1.0 you can get README for v1.0 from [here](https://github.com/realrashid/sweet-alert/blob/1.0/readme.md)
