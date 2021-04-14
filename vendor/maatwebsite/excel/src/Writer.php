@@ -144,9 +144,10 @@ class Writer
             $temporaryFile->updateRemote();
         }
 
+        $this->clearListeners();
         $this->spreadsheet->disconnectWorksheets();
         unset($this->spreadsheet);
-        resolve(CacheManager::class)->flush();
+        app(CacheManager::class)->flush();
 
         return $temporaryFile;
     }

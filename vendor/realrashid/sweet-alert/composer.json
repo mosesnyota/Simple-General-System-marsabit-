@@ -9,8 +9,8 @@
         "sweet-alert",
         "notifier",
         "toast",
-        "alert",
-        "noty"
+        "noty",
+        "alert"
     ],
     "homepage": "https://github.com/realrashid/sweet-alert",
     "license": "MIT",
@@ -29,8 +29,8 @@
         "docs": "https://realrashid.github.io/sweet-alert/"
     },
     "require": {
-        "php": "^7.2",
-        "laravel/framework": "^5.4|^6.0|^7.0"
+        "php": "^7.2|^8.0",
+        "laravel/framework": "^5.4|^7.0|^8.0"
     },
     "require-dev": {
         "symfony/thanks": "^1.0"

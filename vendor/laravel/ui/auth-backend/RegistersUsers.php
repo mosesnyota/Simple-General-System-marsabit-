@@ -3,8 +3,8 @@
 namespace Illuminate\Foundation\Auth;
 
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 trait RegistersUsers
@@ -18,14 +18,14 @@ trait RegistersUsers
      */
     public function showRegistrationForm()
     {
-        return view('auth.login');
+        return view('auth.register');
     }
 
     /**
      * Handle a registration request for the application.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function register(Request $request)
     {
@@ -40,7 +40,7 @@ trait RegistersUsers
         }
 
         return $request->wantsJson()
-                    ? new Response('', 201)
+                    ? new JsonResponse([], 201)
                     : redirect($this->redirectPath());
     }
 

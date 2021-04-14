@@ -2,6 +2,27 @@
 
 All notable changes to `sweet-alert` will be documented in this file.
 
+## v3.2.2 - 2021-02-17
+- Remove Laravel 6 Support
+- Upgraded SweetAlert2 to latest version
+- Docs Updated
+
+## v3.2.1 - 2021-01-15
+- Fixed PHP 8 Issues
+- Upgraded SweetAlert2 to latest version
+- Docs Updated
+
+## v3.2.0 - 2020-12-02
+- Added PHP8 Support
+- Upgraded SweetAlert2 to latest version
+- Docs Updated
+
+## v3.1.7 - 2020-09-09
+- Added Support for Laravel 8
+- Upgraded SweetAlert2 to latest version
+- Minor Changes
+- Docs Updated
+
 ## v3.1.6 - 2020-07-17
 - Added flexibility to Always load the sweetalert.all.js and Never load the sweetalert.all.js by [farhanianz](https://github.com/farhanianz)
 - Upgraded SweetAlert2 to latest version
