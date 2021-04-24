@@ -523,7 +523,7 @@ public function destroyitem($invoice_id,$detailid){
         $pdf->Ln();
         $pdf-> Cell(120, 6, "    the order; Balance payment against delivery",0, 0, 'L', 0, '');
         $pdf->Ln();
-        $pdf-> Cell(120, 6, "2. Payment through Mpesa Paybill",0, 0, 'L', 0, '');
+        $pdf-> Cell(120, 6, "2. Cheques to:  D.O.M CATHOLIC TECHNICAL SCHOOL",0, 0, 'L', 0, '');
         $pdf->Ln();
         $pdf-> Cell(120, 6, "3. Prices indicated on the Quotation are valid for one month",0, 0, 'L', 0, '');
         $pdf->Output();
