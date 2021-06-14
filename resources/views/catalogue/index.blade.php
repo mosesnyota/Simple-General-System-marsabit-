@@ -21,10 +21,10 @@
                     <div class="col-md-6">
                         <h4 class="page-title m-0"> Assets Summary Dashboard {{date('Y')}} </h4>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6"> 
                         <div class="float-right d-none d-md-block">
                         <a href="{{URL::to('/')}}/assetreport" class="btn btn-primary btn-md float-right mr-1"   role="button"><b class="fa fa-file-pdf"> REPORT </b></a>
-
+                        <a href="{{URL::to('/')}}/viewallassets" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-file-pdf"> VIEW ALL </b></a>
                         <button type="button" class="btn btn-warning btn-md float-right mr-1"
                                                 data-toggle="modal" data-target="#modal-addasset" data-backdrop="static"
                                                 data-keyboard="false" href="#"> <b class="fa fa-plus-circle"> ADD NEW

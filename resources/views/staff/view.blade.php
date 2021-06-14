@@ -95,7 +95,7 @@
 
                   <div class="col-9">
 
-                   <div class="card">
+                <div class="card">
                     <!-- /.card-header -->
                  <div class="card-body p-0">
                     <!-- .table-responsive -->

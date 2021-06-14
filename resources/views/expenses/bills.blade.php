@@ -41,7 +41,7 @@
                     </div>
                     <div>
                     
-                        <span class="badge badge-light text-success"> 0% </span> <span class="ml-2">Compared to {{" ".date('Y') - 1}} </span>
+                        <span class="badge badge-light text-success"> 0% </span> <span class="ml-2">Compared to {{" ".(date('Y') - 1)}} </span>
                     
                     
                     </div>

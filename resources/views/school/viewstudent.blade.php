@@ -51,19 +51,24 @@
                               </tr>
                               </thead>
                               <tbody>
-                               
-                            <tr>
-                                <td>Fee Balance</td>
+                              <tr>
+                                <td>Total Invoiced</td>
                                 
-                                <td><span class="badge badge-success">{{number_format($details['balance'],2)}}</span></td>
+                                <td><span class="badge badge-success">{{number_format($details['bill'],2)}}</span></td>
                             </tr>
-                            
                             <tr>
                                 <td><a>Total Paid</a></td>
                                 <td><span class="badge badge-warning">{{number_format($details['totalpaid'],2)}}</span></td>
                               
                                 
                             </tr>
+                            <tr>
+                                <td>Fee Balance</td>
+                                
+                                <td><span class="badge badge-success">{{number_format($details['balance'],2)}}</span></td>
+                            </tr>
+                            
+                            
                             <tr>
                                 <td><a>Current Year</a></td>
                                
@@ -84,6 +89,8 @@
                     </div>
 
                   <div class="col-5">
+                  <a class="btn btn-primary btn-sm" href="../"> <i class="fa fa-undo">  BACK    </i></a>
+                  <a class="btn btn-primary btn-sm" href="../../schoolfees/{{$student->student_id}}/viewstatement"> <i class="fa fa-file-pdf">  GET FEE STATEMENT    </i></a>
 
                    <div class="card">
                     <!-- /.card-header -->

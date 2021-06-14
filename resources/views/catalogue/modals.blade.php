@@ -225,17 +225,7 @@
                 <div class="box-body"> 
                     
                        
-                <div class="form-group row">
-                  <label for="product_id" class="col-sm-2 col-form-label">Asset </label>
-                  <div class="col-sm-10">
-                      <select class="form-control select2" name="asset_id" style="width: 100%;" required>
-                          <option value=""> ------ SELECT ASSET -----</option>
-                          @foreach ($assetscopies as $assetscopy)
-                          <option value="{{$assetscopy ->asset_copy_id}}">{{$assetscopy ->serial_no." ".$assetscopy ->asset_name}}</option>
-                        @endforeach
-                      </select>
-                  </div>
-              </div>
+               
 
                 <div class="form-group row">
                   <label for="product_id" class="col-sm-2 col-form-label">Issued to: </label>
@@ -250,7 +240,7 @@
               </div>
 
                
-              <div class="form-group row">
+                   <div class="form-group row">
                             <label for="manufacture_date" class="col-sm-2 col-form-label">Date Issued:</label>
                             <div class="col-sm-10">
                               <div class="input-group">
@@ -261,23 +251,15 @@
                         </div>
 
 
-                <div class="form-group row">
-                    <label for="description" class="col-sm-2 col-form-label">Comment:</label>
-                    <div class="col-sm-10">
-                        <input type="text" autocomplete="off" class="form-control" id="description" name="description" required>
-                    </div>
-                </div>
-  
-                  
-
-
+                
+                
                 </div>
 
                
                 <!-- /.card-body -->
                 
                   <div class="text-center">
-                    <button type="submit" class="btn btn-lg btn-primary">SAVE</button>
+                    <button type="submit" class="btn btn-lg btn-primary">PROCEED TO SELECT ITEMS</button>
                   </div>
                 
             </form>           

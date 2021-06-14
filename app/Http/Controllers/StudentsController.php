@@ -25,14 +25,21 @@ class StudentsController extends Controller
      */
     public function index()
     {
-        $students  = DB::select( DB::raw("SELECT students.*, course_name FROM students
-        LEFT JOIN courses ON students.course_id = courses.course_id
-        WHERE students.cur_status = 'active'
-        AND students.deleted_at IS NULL") );
+        
+
+        $students  = DB::select( DB::raw("SELECT A.*,course_name ,
+        ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id and fees_invoice.deleted_at is null)
+        -
+        (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id and fee_payments.deleted_at is null )) AS balance
+        FROM students A   join courses B on A.course_id = B.course_id
+        WHERE A.`cur_status` = 'Active' 
+        GROUP BY A.student_id") );
+
+
         $courses =Course::all();
         return view('school.students',compact('students','courses'));
     }
-
+ 
 
     public function getclasslists(Request $request){
         $input = $request->all();
@@ -151,8 +158,34 @@ class StudentsController extends Controller
     {
         $student = Student::find($id);
         $details = [];
-        $details['balance'] = 90;
-        $details['totalpaid'] = 90;
+
+        $billed  = DB::select( DB::raw(" SELECT SUM( IFNULL(`amount`,0)) AS billed FROM students LEFT JOIN `fees_invoice`
+        ON students.`student_id` = fees_invoice.`student_id`  WHERE students.student_id = $id ") );
+        $bill = 0 ;
+
+         foreach($billed as $bld){
+        
+            $bill = $bld-> billed;
+         }
+
+
+
+        $paidld  = DB::select( DB::raw(" SELECT  SUM( IFNULL(`amount`,0)) AS paid FROM  
+        students LEFT JOIN `fee_payments`
+        ON students.`student_id` = fee_payments.`student_id` WHERE students.student_id = $id ") );
+        $paid = 0 ;
+
+         foreach($paidld as $pdd){
+        
+            $paid = $pdd-> paid;
+         }
+
+
+
+
+        $details['balance'] =  $bill  - $paid;
+        $details['totalpaid'] = $paid;
+        $details['bill'] = $bill;
         
         $courses =  DB::table('student_course')
         ->leftjoin('courses', 'student_course.course_id', '=', 'courses.course_id')
@@ -247,10 +280,14 @@ class StudentsController extends Controller
 
 
     public function old(){
-        $students  = DB::select( DB::raw("SELECT students.*, course_name FROM students
-        LEFT JOIN courses ON students.course_id = courses.course_id
-        WHERE students.cur_status != 'active'
-        AND students.deleted_at IS NULL") );
+       
+        $students  = DB::select( DB::raw("SELECT A.*,course_name ,
+        ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id and fees_invoice.deleted_at is null)
+        -
+        (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id and fee_payments.deleted_at is null )) AS balance
+        FROM students A   join courses B on A.course_id = B.course_id
+        WHERE A.`cur_status` != 'Active' 
+        GROUP BY A.student_id") );
        
         return view('school.oldstudents',compact('students'));
     }

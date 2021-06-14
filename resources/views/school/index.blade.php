@@ -12,12 +12,13 @@ $lastyear = 2020;
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="row align-items-center">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <h4 class="page-title m-0"> Summary Dashboard {{date('Y')}} </h4>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="float-right d-none d-md-block">
-                        <a href="{{URL::to('/')}}/students" class="btn btn-primary btn-md"   role="button"><b class="fa fa-users"> STUDENTS </b></a>
+                        <a href="{{URL::to('/')}}/students" class="btn btn-primary btn-md"   role="button"><b class="fa fa-users"> CUR STUDENTS </b></a>
+                        <a href="{{URL::to('/')}}/students/old" class="btn btn-info btn-md"   role="button"><b class="fa fa-users"> OLD STUDENTS </b></a>
                         <a href="{{URL::to('/')}}/academics" class="btn btn-warning btn-md"   role="button"><b class="fa fa-graduation-cap"> ACADEMICS </b></a>
                         @can('VIEW_SCHOOL_FEES')
                         <a href="{{URL::to('/')}}/schoolfees" class="btn btn-info btn-md"   role="button"><b class="fas fa-dollar-sign">  FEES </b></a>

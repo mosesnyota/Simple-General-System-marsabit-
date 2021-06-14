@@ -398,3 +398,9 @@ Route::get('/catalogue/{asset}/{assetcopy}/catalogue/{item}/destroy','AssetCopyI
 
 
 Route::post('/catalogue/{asset}/saveitem','AssetCopyItemsController@saveitems');
+Route::get('/viewallassets','CatalogueController@viewAll');
+
+Route::get('/catalogue/{productid}/pick', 'CatalogueController@pickitem');
+Route::get('/catalogue/issueItems2', 'CatalogueController@issueItems2');
+Route::get('/catalogue/{productid}/remove', 'CatalogueController@removecart');
+Route::post('/catalogue/saveissueditems', 'CatalogueController@saveissueditems');

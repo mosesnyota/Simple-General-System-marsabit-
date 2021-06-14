@@ -57,7 +57,7 @@
                                                                               <th>Admn</th>
                                                                               <th>Names</th>
                                                                               <th>Course</th>
-                                                                              <th>Status</th>
+                                                                              <th>Fee</th>
                                                                               <th></th>
                                                                               
                                                                             </tr>
@@ -70,13 +70,18 @@
                                                                               <td><a>{{$student->student_no}}</a></td>
                                                                               <td>{{$student->first_name." ".$student->middle_name." ".$student->surname}}</td>
                                                                               <td>{{$student->course_name}}</td>
-                                                                              <td>{{$student->cur_status}}</td>
+                                                                              <td data-target="balance" > <?php if ( $student->balance  > 1000) { ?>
+                                                                                  <span class="badge badge-warning"><b> {{number_format($student->balance ,2)}}</b></span>
+                                                                                  <?php } else { ?>
+                                                                                  <span class="badge badge-info">{{number_format($student->balance ,2)}}</span>
+                                                                                  <?php } ?>
+                                                                              </td>
 
                                                                               <td>
                                                                                 <a class="btn btn-info btn-sm" href="students/{{$student ->student_id}}/view"><i class="fas fa-eye"></i></a>
                                                                                 <a class="btn btn-success btn-sm" href="students/{{$student ->student_id}}/edit"><i class="fas fa-edit"></i></a>
                                                                                 <button type="button" class="btn btn-danger btn-sm mr-1 delete-confirm"  href="students/{{$student ->student_id}}/destroy/"> <a> <i class="fa fa-trash" > </i></a>  </button>  
-                                                                                <button type="button" class="btn btn-info btn-sm mr-1 remove-confirm"  href="students/{{$student ->student_id}}/remove/"> <a> <i class="fa fa-window-close" > </i></a>  </button>  
+                                                                                <button type="button" class="btn btn-danger btn-sm mr-1 remove-confirm"  href="students/{{$student ->student_id}}/remove/"> <a> <i class="fa fa-window-close" > </i></a>  </button>  
                                                                               
                                                                               </td>  
  

@@ -19,12 +19,12 @@
                         <div class="page-title-box">
                             <div class="row align-items-center">
                                 <div class="col-md-5">
-                                    <h4 class="page-title m-0">INNACTIVE STUDENTS</h4>
+                                    <h4 class="page-title m-0">OLD/ALUMNI STUDENTS</h4>
                                 </div>
                                 <div class="col-md-7">
                                   
                                
-                                   <a href="{{URL::to('/')}}/students" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-undo"> Back</b></a>
+                                   <a href="{{URL::to('/')}}/school" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-undo"> Back</b></a>
                                    
                              
                                     
@@ -54,6 +54,7 @@
                                                                               <th>Admn</th>
                                                                               <th>Names</th>
                                                                               <th>Course</th>
+                                                                              <th>Fee</th>
                                                                               <th>Status</th>
                                                                               <th></th>
                                                                               
@@ -67,13 +68,20 @@
                                                                               <td><a>{{$student->student_no}}</a></td>
                                                                               <td>{{$student->first_name." ".$student->middle_name." ".$student->surname}}</td>
                                                                               <td>{{$student->course_name}}</td>
+                                                                              <td data-target="balance" > <?php if ( $student->balance  > 1000) { ?>
+                                                                                  <span class="badge badge-warning"><b> {{number_format($student->balance ,2)}}</b></span>
+                                                                                  <?php } else { ?>
+                                                                                  <span class="badge badge-info">{{number_format($student->balance ,2)}}</span>
+                                                                                  <?php } ?>
+                                                                              </td>
                                                                               <td>{{$student->cur_status}}</td>
 
                                                                               <td>
-                                                                                <a class="btn btn-info btn-sm" href="students/{{$student ->student_id}}/view"><i class="fas fa-eye"></i></a>
-                                                                                <a class="btn btn-success btn-sm" href="students/{{$student ->student_id}}/edit"><i class="fas fa-edit"></i></a>
-                                                                                <button type="button" class="btn btn-danger btn-sm mr-1 delete-confirm"  href="students/{{$student ->student_id}}/destroy/"> <a> <i class="fa fa-trash" > </i></a>  </button>  
-                                                                                <button type="button" class="btn btn-info btn-sm mr-1 remove-confirm"  href="students/{{$student ->student_id}}/remove/"> <a> <i class="fa fa-window-close" > </i></a>  </button>  
+                                                                                <a class="btn btn-info btn-sm" href="{{$student ->student_id}}/view"><i class="fas fa-eye"></i></a>
+                                                                                <a class="btn btn-primary btn-sm" href="../schoolfees/{{$student->student_id}}/viewstatement"><i class="fas fa-eye"> STMT</i></a>
+                                                    <button type="button" class="btn btn-warning btn-sm"> <a  data-role="payfee"  data-id="{{$student->student_id}}"> <i class="fa fa-euro-sign" > Pay </i></a>  </button>  
+                                                          
+                                                                                
                                                                               
                                                                               </td>  
  

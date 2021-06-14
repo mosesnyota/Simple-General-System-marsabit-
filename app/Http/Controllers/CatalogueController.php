@@ -32,26 +32,71 @@ class CatalogueController extends Controller {
      */
     public function index()
     {
-        // $Catalogues = Catalogue::all();
-        // $counter = 1;
-        // foreach($Catalogues as $catalogue){
-        //     $qnty = $catalogue->quantity;
-        //     for ($x = 1; $x <= $qnty; $x++) {
-        //         $input = [];
-        //         $input['asset_id'] = $catalogue->asset_id;
-        //         $input['manufacture_date'] = date('Y-m-d');
-        //         $input['price'] = $catalogue->unit_price;
-        //         $input['location_id'] = 1;
-        //         $input['serial_no'] = $counter;
-        //         $counter += 1;
-        //         AssetCopy::create( $input);
+        $assets =  DB::select('SELECT catalogue.asset_id,`asset_name`, asset_category,
+        COUNT(asset_copy.`asset_id`) AS totalassets, COUNT( `issued_id` ) AS issued 
+        FROM `asset_categories` JOIN catalogue ON `asset_categories`.`category_id` = catalogue.`category_id`
+        LEFT JOIN `asset_copy` ON catalogue.`asset_id`  = asset_copy.`asset_id` 
+        LEFT JOIN `issued_assets` ON `asset_copy`.`asset_copy_id` = `issued_assets`.`asset_copy_id`
+        WHERE catalogue.`deleted_at` IS NULL AND
+        asset_copy.`deleted_at` IS NULL
+        GROUP BY `asset_id`');
 
-        //     }
+        $issuedassets = DB::select("SELECT `asset_copy`.`asset_id`, COUNT(`issued_assets`.`asset_copy_id`) AS givend
+        FROM `asset_copy` JOIN `issued_assets` ON `asset_copy`.`asset_copy_id` =
+        `issued_assets`.`asset_copy_id`
+        WHERE cur_status = 'issued'
+        GROUP BY asset_id");
 
-        //     $counter = 1;
-        // }
+        foreach($assets as $issuedd){
+            $idd = $issuedd->asset_id;
+            foreach($issuedassets as $issd){
+                $amntissued = $issd->givend;
+                $dd = $issd->asset_id;
+                if($idd == $dd  ){
+                    $issuedd ->issued =  $amntissued ;
+                }
+            }
 
 
+        }
+
+        $locations = Locations::All();
+        $categories = AssetCategories::All();
+        $assetvalue =  DB::select('SELECT SUM(price) AS totalvalue FROM `asset_copy` 
+            WHERE  asset_copy.`deleted_at` IS NULL');
+
+
+        $assetscopies =  DB::table('catalogue')
+        ->join('asset_copy', 'asset_copy.asset_id', '=', 'catalogue.asset_id')
+        ->join('locations', 'asset_copy.location_id', '=', 'locations.store_id')
+        ->select(DB::raw('catalogue.*, asset_copy_id, asset_copy.serial_no, store_name'))
+        ->whereNull('catalogue.deleted_at')
+        ->whereNull('asset_copy.deleted_at')
+        ->orderBy('asset_name','DESC')->get();
+
+        $totalAssetsNu =  DB::select('SELECT SUM(total) AS totalvalue FROM (
+            SELECT `catalogue`.`asset_id`, COUNT(`asset_copy_id`)  AS total FROM 
+            `catalogue` JOIN `asset_copy` ON `catalogue`.`asset_id` = asset_copy.`asset_id`
+            WHERE catalogue.`deleted_at` IS NULL AND asset_copy.`deleted_at` IS NULL
+            GROUP BY asset_id) AS D ');
+
+        $totalAssets = 0; 
+        foreach($totalAssetsNu as $totalAssetsN){
+            $totalAssets = $totalAssetsN->totalvalue;
+        }
+
+        
+        $employees = Staff::orderBy('firstname')->get();
+        $stockvalue = 0;
+        foreach($assetvalue as $valued){
+            $stockvalue = $valued->totalvalue;
+        }
+        return view('catalogue.index', compact('totalAssets','assets','assetscopies','locations','categories','stockvalue','employees')); 
+    }  
+
+
+
+    public function viewAll(){
 
         $assets =  DB::select('SELECT catalogue.asset_id,`asset_name`, asset_category,
         COUNT(asset_copy.`asset_id`) AS totalassets, COUNT( `issued_id` ) AS issued 
@@ -112,8 +157,8 @@ class CatalogueController extends Controller {
         foreach($assetvalue as $valued){
             $stockvalue = $valued->totalvalue;
         }
-        return view('catalogue.index', compact('totalAssets','assets','assetscopies','locations','categories','stockvalue','employees')); 
-    }
+        return view('catalogue.viewall', compact('totalAssets','assets','assetscopies','locations','categories','stockvalue','employees')); 
+    } 
 
 
 
@@ -167,13 +212,98 @@ class CatalogueController extends Controller {
     }
 
     public function issueasset(Request $request){
+        
+   
         $input = $request->all();
-        $input['issue_date']  =  date('Y-m-d', strtotime($input['issue_date']));
-        IssueAsset::create($input);
-        return redirect()->action(
-            'CatalogueController@index'
-        );
+        $input['issue_date']  =  date('Y-m-d', strtotime($input['issue_date'])); 
+       // IssueAsset::create($input);
+       $assets =   DB::select('SELECT catalogue.asset_id,`asset_name`, barcode,asset_category,
+       COUNT(asset_copy.`asset_id`) AS totalassets, COUNT( `issued_id` ) AS issued 
+       FROM `asset_categories` JOIN catalogue ON `asset_categories`.`category_id` = catalogue.`category_id`
+       LEFT JOIN `asset_copy` ON catalogue.`asset_id`  = asset_copy.`asset_id` 
+       LEFT JOIN `issued_assets` ON `asset_copy`.`asset_copy_id` = `issued_assets`.`asset_copy_id`
+       WHERE catalogue.`deleted_at` IS NULL AND
+       asset_copy.`deleted_at` IS NULL
+       GROUP BY `asset_id`');
+
+        $request->session()->put('issue_date', $input['issue_date']);
+        $request->session()->put('staffmember', $input['issued_to']);
+        $products =collect([]);
+        $request->session()->put('products',  $products);
+        return view('catalogue.viewall',compact('assets'));
+     
+       
     }
+
+    public function issueItems2(){
+
+        $assets =   DB::select('SELECT catalogue.asset_id,`asset_name`, barcode,asset_category,
+        COUNT(asset_copy.`asset_id`) AS totalassets, COUNT( `issued_id` ) AS issued 
+        FROM `asset_categories` JOIN catalogue ON `asset_categories`.`category_id` = catalogue.`category_id`
+        LEFT JOIN `asset_copy` ON catalogue.`asset_id`  = asset_copy.`asset_id` 
+        LEFT JOIN `issued_assets` ON `asset_copy`.`asset_copy_id` = `issued_assets`.`asset_copy_id`
+        WHERE catalogue.`deleted_at` IS NULL AND
+        asset_copy.`deleted_at` IS NULL
+        GROUP BY `asset_id`');
+
+        return view('catalogue.viewall',compact('assets'));
+
+        
+    }
+
+
+    public function pickitem(Request $request, $id){
+        $issue_date = $request->session()->get('issue_date');
+        $staffmember = $request->session()->get('staffmember');
+        $product = Catalogue::find($id);
+        $request->session()->push('products', $product);
+        
+
+        return redirect()->action(
+            'CatalogueController@issueItems2'
+        );
+
+    }
+
+
+    public function removecart(Request $request,$id){
+        $pdt = $request->session()->get('products');
+        $arraysize = count($pdt);
+        $found  = FALSE;
+        for ($x = 0; $x < $arraysize ; $x++){ 
+            
+        if(isset($pdt[$x])){
+            $product = $pdt[$x]->asset_id;
+            if($product == $id){
+                $found = TRUE;
+                //unset($pdt[$x]); 
+                array_splice($pdt,$x,1);
+
+                $arraysize = $arraysize - 1;
+                break;
+            }
+         } 
+
+        if($found){
+            break;
+        }
+
+        }
+
+       
+
+        $request->session()->forget('products');
+        $products =collect([]);
+        $newarray = array_values($pdt);
+        $request->session()->put('products', $newarray );
+       
+        
+       return redirect()->action('CatalogueController@issueItems2');
+        
+    }
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -190,6 +320,16 @@ class CatalogueController extends Controller {
         return redirect()->action(
             'CatalogueController@index'
         );
+    }
+
+
+    public function saveissueditems(Request $request){
+        $input = $request->all();
+        $products =$request->session()->get('products');
+        $issue_date = $request->session()->get('issue_date');
+        $staffmember = $request->session()->get('staffmember');
+
+        print( $products );
     }
 
 
