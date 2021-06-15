@@ -328,8 +328,21 @@ class CatalogueController extends Controller {
         $products =$request->session()->get('products');
         $issue_date = $request->session()->get('issue_date');
         $staffmember = $request->session()->get('staffmember');
-
-        print( $products );
+       
+        foreach ($products as $product ){
+            print($product);
+            $newissue = [];
+            $newissue['staffid'] = $staffmember;
+            $newissue['asset_id'] = $product ->asset_id;
+            $newissue['asset_copy_id'] = $product ->asset_id;
+            $newissue['issue_date'] = $issue_date;
+            IssueAsset::create($newissue);
+        }
+        alert()->success('Success', 'Issued Items Successfully');
+        return redirect()->action(
+            'CatalogueController@index'
+        );
+        
     }
 
 
