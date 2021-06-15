@@ -51,6 +51,7 @@
                                                                             <thead>
                                                                             <tr>
                                                                               <th>#</th>
+                                                                              <th data-visible="false">#</th>
                                                                               <th>Admn</th>
                                                                               <th>Names</th>
                                                                               <th>Course</th>
@@ -63,11 +64,12 @@
                                                                             <tbody>
                                                                               <?php $counter = 1 ; ?>
                                                                           @foreach ($students as $student)
-                                                                            <tr>
+                                                                          <tr id="{{$student ->student_id}}">
                                                                             <td><a>{{$counter}}</a></td>
-                                                                              <td><a>{{$student->student_no}}</a></td>
-                                                                              <td>{{$student->first_name." ".$student->middle_name." ".$student->surname}}</td>
-                                                                              <td>{{$student->course_name}}</td>
+                                                                            <td data-target="student_id" >{{ $student->student_id   }}</td>
+                                                                            <td data-target="student_no" >{{ $student->student_no   }}</td>
+                                                                            <td data-target="student_name">{{$student->first_name." ".$student->middle_name." ".$student->surname}}</td>
+                                                                            <td data-target="department" >{{ $student->course_name   }}</td> 
                                                                               <td data-target="balance" > <?php if ( $student->balance  > 1000) { ?>
                                                                                   <span class="badge badge-warning"><b> {{number_format($student->balance ,2)}}</b></span>
                                                                                   <?php } else { ?>
@@ -110,6 +112,7 @@
     </div> <!-- content -->
 
     
+    @include('fee.modals')
 
 
 @endsection

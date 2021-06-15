@@ -181,7 +181,7 @@ class StudentsController extends Controller
          }
 
 
-
+ 
 
         $details['balance'] =  $bill  - $paid;
         $details['totalpaid'] = $paid;
@@ -289,7 +289,8 @@ class StudentsController extends Controller
         WHERE A.`cur_status` != 'Active' 
         GROUP BY A.student_id") );
        
-        return view('school.oldstudents',compact('students'));
+       $courses =Course::all();
+        return view('school.oldstudents',compact('students','courses'));
     }
 
     /**

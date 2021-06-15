@@ -41,9 +41,9 @@ class CatalogueController extends Controller {
         asset_copy.`deleted_at` IS NULL
         GROUP BY `asset_id`');
 
-        $issuedassets = DB::select("SELECT `asset_copy`.`asset_id`, COUNT(`issued_assets`.`asset_copy_id`) AS givend
-        FROM `asset_copy` JOIN `issued_assets` ON `asset_copy`.`asset_copy_id` =
-        `issued_assets`.`asset_copy_id`
+        $issuedassets = DB::select("SELECT `catalogue`.`asset_id`, COUNT(`issued_assets`.`asset_copy_id`) AS givend
+        FROM `catalogue` JOIN `issued_assets` ON `catalogue`.asset_id = 
+        `issued_assets`.`asset_id`
         WHERE cur_status = 'issued'
         GROUP BY asset_id");
 
