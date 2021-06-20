@@ -253,6 +253,12 @@ Route::get('/feevotehead/{votehead}/edit','SchoolFeeController@editvotehead');
 Route::get('/feevotehead/{votehead}/destroy','SchoolFeeController@destroyvotehead');
 Route::post('/feevotehead/{votehead}/update','SchoolFeeController@updatevotehead');
 
+
+Route::get('/schoolfees/{print}/printfeestatement','SchoolFeeController@printfeestatement');
+Route::get('/schoolfees/{student}/viewinvoices/{year}/{Term}/printstatement ','SchoolFeeController@printStatement');
+
+
+
 Route::get('/createfeeinvoice','SchoolFeeController@create');
 Route::post('/savefeeinvoice','SchoolFeeController@savefeeinvoice');
 
@@ -345,7 +351,7 @@ Route::get('/students/old', 'StudentsController@old');
 Route::post('/invoice/{invoice}/invoice/pay','InvoicesController@saveInvoicePayment2');
 Route::get('invoice/{invoice}/invoice/production/{receipt}/receipt','InvoicesController@printReceipt');
 
-
+ 
 
 //NEW CHANGES
 

@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Auth;
 use App\PettyCashReceipt;
 
 
+use App\MyPDF;
+use App\MyPDFPortrait;
+
+
 class SchoolFeeController extends Controller
 {
     
@@ -73,9 +77,238 @@ class SchoolFeeController extends Controller
 
     }
 
-    public function viewstatement($id){
-       
 
+
+
+    public function printStatement($student_id,$year,$term){
+        //schoolfees/6/viewinvoices/2021/Term%201/printstatement 
+
+        $PYS =  DB::select("SELECT CONCAT(first_name,' ',middle_name,
+        '  Admn: ',student_no) AS studentname from students WHERE  student_id = '$student_id' ");
+
+        $pt = null;
+        foreach($PYS  as $py){
+            $pt = $py;
+        }
+        $studentname = $pt->studentname;
+
+        $payments =  DB::select( DB::raw(" SELECT `votehead`, fees_invoice.created_at as payment_date ,  `fee_invoice_id`,`term`,`inv_year`,`fees_invoice`.`amount`   FROM `fees_invoice`
+        JOIN `fees_voteheads` ON `fees_invoice`.`votehead_id` = `fees_voteheads`.`votehead_id` WHERE student_id = $student_id 
+        and term = '$term' and inv_year = '$year'"));
+
+        $term = 0;
+        $year = 0;
+        $termyear = "";
+        foreach($payments  as $pd){
+            $term = $pd -> term;
+            $year = $pd -> inv_year;
+
+        }
+        $termyear = $term."  ".$year;
+        $voteheads  = FeeVotehead::all();
+
+
+        $pdf = new MyPDFPortrait();
+        $pdf-> SetWidths(7);
+        $pdf->AddPage();
+        $pdf->SetFont('Times','',11);
+       
+        //Table with 20 rows and 4 columns
+        $pdf->SetX(5);
+        $pdf->SetFillColor(237, 228, 226);
+        $pdf->Ln(7);
+        $pdf-> Cell(190, 10, "FEE INVOICE ". $termyear . " FOR : ".strtoupper($studentname)."        Printed On :".   date("d-m-Y h:i:sa") ,0, 0, 'C', 1, '');
+        $pdf->Ln(15);
+        $pdf->SetX(10);
+        $pdf->SetFont('Times','',11);
+       
+                //table header
+        $pdf->SetFillColor(157, 245, 183);
+        $pdf->setFont("times", "", "11");
+
+      
+        $pdf->Cell(105, 7, "FEE STATEMENT", 1, 0, "C", 1);
+        $pdf->SetFillColor(224, 235, 255);
+        $pdf->Ln();
+        $pdf->Cell(20, 7, "#", 1, 0, "L", 1);
+        $pdf->Cell(85, 7, "Votehead", 1, 0, "C", 1);
+        $pdf->Cell(70, 7, "Amount", 1, 0, "C", 1);
+        
+        
+       
+        $pdf->Ln();
+        $counter = 1; 
+        $y = $pdf->GetY();
+        $x = 10;
+        $fill = 0;
+
+        
+        $pdf->SetWidths(array(20,85,70 ));
+        $aligns = array('L','L','R');
+        $pdf->SetAligns($aligns );
+        $pdf->SetFillColor(224, 235, 255);
+
+        $TOTALAMOUNT = 0 ;
+        foreach($payments as $payment){ 
+            
+            $fill =  !$fill;
+            $type = "";
+            $TOTALAMOUNT += $payment ->amount;
+            $pdf->Row(array( 
+                $counter,
+                $payment->votehead,  
+                number_format($payment ->amount,2)
+            ), $fill);
+
+            $counter++;
+        }
+        
+            $pdf->Cell(105, 7, "TOTAL", 1, 0, "R", $fill);
+            $pdf->Cell(70, 7, number_format($TOTALAMOUNT,2), 1, 0, "R", $fill);
+
+            $pdf->SetFillColor(224, 235, 255);
+            $pdf->setXY($x, $y);
+            $pdf->Output("Fee Invoice.pdf", "I");
+
+            exit;
+
+    }
+
+
+    public function printfeestatement($id){
+        $PYS =  DB::select("SELECT CONCAT(first_name,' ',middle_name,
+        '  Admn: ',student_no) AS studentname from students WHERE  student_id = '$id' ");
+
+        $pt = null;
+        foreach($PYS  as $py){
+            $pt = $py;
+        }
+        $studentname = $pt->studentname;
+
+        $payments =  DB::select("SELECT * FROM ( 
+            SELECT 'Payment' AS paytype,student_no,students.student_id,payment_date
+            ,SUM(amount) AS total,'-' AS term, '-' AS inv_year
+            FROM fee_payments
+            JOIN students ON students.student_id = fee_payments.student_id
+            WHERE students.deleted_at IS NULL AND fee_payments.deleted_at IS NULL 
+            AND fee_payments.student_id = $id GROUP BY payment_date
+            UNION
+            SELECT 'Invoice' AS paytype ,student_no, students.student_id,  '-' AS payment_date
+             , SUM(amount) AS total,  `term`,`inv_year`
+            FROM fees_invoice 
+            JOIN students ON students.student_id = fees_invoice.student_id
+            WHERE students.deleted_at IS NULL AND fees_invoice.deleted_at IS NULL 
+            AND fees_invoice.student_id = $id
+            GROUP BY inv_year, term
+            ) AS A
+            ORDER BY A.payment_date");
+
+
+$billed  = DB::select( DB::raw(" SELECT SUM( IFNULL(`amount`,0)) AS billed FROM students LEFT JOIN `fees_invoice`
+        ON students.`student_id` = fees_invoice.`student_id`  WHERE students.student_id = $id ") );
+        $bill = 0 ;
+
+         foreach($billed as $bld){
+        
+            $bill = $bld-> billed;
+         }
+
+
+
+        $paidld  = DB::select( DB::raw(" SELECT  SUM( IFNULL(`amount`,0)) AS paid FROM  
+        students LEFT JOIN `fee_payments`
+        ON students.`student_id` = fee_payments.`student_id` WHERE students.student_id = $id ") );
+        $paid = 0 ;
+
+         foreach($paidld as $pdd){
+        
+            $paid = $pdd-> paid;
+         }
+
+
+ 
+
+        $balance =  $bill  - $paid;
+
+
+        $pdf = new MyPDFPortrait();
+        $pdf-> SetWidths(7);
+        $pdf->AddPage();
+        $pdf->SetFont('Times','',11);
+       
+        //Table with 20 rows and 4 columns
+        $pdf->SetX(5);
+        $pdf->SetFillColor(237, 228, 226);
+        $pdf->Ln(7);
+        $pdf-> Cell(190, 10, "FEE STATEMENT FOR : ".strtoupper($studentname)." as at : ".   date("d-m-Y h:i:sa") ,0, 0, 'C', 1, '');
+        $pdf->Ln(15);
+        $pdf->SetX(10);
+        $pdf->SetFont('Times','',11);
+       
+                //table header
+        $pdf->SetFillColor(157, 245, 183);
+        $pdf->setFont("times", "", "11");
+
+      
+        $pdf->Cell(105, 7, "FEE STATEMENT", 1, 0, "C", 1);
+        $pdf->SetFillColor(224, 235, 255);
+        $pdf->Ln();
+        $pdf->Cell(20, 7, "#", 1, 0, "L", 1);
+        $pdf->Cell(50, 7, "Type", 1, 0, "C", 1);
+        $pdf->Cell(70, 7, "Narration", 1, 0, "C", 1);
+        $pdf->Cell(50, 7, "Amount", 1, 0, "C", 1);
+        
+       
+        $pdf->Ln();
+        $counter = 1; 
+        $y = $pdf->GetY();
+        $x = 10;
+        $fill = 0;
+
+        
+        $pdf->SetWidths(array(20,50,70,50));
+        $aligns = array('L','L','L','R');
+        $pdf->SetAligns($aligns );
+        $pdf->SetFillColor(224, 235, 255);
+
+        $TOTALAMOUNT = 0 ;
+        foreach($payments as $payment){ 
+            
+            $fill =  !$fill;
+            $type = "";
+            if($payment ->paytype == 'Invoice')
+                $type = "Fee Invoice : ".$payment->term." ".$payment->inv_year;
+            else{
+                $type = date_format(date_create($payment->payment_date),'d-m-Y');
+            }
+                     
+
+
+            $pdf->Row(array( 
+                $counter,
+                $payment->paytype, $type , 
+                number_format($payment ->total,2)
+            ), $fill);
+
+            $counter++;
+        }
+        
+            $pdf->Cell(120, 7, "TOTAL BALANCE", 1, 0, "R", $fill);
+            $pdf->Cell(70, 7, number_format($balance,2), 1, 0, "R", $fill);
+
+            $pdf->SetFillColor(224, 235, 255);
+            $pdf->setXY($x, $y);
+            $pdf->Output("Expenses Report.pdf", "I");
+
+            exit;
+
+
+
+    }
+
+
+
+    public function viewstatement($id){
         $PYS =  DB::select("SELECT CONCAT(first_name,' ',middle_name,
         '  Admn: ',student_no) AS studentname from students WHERE  student_id = '$id' ");
 
@@ -225,15 +458,12 @@ class SchoolFeeController extends Controller
         $input = $request->all();
         $input['payment_date']  =  date('Y-m-d', strtotime($input['payment_date']));
         $id = FeePayment::create($input)->payment_id;
-
         //alert()->success('Success', 'Invoice Created Successfully');
-
-
         return view('fee.feereceipt',compact('id'));
-    
-
-
     }
+
+
+    
 
     public function feereceipts(){
         $payments =  DB::table('fee_payments')
@@ -530,6 +760,11 @@ foreach($bal as $bal2){
         );
 
     }
+
+
+
+
+
 }
 
 

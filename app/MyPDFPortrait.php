@@ -13,7 +13,7 @@ function Header()
 	$this->Image('logo.png',10,6,30);
 	$this->Image('donbosco.png',170,6,40);
     // Arial bold 15
-    $this->SetFont('Arial','B',14);
+    $this->SetFont('Arial','B',12);
     // Move to the right
     
 	// Title

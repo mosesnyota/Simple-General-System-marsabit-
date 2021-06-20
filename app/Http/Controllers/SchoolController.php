@@ -22,7 +22,17 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $students = Student::all();
+        $students  = DB::select( DB::raw("SELECT A.*,course_name ,
+        ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id and fees_invoice.deleted_at is null)
+        -
+        (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id and fee_payments.deleted_at is null )) AS balance
+        FROM students A   join courses B on A.course_id = B.course_id
+        WHERE A.`cur_status` = 'Active' 
+        GROUP BY A.student_id") );
+
+
+       
+
         $activestudents =  DB::table('students')
         ->select(DB::raw('count(*) AS total'))
         ->where('cur_status', '=', 'active')

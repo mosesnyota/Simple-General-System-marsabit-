@@ -25,9 +25,9 @@
                                   
                                    
                                 <button type="button"  class="btn btn-primary btn-md float-right mr-1"  data-toggle="modal" data-target="#modal-addfee" data-backdrop="static" data-keyboard="false" href="#"> <b class="fa fa-plus" aria-hidden="true"> Add Fee </b></button>
-                        
+                                
                                     <a href="{{ redirect()->getUrlGenerator()->previous() }}" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-undo"> Back </b></a>
-                                   
+                                    <a href="printstatement" target="_blank" class="btn btn-warning btn-md float-right mr-1"   role="button"><b class="fa fa-print"> Print </b></a>
                              
                                     
                                 </div>

@@ -19,16 +19,14 @@
                         <div class="page-title-box">
                             <div class="row align-items-center">
                                 <div class="col-md-6">
-                                    <h4 class="page-title m-0">FEE STATEMENT FOR {{$studentname}}</h4>
+                                    <h4 class="page-title m-0">FEE STATEMENT FOR {{$studentname}}    as at : . {{  date("d-m-Y h:i:sa") }}  </h4>
                                 </div>
                                 <div class="col-md-6">
-                                  
-                                   
+                                <a href="printfeestatement" target="_blank" class="btn btn-warning btn-md float-right mr-1"   role="button"><b class="fa fa-print"> Print </b></a>
                                 <button type="button"  class="btn btn-primary btn-md float-right mr-1"  data-toggle="modal" data-target="#modal-addfeeinv" data-backdrop="static" data-keyboard="false" href="#"> <b class="fa fa-plus" aria-hidden="true"> Add Fee Invoice </b></button>
+                                
                                 <a href="../../schoolfees" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-undo"> Back </b></a>
-                                   
-                             
-                                    
+                                
                                 </div>
                                 <!-- end col -->
                             </div>

@@ -99,7 +99,79 @@ $lastyear = 2020;
     <!-- end row -->
     
     <div class="row">
-        <div class="col-xl-6">
+
+
+    <div class="col-xl-7">
+        
+              
+    <div class="card">
+                    <!-- /.card-header -->
+                 <div class="card-body">
+                    <!-- .table-responsive -->
+            
+                    <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive"
+                                   style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                                            <thead>
+                                                                            <tr>
+                                                                             
+                                                                              <th>Admn</th>
+                                                                              <th>Names</th>
+                                                                              <th>Course</th>
+                                                                              <th>Fee</th>
+                                                                              <th></th>
+                                                                              
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                              <?php $counter = 1 ; ?>
+                                                                          @foreach ($students as $student)
+                                                                            <tr>
+                                                                           
+                                                                              <td><a>{{$student->student_no}}</a></td>
+                                                                              <td>{{$student->first_name." ".$student->middle_name." ".$student->surname}}</td>
+                                                                              <td>{{$student->course_name}}</td>
+                                                                              <td data-target="balance" > <?php if ( $student->balance  > 1000) { ?>
+                                                                                  <span class="badge badge-warning"><b> {{number_format($student->balance ,2)}}</b></span>
+                                                                                  <?php } else { ?>
+                                                                                  <span class="badge badge-info">{{number_format($student->balance ,2)}}</span>
+                                                                                  <?php } ?>
+                                                                              </td>
+
+                                                                              <td>
+                                                                                <a class="btn btn-info btn-sm" href="students/{{$student ->student_id}}/view"><i class="fas fa-eye"></i></a>
+                                                                              
+                                                                                 
+                                                                                 
+                                                                              
+                                                                              </td>  
+ 
+                                                                          </tr>
+                                                                        
+                                                                          <?php $counter += 1 ; ?>
+                                                                          @endforeach
+                                                                            
+                                                                            </tbody>
+                                                                          </table>
+                                                                        </div>
+                      <!-- /.table-responsive -->
+                      <div class="card-footer clearfix">
+                  <a href="{{URL::to('/')}}/students" class="btn btn-sm btn-info float-left">View All Students</a>
+                  <a href="{{URL::to('/')}}/students" class="btn btn-sm btn-secondary float-right">View All Students</a>
+                </div>
+                    </div>
+               
+                   
+            
+
+          
+   
+
+
+    </div> <!-- END COL 6 -->
+
+ 
+
+        <div class="col-xl-5">
         
                 <div class="card">
                     <div class="card-body">
@@ -111,7 +183,7 @@ $lastyear = 2020;
                      
                         <th>RCP No</th>
                         <th>Student</th>
-                        <th>Date</th>
+                       
                         <th>Amount</th>
                        
                       </tr>
@@ -126,7 +198,7 @@ $lastyear = 2020;
                         <td><a>{{"RC0".$payment->payment_id}}</a></td>
                         <td><a>{{$payment->first_name." ".$payment->middle_name." ".$payment->surname}}</a></td>
                         
-                        <td><a>{{date_format(date_create($payment->payment_date),'d-m-Y')}}</a></td>
+                        
                        
 
                         <td>  <?php if($payment->amount > 1000){ ?>
@@ -156,39 +228,7 @@ $lastyear = 2020;
               </div>
         </div>
 
-        <div class="col-xl-6">
         
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="mt-0 header-title mb-4">Latest Marks</h4>
-                    <div class="table-responsive">
-                      
-                            <table class="table table-hover">
-                            <thead>
-                            <tr>
-                              <th>No</th>
-                              <th>Student </th>
-                              <th>Exam</th>
-                              <th>Marks</th>
-                              
-                            </tr>
-                            </thead>
-                            <tbody>
-                            
-                            
-            </tbody>
-        </table>
-    </div>
-              <!-- /.table-responsive -->
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer clearfix">
-              <a href="{{URL::to('/')}}/#" class="btn btn-sm btn-info float-left">Record Marks</a>
-              <a href="{{URL::to('/')}}/#" class="btn btn-sm btn-secondary float-right"> All Marks</a>
-            </div>
-            <!-- /.card-footer -->
-          </div>
-    </div>
     </div>
     <!-- end row -->
 
