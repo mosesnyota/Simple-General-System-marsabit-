@@ -31,7 +31,7 @@ class StudentsController extends Controller
         ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id and fees_invoice.deleted_at is null)
         -
         (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id and fee_payments.deleted_at is null )) AS balance
-        FROM students A   join courses B on A.course_id = B.course_id
+        FROM students A   left join courses B on A.course_id = B.course_id
         WHERE A.`cur_status` = 'Active' 
         GROUP BY A.student_id") );
 
@@ -129,7 +129,7 @@ class StudentsController extends Controller
     {
         $input = $request->all();
         $course_id = $input['course_id'];
-        unset($input["course_id"]);
+      
         $input['dob'] = date('Y-m-d', strtotime($input['dob']));
         $input['date_joined'] = date('Y-m-d', strtotime($input['date_joined']));
       
