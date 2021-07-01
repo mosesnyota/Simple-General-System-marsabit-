@@ -217,7 +217,7 @@ $billed  = DB::select( DB::raw(" SELECT SUM( IFNULL(`amount`,0)) AS billed FROM 
 
         $paidld  = DB::select( DB::raw(" SELECT  SUM( IFNULL(`amount`,0)) AS paid FROM  
         students LEFT JOIN `fee_payments`
-        ON students.`student_id` = fee_payments.`student_id` WHERE students.student_id = $id ") );
+        ON students.`student_id` = fee_payments.`student_id` WHERE students.student_id = $id  AND fee_payments.deleted_at IS NULL") );
         $paid = 0 ;
 
          foreach($paidld as $pdd){
