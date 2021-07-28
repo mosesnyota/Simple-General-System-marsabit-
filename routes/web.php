@@ -351,7 +351,11 @@ Route::get('/students/old', 'StudentsController@old');
 Route::post('/invoice/{invoice}/invoice/pay','InvoicesController@saveInvoicePayment2');
 Route::get('invoice/{invoice}/invoice/production/{receipt}/receipt','InvoicesController@printReceipt');
 
+
+Route::get('/students/{student}/printfeestatement','SchoolFeeController@printfeestatement' );
  
+Route::get('/students/{student}/viewinvoices/{year}/{term}/view','SchoolFeeController@printstatement' );
+
 
 //NEW CHANGES
 

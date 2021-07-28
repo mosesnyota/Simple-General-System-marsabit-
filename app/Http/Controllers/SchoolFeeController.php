@@ -82,7 +82,7 @@ class SchoolFeeController extends Controller
 
     public function printStatement($student_id,$year,$term){
         //schoolfees/6/viewinvoices/2021/Term%201/printstatement 
-
+        $id = $student_id;
         $PYS =  DB::select("SELECT CONCAT(first_name,' ',middle_name,
         '  Admn: ',student_no) AS studentname from students WHERE  student_id = '$student_id' ");
 
@@ -106,6 +106,35 @@ class SchoolFeeController extends Controller
         }
         $termyear = $term."  ".$year;
         $voteheads  = FeeVotehead::all();
+
+
+
+                
+        $billed  = DB::select( DB::raw(" SELECT SUM( IFNULL(`amount`,0)) AS billed FROM students LEFT JOIN `fees_invoice`
+        ON students.`student_id` = fees_invoice.`student_id`  WHERE students.student_id = $id ") );
+        $bill = 0 ;
+
+        foreach($billed as $bld){
+
+            $bill = $bld-> billed;
+        }
+
+
+
+        $paidld  = DB::select( DB::raw(" SELECT  SUM( IFNULL(`amount`,0)) AS paid FROM  
+        students LEFT JOIN `fee_payments`
+        ON students.`student_id` = fee_payments.`student_id` WHERE students.student_id = $id  AND fee_payments.deleted_at IS NULL") );
+        $paid = 0 ;
+
+        foreach($paidld as $pdd){
+
+            $paid = $pdd-> paid;
+        }
+
+
+
+
+        $balance =  $bill  - $paid;
 
 
         $pdf = new MyPDFPortrait();
@@ -163,8 +192,8 @@ class SchoolFeeController extends Controller
             $counter++;
         }
         
-            $pdf->Cell(105, 7, "TOTAL", 1, 0, "R", $fill);
-            $pdf->Cell(70, 7, number_format($TOTALAMOUNT,2), 1, 0, "R", $fill);
+            $pdf->Cell(105, 7, "Current Balance [ This includes previous balances/over payments", 1, 0, "R", $fill);
+            $pdf->Cell(70, 7, number_format($balance,2), 1, 0, "R", $fill);
 
             $pdf->SetFillColor(224, 235, 255);
             $pdf->setXY($x, $y);
@@ -728,7 +757,7 @@ foreach($bal as $bal2){
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    { 
         $course = Course::find($id) ;
         $input = $request->all();
         $course ->course_name = $input['course_name'];

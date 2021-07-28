@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Student;
 use DB;
 use App\Course;
+use App\FeeVotehead;
 use App\StudentCourses;
 use App\ClassListPDF;
 use SweetAlert;
@@ -193,7 +194,47 @@ class StudentsController extends Controller
         ->where('student_course.student_id', '=', $id)
         ->get();
 
-        return view('school.viewstudent',compact('student','courses','details'));
+
+
+
+//********************************************************************************* */
+        $PYS =  DB::select("SELECT CONCAT(first_name,' ',middle_name,
+        '  Admn: ',student_no) AS studentname from students WHERE  student_id = '$id' ");
+
+        $pt = null;
+        foreach($PYS  as $py){
+            $pt = $py;
+        }
+        $studentname = $pt->studentname;
+        $payments =  DB::select("SELECT * FROM (
+            SELECT 'Payment' AS paytype,student_no,students.student_id,payment_date
+            ,SUM(amount) AS total,'-' AS term, '-' AS inv_year
+            FROM fee_payments
+            JOIN students ON students.student_id = fee_payments.student_id
+            WHERE students.deleted_at IS NULL AND fee_payments.deleted_at IS NULL 
+            AND fee_payments.student_id = $id GROUP BY payment_date
+            UNION
+            SELECT 'Invoice' AS paytype ,student_no, students.student_id,  '-' AS payment_date
+             , SUM(amount) AS total,  `term`,`inv_year`
+            FROM fees_invoice 
+            JOIN students ON students.student_id = fees_invoice.student_id
+            WHERE students.deleted_at IS NULL AND fees_invoice.deleted_at IS NULL 
+            AND fees_invoice.student_id = $id
+            GROUP BY inv_year, term
+            ) AS A
+            ORDER BY A.payment_date");
+
+        $voteheads  = FeeVotehead::all();
+        
+        //********************************************************************************* */
+
+
+
+
+
+
+
+        return view('school.viewstudent',compact('student','courses','details','payments','studentname','voteheads'));
        
     }
 
