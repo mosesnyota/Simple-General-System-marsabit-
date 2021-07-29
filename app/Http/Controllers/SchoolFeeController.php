@@ -192,6 +192,16 @@ class SchoolFeeController extends Controller
             $counter++;
         }
         
+
+        $pdf->Cell(105, 7, "Total for the term ", 1, 0, "R", $fill);
+            $pdf->Cell(70, 7, number_format($TOTALAMOUNT,2), 1, 0, "R", $fill);
+
+            $pdf->Ln();
+
+            $pdf->Cell(105, 7, "", 1, 0, "R", $fill);
+            $pdf->Cell(70, 7, "", 1, 0, "R", $fill);
+            $pdf->Ln();
+
             $pdf->Cell(105, 7, "Current Balance [ This includes previous balances/over payments", 1, 0, "R", $fill);
             $pdf->Cell(70, 7, number_format($balance,2), 1, 0, "R", $fill);
 
