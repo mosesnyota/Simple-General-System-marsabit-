@@ -82,7 +82,34 @@ class SchoolController extends Controller
         foreach($feepaid as $paid){
             $totalFeePaid = $paid -> total;
         }
+
+        $totalinvoices1 = 0;
+        $totalpayments1 = 0;
+        $totalinvoices =  DB::select( DB::raw("SELECT students.`student_id`,`student_no`,`first_name`,`middle_name`,
+        `surname`,`cur_status`,comment, SUM(amount) AS invoiced FROM `students`
+        JOIN `fees_invoice` ON `students`.`student_id` = `fees_invoice`.`student_id`
+        GROUP BY student_id  HAVING invoiced > 0"));
+
+        foreach($totalinvoices as $invoice){ 
+            $totalinvoices1 += $invoice ->invoiced;
+
+        }
+        $totalpayments =  DB::select( DB::raw("SELECT `student_id`, SUM(amount) AS paid FROM `fee_payments`
+        GROUP BY student_id   "));
+
+        foreach($totalpayments as $payments2){ 
+            $totalpayments1 += $payments2 ->paid;
+
+        }
+
+        $unpaidfees = $totalinvoices1 - $totalpayments1;
+        
+
+
+
         $studentDetails['paid'] = $totalFeePaid;
+        $studentDetails['unpaid'] = $unpaidfees;
+        
         return view('school.index',compact('students','studentDetails','payments'));
     }
 

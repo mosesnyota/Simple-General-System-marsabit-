@@ -79,12 +79,12 @@ $lastyear = 2020;
             <div class="card bg-pink mini-stat text-white">
                 <div class="p-3 mini-stat-desc">
                     <div class="clearfix">
-                        <h6 class="text-uppercase mt-0 float-left text-white-50"> Unpaid Invoices</h6>
-                        <h4 class="mb-3 mt-0 float-right">{{0}}</h4>
+                        <h6 class="text-uppercase mt-0 float-left text-white-50"> Unpaid</h6>
+                        <h4 class="mb-3 mt-0 float-right">{{number_format($studentDetails['unpaid'],2)}}</h4>
                     </div>
                     <div>
                         
-                    <span class="badge badge-light text-primary"> {{"Total Unpaid Ksh. ".number_format(0,2)}}  </span> <span class="ml-2"></span>
+                    <a href="{{URL::to('/')}}/feebalances" target = "_target" class="btn btn-warning btn-sm"   role="button"><b class="fas fa-print"> Print Balances </b></a>
                     </div>
                 </div>
                 

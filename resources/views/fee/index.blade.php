@@ -26,8 +26,9 @@
                                 </div>
                                 <div class="col-md-6">
                                 <a href="{{URL::to('/')}}/feereceipts" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fas fa-dollar-sign"> RECEIPTS </b></a>
+                                <a href="{{URL::to('/')}}/feebalances" target = "_blank" class="btn btn-warning btn-md float-right mr-1"   role="button"><b class="fas fa-dollar-sign"> GET BALANCES </b></a>
                                 <a href="{{URL::to('/')}}/createfeeinvoice" class="btn btn-success btn-md float-right mr-1"  
-                                 role="button"><b class="fa fa-dollar-sign"> CREATE FEE INVOICE  </b></a>
+                                 role="button"><b class="fa fa-dollar-sign"> CREATE FEE INVOICE  </b></a> 
                                     
                                  <a href="{{URL::to('/')}}/school" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-undo"> Back </b></a>
                                 </div>
