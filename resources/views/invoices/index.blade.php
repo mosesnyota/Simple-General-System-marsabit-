@@ -22,7 +22,7 @@
 
                         <a href="{{URL::to('/')}}/invoice/payments" class="btn btn-primary btn-md float-right mr-1"   role="button"><b class="fas fa-dollar-sign"> View Payments </b></a>
                         <a href="{{URL::to('/')}}/invoice" class="btn btn-info btn-md float-right mr-1"   role="button"><b class="fa fa-plus-circle"> New Invoice </b></a>
-
+ 
                       
                         </div> 
                     </div>
@@ -133,8 +133,8 @@
                         <h4 class="mb-3 mt-0 float-right">{{$invoice_details['open_invoices']}}</h4>
                     </div>
                     <div>
-                        
-                    <span class="badge badge-light text-primary"> {{"Total Unpaid Ksh. ".number_format($invoice_details['unpaid'],2)}}  </span> <span class="ml-2"></span>
+                    <a href="{{URL::to('/')}}/unpaidinvoices" target = "_target" class="btn btn-warning btn-sm"   role="button"><b class="fas fa-print"> Print Unpaid: {{number_format($invoice_details['unpaid'],2)}} </b>   </a>
+                   
                     </div>
                 </div>
                 

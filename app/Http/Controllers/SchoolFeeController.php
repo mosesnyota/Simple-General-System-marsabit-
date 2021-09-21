@@ -95,11 +95,12 @@ class SchoolFeeController extends Controller
         $invoices =  DB::select( DB::raw("SELECT students.`student_id`,`student_no`,`first_name`,`middle_name`,
         `surname`,`cur_status`,comment, SUM(amount) AS invoice FROM `students`
         JOIN `fees_invoice` ON `students`.`student_id` = `fees_invoice`.`student_id`
+        where fees_invoice.deleted_at is null and students.deleted_at is null
         GROUP BY student_id  HAVING invoice > 0"));
 
 
         $payments =  DB::select( DB::raw("SELECT `student_id`, SUM(amount) AS paid FROM `fee_payments`
-        GROUP BY student_id"));
+        where fee_payments.deleted_at is null GROUP BY student_id  " ));
 
 
         $totalbalance = 0 ;

@@ -124,20 +124,19 @@ class InvoicesController extends Controller
 
         
        $invoices  =  DB::table('invoices')
-        ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
-        ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
-        ->leftjoin('courses', 'invoices.course_id','=','courses.course_id')
+        ->join('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
+        ->join('customers', 'customers.customer_id', '=', 'invoices.customer_id')
+        ->join('courses', 'invoices.course_id','=','courses.course_id')
         ->select(DB::raw('customers.*,invoices.*,course_name as department,SUM(unit_cost * quantity) AS amount'))
         ->where('invoices.deleted_at', '=', NULL)
         ->where('invoice_details.deleted_at', '=', NULL)
         ->groupBy('invoice_id')
         ->orderBy('cur_status','desc')
         ->orderBy('invoice_date','DESC')
-        
         ->get();
 
 
-
+ 
 
         $paymentsD =   DB::select("SELECT invoice_payment.invoice_id, SUM(invoice_payment.amount) AS paid FROM `invoice_payment` 
             join invoices on invoices.invoice_id = invoice_payment.invoice_id
@@ -151,6 +150,133 @@ class InvoicesController extends Controller
 
 
         return view('invoices.index',compact('invoice_details','invoices','paidVals'));
+    }
+
+
+    public function unpaidinvoices(){
+        
+        
+        $pdf = new MyPDFPortrait();
+        $pdf-> SetWidths(7);
+        $pdf->AddPage();
+        $pdf->SetFont('Times','',11);
+       
+        //Table with 20 rows and 4 columns
+        $pdf->SetX(5);
+        $pdf->SetFillColor(237, 228, 226);
+        $pdf->Ln(7);
+        $pdf-> Cell(190, 10, " UNPAID INVOICES ".   date("d-m-Y h:i:sa") ,0, 0, 'C', 1, '');
+        $pdf->Ln(15);
+        $pdf->SetX(10); 
+        $pdf->SetFont('Times','',11);
+       
+                //table header
+        $pdf->SetFillColor(157, 245, 183);
+        $pdf->setFont("times", "", "11");
+
+      
+        $pdf->Cell(105, 7, "INVOICE BALANCES", 1, 0, "C", 1);
+        $pdf->SetFillColor(224, 235, 255);
+        $pdf->Ln();
+        $pdf->Cell(10, 7, "SN", 1, 0, "C", 1);
+        $pdf->Cell(40, 7, "Department", 1, 0, "C", 1);
+        $pdf->Cell(80, 7, "Customer", 1, 0, "C", 1);
+        $pdf->Cell(20, 7, "Total", 1, 0, "C", 1);
+        $pdf->Cell(20, 7, "Paid", 1, 0, "C", 1);
+        $pdf->Cell(20, 7, "Balance", 1, 0, "C", 1);
+        
+        
+       
+        $pdf->Ln();
+        $counter = 1; 
+        $y = $pdf->GetY();
+        $x = 10;
+        $fill = 0;
+
+        
+        $pdf->SetWidths(array(10,40,80,20,20,20 ));
+        $aligns = array('R','L','L','R','R','R');
+        $pdf->SetAligns($aligns );
+        $pdf->SetFillColor(224, 235, 255);
+
+        // $invoices  =  DB::table('invoices')
+        // ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
+        // ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
+        // ->leftjoin('courses', 'invoices.course_id','=','courses.course_id')
+        // ->select(DB::raw('customers.*,invoices.*,course_name as department,SUM(unit_cost * quantity) AS amount'))
+        // ->where('invoices.deleted_at', '=', NULL)
+        // ->where('invoice_details.deleted_at', '=', NULL)
+        // ->groupBy('invoice_id')
+        // ->orderBy('invoice_id','ASC')
+       // ->get();
+
+       $invoices = DB::select("SELECT customers.*,invoices.*,course_name AS department,SUM(unit_cost * quantity) AS amount 
+       FROM `invoices` 
+       LEFT JOIN `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id` 
+       LEFT JOIN `customers` ON `customers`.`customer_id` = `invoices`.`customer_id` 
+       LEFT JOIN `courses` ON `invoices`.`course_id` = `courses`.`course_id` 
+       WHERE `invoices`.`deleted_at` IS NULL 
+       AND `invoice_details`.`deleted_at` IS NULL 
+       GROUP BY `invoice_id` 
+       ORDER BY `invoice_id` ASC");
+
+
+
+        $payments  =   DB::select("SELECT invoice_payment.invoice_id, SUM(invoice_payment.amount) AS paid FROM `invoice_payment` 
+        join invoices on invoices.invoice_id = invoice_payment.invoice_id
+        WHERE invoice_payment.deleted_at IS NULL and invoices.deleted_at is null group by invoice_payment.invoice_id");
+
+
+        $totalbalance = 0 ;
+        foreach($invoices as $invoice){ 
+            $paid = 0 ;
+            $bal = 0 ;
+            $id =  $invoice->invoice_id;
+            foreach($payments as $payment){ 
+                if($payment->invoice_id == $id ){
+                    $paid = $payment->paid;
+                    
+                }
+            }
+
+            $bal = $invoice ->amount - $paid ;
+            $fill =  !$fill;
+            $type = "";
+            $DEPART = $invoice->department;
+            if($invoice->department == 'MOTOR VEHICLE MECHANIC')
+            {  $DEPART ="MVM";}
+            
+
+            if($bal != 0 ){
+            $totalbalance += $bal;
+            $pdf->Row(array( 
+                $invoice->invoice_id, 
+                $DEPART , 
+                $invoice->customer_names ." ( ".$invoice->narration ." )", 
+                number_format(($invoice ->amount ),2),
+                number_format($paid ,2),
+                number_format(($invoice ->amount - $paid ),2)
+            ), $fill);
+
+            $counter++;
+        }
+        }
+        
+
+            $pdf->Cell(110, 7, "Total Balance ", 1, 0, "R", $fill);
+            $pdf->Cell(80, 7, number_format($totalbalance,2), 1, 0, "R", $fill);
+
+            $pdf->Ln();
+
+           
+
+           
+
+            $pdf->SetFillColor(224, 235, 255);
+            $pdf->setXY($x, $y);
+            $pdf->Output("Unpaid Invoices.pdf", "I");
+
+            exit;
     }
     
     

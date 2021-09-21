@@ -222,7 +222,9 @@ Route::get('/customers/{customer}/view','CustomersController@show');
 Route::get('/customers/{customer}/viewpayments','CustomersController@viewpayments');
 Route::get('/customers/{customer}/viewinvoices','CustomersController@viewinvoices');
 
-Route::get('/production','InvoicesController@index');
+Route::get('/production','InvoicesController@index'); 
+Route::get('/unpaidinvoices','InvoicesController@unpaidinvoices'); 
+
 Route::get('/invoices','InvoicesController@invoice');
 Route::get('/invoice','InvoicesController@newinvoice');
 Route::get('/invoice/{invoice}/open','InvoicesController@openinvoice');
