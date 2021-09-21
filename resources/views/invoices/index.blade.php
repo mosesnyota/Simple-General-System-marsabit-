@@ -161,6 +161,7 @@
                       <thead>
                       <tr>
                       <th>#</th>
+                      <th>SN</th>
                       <th width="13%">Date</th>
                         <th width="30%">Narration</th>
                         <th>Department</th>
@@ -185,6 +186,7 @@
                       
                       <tr id="{{$invoice ->invoice_id}}">
                         <td><a>{{$counter}}</a></td>
+                        <td><a>{{"INV".$invoice ->invoice_id}}</a></td>
                         <td><a>{{date_format(date_create($invoice->invoice_date),'d-m-Y')}}</a></td>
                         <td data-target="narration2" ><a>{{$invoice->narration}}</a></td>
                         <td data-target="customer_names2"><a>{{$invoice->department}}</a></td>

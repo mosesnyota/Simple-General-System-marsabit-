@@ -92,11 +92,11 @@ class InvoicesController extends Controller
         }
 
        
-        $open2 =  DB::select("SELECT SUM(unit_cost * quantity) AS unpaid FROM `invoices` JOIN 
+        $open2 =  DB::select("SELECT SUM(unit_cost * quantity) AS unpaid FROM `invoices` left JOIN 
         `invoice_details` ON `invoices`.`invoice_id` = `invoice_details`.`invoice_id`
         WHERE invoices.deleted_at IS NULL AND invoice_details.`deleted_at` IS NULL ");
 
-        $open3=  DB::select("SELECT SUM(invoice_payment.amount) AS paid FROM `invoices` JOIN 
+        $open3=  DB::select("SELECT SUM(invoice_payment.amount) AS paid FROM `invoices` left JOIN 
         `invoice_payment` ON `invoices`.`invoice_id` = `invoice_payment`.`invoice_id`
         WHERE invoices.deleted_at IS NULL AND invoice_payment.`deleted_at` IS NULL");
 
@@ -124,9 +124,9 @@ class InvoicesController extends Controller
 
         
        $invoices  =  DB::table('invoices')
-        ->join('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
-        ->join('customers', 'customers.customer_id', '=', 'invoices.customer_id')
-        ->join('courses', 'invoices.course_id','=','courses.course_id')
+        ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
+        ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
+        ->leftjoin('courses', 'invoices.course_id','=','courses.course_id')
         ->select(DB::raw('customers.*,invoices.*,course_name as department,SUM(unit_cost * quantity) AS amount'))
         ->where('invoices.deleted_at', '=', NULL)
         ->where('invoice_details.deleted_at', '=', NULL)
@@ -139,7 +139,7 @@ class InvoicesController extends Controller
  
 
         $paymentsD =   DB::select("SELECT invoice_payment.invoice_id, SUM(invoice_payment.amount) AS paid FROM `invoice_payment` 
-            join invoices on invoices.invoice_id = invoice_payment.invoice_id
+            right join invoices on invoices.invoice_id = invoice_payment.invoice_id
             WHERE invoice_payment.deleted_at IS NULL  group by invoice_payment.invoice_id");
 
                 $paidVals = [];
