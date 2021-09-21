@@ -31,6 +31,13 @@ class SchoolController extends Controller
         GROUP BY A.student_id") );
 
 
+        $students  = DB::select( DB::raw("SELECT A.*,course_name, 0 as balance
+        FROM students A   left join courses B on A.course_id = B.course_id
+        WHERE A.`cur_status` = 'Active' 
+        GROUP BY A.student_id") );
+       
+
+
        
 
         $activestudents =  DB::table('students')
@@ -112,7 +119,7 @@ class SchoolController extends Controller
         
         return view('school.index',compact('students','studentDetails','payments'));
     }
-
+ 
     /**
      * Show the form for creating a new resource.
      *
