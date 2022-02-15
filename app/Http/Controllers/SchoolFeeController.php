@@ -148,7 +148,7 @@ class SchoolFeeController extends Controller {
         $pdf->SetX( 5 );
         $pdf->SetFillColor( 237, 228, 226 );
         $pdf->Ln( 7 );
-        $pdf-> Cell( 190, 10, ' ZERO FEE BALANCES '.   date( 'd-m-Y h:i:sa' ), 0, 0, 'C', 1, '' );
+        $pdf-> Cell( 190, 10, ' STUDENTS WITH OVERPAYMENTS AND ZERO FEE BALANCES '.   date( 'd-m-Y h:i:sa' ), 0, 0, 'C', 1, '' );
         $pdf->Ln( 15 );
         $pdf->SetX( 10 );
 
