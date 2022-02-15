@@ -664,8 +664,8 @@ class SchoolFeeController extends Controller {
 
     public function printReceipt( $id ) {
 
-        $transactions =  DB::select( DB::raw( "SELECT fee_payments.*,CONCAT(first_name,\' \',middle_name,\' \",surname) as studentnames,student_no FROM fee_payments
-        JOIN students ON fee_payments.student_id = students.student_id WHERE fee_payments.payment_id = $id " ) );
+        $transactions =  DB::select( DB::raw( "SELECT fee_payments.*,CONCAT(first_name, ' ' ,middle_name, ' ' ,surname) as studentnames,student_no FROM fee_payments
+        JOIN students ON fee_payments.student_id = students.student_id WHERE fee_payments.payment_id = $id ") );
 
         $transaction = null;
         $student_id = 0;
