@@ -177,4 +177,8 @@ class SchoolController extends Controller
     {
         //
     }
+
+    public function smscomm(){
+        return view('school.smsindex');
+    }
 }

@@ -27,7 +27,22 @@
                       </div>
                   </div>
 
+                  <div class="form-group row">
+                      <label for="asset_name" class="col-sm-2 col-form-label">Quantity:</label>
+                      <div class="col-sm-10">
+                          <input type="number" autocomplete="off" class="form-control" id="quantity" name="quantity" required>
+                      </div>
+                  </div>
 
+              <div class="form-group row">
+                <label for="buying_price" class="col-sm-2 col-form-label">Buying Price:</label>
+                <div class="col-sm-10">
+                    <input type="number" autocomplete="off" class="form-control" id="unit_price" name="unit_price"  required>
+                </div>
+              </div>
+               
+
+ 
                   <div class="form-group row">
                   <label for="category_id" class="col-sm-2 col-form-label">Category</label>
                   <div class="col-sm-10">
@@ -86,7 +101,7 @@
 
  
                    <div class="form-group row">
-                        <label for="barcode" class="col-sm-2 col-form-label">Asset Tag:</label>
+                        <label for="barcode" class="col-sm-2 col-form-label">Tag/Serial No:</label>
                         <div class="col-sm-10">
                             <input type="text" autocomplete="off" class="form-control" id="serial_no" name="serial_no" required>
                         </div>
@@ -115,12 +130,21 @@
                       </div>
                   </div>
 
-                  <div class="form-group row">
+              <div class="form-group row">
                 <label for="buying_price" class="col-sm-2 col-form-label">Asset Price:</label>
                 <div class="col-sm-10">
                     <input type="number" autocomplete="off" class="form-control" id="price" name="price"  required>
                 </div>
               </div>
+
+              <div class="form-group row">
+                      <label for="asset_name" class="col-sm-2 col-form-label">Quantity:</label>
+                      <div class="col-sm-10">
+                          <input type="number" autocomplete="off" class="form-control" id="quantity" name="quantity" required>
+                      </div>
+              </div>
+
+
 
             
                 </div>

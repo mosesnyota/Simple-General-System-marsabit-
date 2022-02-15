@@ -314,12 +314,26 @@ class CatalogueController extends Controller {
     public function store(Request $request)
     {
         $input = $request->all();
-      
-        Catalogue::create($input);
-      
+        $id = Catalogue::create($input)->asset_id;
+        $quantity = $input['quantity'];
+        $locations = Locations::all()->random();
+        $locationsID = $locations->store_id;
+
+        for ($x = 1; $x <= $quantity; $x++) {
+            $copy = [];
+            $copy['serial_no'] = $x;
+            $copy['asset_id'] =  $id ;
+            $copy['manufacture_date'] = date('Y-m-d'); 
+            $copy['location_id'] = $locationsID; 
+            $copy['price'] = $input['unit_price'] ;
+
+            //echo $copy['serial_no']." ". $copy['manufacture_date']."   ".$copy['location_id']."  Price ".$copy['price']."<br>";
+            AssetCopy::create($copy);
+        }
         return redirect()->action(
-            'CatalogueController@index'
-        );
+             'CatalogueController@index'
+         );
+       
     }
 
 
@@ -351,7 +365,16 @@ class CatalogueController extends Controller {
     {
         $input = $request->all();
         $input['manufacture_date']  =  date('Y-m-d', strtotime($input['manufacture_date']));
-        AssetCopy::create($input);
+        $quantity = $input['quantity'];
+        unset($input['quantity']);
+       
+
+        for ($x = 1; $x <= $quantity; $x++) {
+            $input['serial_no'] = $x;
+            AssetCopy::create($input);
+        }
+
+
       
         return redirect()->action(
             'CatalogueController@index'
@@ -415,7 +438,14 @@ class CatalogueController extends Controller {
 
     public function assetreport(){
 
-        return view('catalogue.openassetreport');
+        $staffs =  DB::select("SELECT staff.* , COUNT(`issued_id`) AS total FROM `issued_assets` 
+        JOIN staff ON staff.`staffid` = issued_assets.`staffid`
+        WHERE `issued_assets`.`cur_status` = 'issued'
+        GROUP BY staff.`staffid`");
+
+
+
+        return view('catalogue.staffreport',compact('staffs'));
     }
 
     public function openReportAssets(){
@@ -574,19 +604,36 @@ class CatalogueController extends Controller {
      */
     public function show($id)
     {
-        $assetcopies =  DB::select(" SELECT asset_copy.`asset_copy_id`, `barcode`,serial_no,`asset_name`,`price`, `manufacture_date`,`store_name`, `firstname`,`othernames`
-        FROM `catalogue`
-        LEFT JOIN `asset_copy` ON `catalogue`.`asset_id` = `asset_copy`.`asset_id`  
-        LEFT JOIN `locations` ON locations.`store_id` = asset_copy.`location_id`
-        LEFT JOIN `issued_assets` ON asset_copy.`asset_copy_id` = `issued_assets`.`asset_copy_id`
-        LEFT JOIN staff ON issued_assets.`staffid` = staff.`staffid`
-        WHERE catalogue.`deleted_at` IS NULL 
-        AND asset_copy.`deleted_at` IS NULL
-        AND catalogue.`asset_id` = $id ");
+        $assetcopies =  DB::select(" SELECT `catalogue`.`asset_id`,`barcode`,`asset_name`,asset_copy.`asset_copy_id`,`manufacture_date`,`price`,serial_no,
+        `store_name`, `issue_date`,`firstname`,`othernames`
+        FROM `catalogue` LEFT JOIN `asset_copy` ON `asset_copy`.`asset_id` = CATALOGUE.`asset_id`
+        LEFT JOIN `locations` ON `asset_copy`.`location_id` = locations.`store_id`
+        LEFT JOIN `issued_assets` ON asset_copy.`asset_copy_id` = issued_assets.`asset_copy_id`
+        LEFT JOIN `staff` ON issued_assets.`staffid` = `staff`.`staffid`
+        WHERE `catalogue`.`asset_id`  = $id ");
 
-      $assetname = Catalogue::find($id)->asset_name;
+         $assetname = Catalogue::find($id)->asset_name;
 
          return view('catalogue.viewassetcopies',compact('assetcopies','assetname'));
+    }
+
+    public function showIssuedAssets($staffid){
+            $id = $staffid;
+            $staffd = DB::table('staff')
+            ->join('roles', 'staff.staffcategory_id', '=', 'roles.id')
+            ->select(DB::raw('staff.*,roles.name'))
+            ->where('staffid', '=', $id)
+            ->get();
+            $staff = $staffd->first();
+
+            $issuedAssets =  DB::select("SELECT catalogue.asset_id,`asset_name`, barcode,`serial_no`,`staffid`,`issue_date`,`cur_status`
+            FROM  catalogue 
+            LEFT JOIN `asset_copy` ON catalogue.`asset_id`  = asset_copy.`asset_id` 
+            LEFT JOIN `issued_assets` ON `asset_copy`.`asset_copy_id` = `issued_assets`.`asset_copy_id`
+            WHERE catalogue.`deleted_at` IS NULL AND
+            asset_copy.`deleted_at` IS NULL
+            AND `staffid` = $staffid ");
+            return view('catalogue.viewsissuedassetstostaff', compact('staff','issuedAssets'));
     }
 
     /**

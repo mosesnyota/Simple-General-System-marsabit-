@@ -33,7 +33,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                        <button type="button"  class="btn btn-success btn-md float-right mr-1"  data-toggle="modal" data-target="#modal_newstaff" data-backdrop="static" data-keyboard="false" href="#"> <b class="fa fa-plus-circle"> Add Staff </b></button>
+                                       
                                    </div>
 
                                 <!-- end col -->
@@ -60,8 +60,7 @@
                                         <tr>
                                             <th width="10%">#</th>
                                             <th>Name</th>
-                                            <th>Role</th>
-                                            <th>Phone</th>
+                                            <th>Items</th>
                                             
                                             <th></th>
 
@@ -75,14 +74,13 @@
                                                 <tr>
                                                     <td>{{ $counter }}</td>
                                                     <td>{{ $staff->firstname.' '.$staff->othernames }}</td>
-                                                    <td>{{ $staff->name }}</td>
-                                                    <td>{{ $staff->phone }}</td>
+                                                 
+                                                    <td>{{ $staff->total }}</td>
                                                     
 
                                                     <td>
-                                                      <a class="btn btn-primary btn-sm" href="editstaff/{{$staff->staffid}}"><i class="fas fa-edit"></i></a>
-                                                      <button type="button" class="btn btn-danger btn-sm mr-1 delete-confirm"  href="staff/destroy/{{$staff->staffid}}"> <a  data-role="deletestaff"  data-id="{{$staff->staffid}}"> <i class="fa fa-trash" > </i></a>  </button>  
-                                                      <a class="btn btn-primary btn-sm" href="staff/{{$staff->staffid}}/view"><i class="fas fa-eye"></i></a>
+                                                     
+                                                      <a class="btn btn-primary btn-sm" href="staff/{{$staff->staffid}}/viewassets"><i class="fas fa-eye">View Items</i></a>
                                                  
 
                                                     </td> 
@@ -109,7 +107,7 @@
 
     </div> <!-- content -->
 
-    @include('staff.staffmodals')
+   
 
     <!-- End Right content here -->
 @endsection

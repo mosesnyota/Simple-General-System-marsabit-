@@ -84,16 +84,12 @@ function Row($data,$fill)
 		//Save the current position
 		$x=$this->GetX();
 		$y=$this->GetY();
-		
-		
 		//Print the text
 		$this->MultiCell($w,7,$data[$i],0,$a,$fill);
 		//Draw the border
 		$this->Rect($x,$y,$w,$h);
 		//Put the position to the right of the cell
 		$this->SetXY($x+$w,$y);
-
-		
 	}
 	//Go to the next line
 	$this->Ln($h);

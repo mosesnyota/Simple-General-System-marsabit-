@@ -417,7 +417,12 @@ Route::get('/catalogue/{productid}/pick', 'CatalogueController@pickitem');
 Route::get('/catalogue/issueItems2', 'CatalogueController@issueItems2');
 Route::get('/catalogue/{productid}/remove', 'CatalogueController@removecart');
 Route::post('/catalogue/saveissueditems', 'CatalogueController@saveissueditems');
-
 Route::post('/students/fee/pay', 'SchoolFeeController@payfee');
-
 Route::get('students/fee/printreceipt/{payment}/print','SchoolFeeController@printReceipt');
+Route::get('/smscommunication','SmsController@index'); 
+Route::get('staff/{staff}/viewassets','CatalogueController@showIssuedAssets');
+Route::post('smscommunication/sendsms','SmsController@sendsms');
+Route::get('smscommunication/sentsms','SmsController@sentsms');
+
+
+

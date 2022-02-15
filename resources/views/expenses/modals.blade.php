@@ -5,7 +5,7 @@
 <div class="modal fade bs-example-modal-lg" id="modal-recordExpense" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header modal-header-info">
+            <div class="modal-header modal-header">
                 <h4 class="modal-title">RECORD AN EXPENSE</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

@@ -24,8 +24,9 @@
         <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('modalheader.css')}}" rel="stylesheet" type="text/css">
-        <script src="{{asset('sweetaleart/sweetalert.min.js')}}"></script>
+        
         <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+        <script src="{{asset('sweetaleart/sweetalert.min.js')}}"></script>
         <link href="{{asset('sweetaleart/sweetalert.min.css')}}" rel="stylesheet" type="text/css">
          <!-- Plugins css -->
          <link href="{{asset('plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')}}" rel="stylesheet">
@@ -209,10 +210,6 @@ function getValues() {
                             <i class="mdi mdi-magnify noti-icon"></i>
                         </a>
                     </li>
-
-                   
-
-
                     <li class="list-inline-item dropdown notification-list nav-user">
                         <a class="nav-link dropdown-toggle arrow-none waves-effect" data-toggle="dropdown" href="#" role="button"
                         aria-haspopup="false" aria-expanded="false">
@@ -241,12 +238,8 @@ function getValues() {
                             <i class="mdi mdi-menu"></i>
                         </button>
                     </li>
-                    
                     @can('VIEW_SCHOOL')
                       <a href="{{URL::to('/')}}/school" class="btn btn-info btn-md"   role="button"><b class="fas fa-school"> SCHOOL </b></a>
-                      @endcan
-                      @can('VIEW_INVENTORY')
-                      <a href="{{URL::to('/')}}/products" class="btn btn-success btn-md"   role="button"><b class="fa fa-briefcase"> INVENTORY </b></a>
                       @endcan
                       @can('VIEW_PRODUCTION')
                       <a href="{{URL::to('/')}}/production" class="btn btn-warning btn-md"   role="button"><b class="fas fa-industry"> PRODUCTION </b></a>
@@ -258,14 +251,10 @@ function getValues() {
                       <a href="{{URL::to('/')}}/expense" class="btn btn-success btn-md"   role="button"><b class="fas fa-money-bill-alt"> EXPENSES </b></a>
                       @endcan
                       @can('VIEW_ASSETS')
-                      <a href="{{URL::to('/')}}/catalogue" class="btn btn-primary btn-md"   role="button"><b class="fa fa-bank"> ASSETS </b></a>
+                      <a href="{{URL::to('/')}}/catalogue" class="btn btn-primary btn-md"   role="button"><b class="fa fa-bank"> ASSETS INVENTORY </b></a>
                       @endcan
-
                 </ul>
-
-
             </nav>
-
         </div>
         @yield('content')
         <!-- Top Bar End -->
