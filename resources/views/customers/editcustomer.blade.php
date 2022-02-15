@@ -31,7 +31,7 @@
         
 
         <div class="row">
-            <div class="col-12">
+            <div class="col-12"> 
                 <div class="card m-b-30">
                     <div class="card-body">
 
@@ -43,13 +43,13 @@
                             <div class="form-group row">
                                 <label for="supplier_name" class="col-sm-2 col-form-label">Name/Organization</label>
                                 <div class="col-sm-10">
-                                <input type="text" autocomplete="off" class="form-control" id="customer_names" name="customer_names" value = "{{$supplier->customer_names}}" required>
+                                <input type="text" autocomplete="off" class="form-control" id="customer_names" name="customer_names" value = "{{$customer->customer_names}}" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="address" class="col-sm-2 col-form-label">Address</label>
                                 <div class="col-sm-10">
-                                <input type="text" autocomplete="off" class="form-control" id="address" name="address" value = "{{$supplier->address}}" required>
+                                <input type="text" autocomplete="off" class="form-control" id="address" name="address" value = "{{$customer->address}}" required>
                                 </div>
                             </div>
         
@@ -65,7 +65,7 @@
                                                 <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                             </div>
                                             
-                                            <input type="text" autocomplete="off" name="phone" id="phone" class="form-control" value = "{{$supplier->phone}}" required>
+                                            <input type="text" autocomplete="off" name="phone" id="phone" class="form-control" value = "{{$customer->phone}}" required>
                                       
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@
                                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                             </div>
                                             <input type="text" name="email" id="email" class="form-control"
-                                            autocomplete="off"  value = "{{$supplier->email}}" required>
+                                            autocomplete="off"  value = "{{$customer->email}}" required>
                                       
                                     </div>
                                 </div>
