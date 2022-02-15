@@ -42,6 +42,23 @@ class StaffsController extends Controller
         return view('staff.index',compact('staffs','roles'));
     }
 
+
+    public function leavedays(){
+        $staffs= DB::table('staff')
+        ->leftJoin('roles', 'staff.staffcategory_id', '=', 'roles.id')
+        ->select(DB::raw('staff.*,roles.name'))
+        ->orderBy('firstname', 'ASC')
+        ->get();
+
+        $roles= DB::table('roles')
+        ->select('roles.*')
+        ->orderBy('name', 'ASC')
+        ->get();
+     
+
+        return view('staff.leavedays',compact('staffs','roles'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

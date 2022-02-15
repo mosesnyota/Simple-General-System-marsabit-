@@ -95,6 +95,7 @@
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/staff"> <b class="fa fa-users" > Manage Staff </b></a></li>
+                        <li><a href="{{URL::to('/')}}/staffleavedays"> <b class="fa fa-users" > Staff Leave Days </b></a></li>
                     </ul>
                 </li> @endcan
 

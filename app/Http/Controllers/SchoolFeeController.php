@@ -491,8 +491,8 @@ class SchoolFeeController extends Controller {
             $counter++;
         }
 
-        $pdf->Cell( 120, 7, 'TOTAL BALANCE', 1, 0, 'R', $fill );
-        $pdf->Cell( 70, 7, number_format( $balance, 2 ), 1, 0, 'R', $fill );
+        $pdf->Cell( 140, 7, 'Balance: (INCLUDES total Over payments, Previous Balance and Next Terms fee)', 1, 0, 'R', $fill );
+        $pdf->Cell( 50, 7, number_format( $balance, 2 ), 1, 0, 'R', $fill );
 
         $pdf->SetFillColor( 224, 235, 255 );
         $pdf->setXY( $x, $y );

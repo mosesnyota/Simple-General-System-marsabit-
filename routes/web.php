@@ -428,5 +428,8 @@ Route::get('staff/{staff}/viewassets','CatalogueController@showIssuedAssets');
 Route::post('smscommunication/sendsms','SmsController@sendsms');
 Route::get('smscommunication/sentsms','SmsController@sentsms');
 
+Route::get('/staffleavedays','StaffsController@leavedays');
+
+
 
 
