@@ -251,6 +251,10 @@ Route::get('/courses/{course}/destroy','CourseController@destroy');
 
 Route::get('/schoolfees','SchoolFeeController@index')->name('schoolfees');
 Route::get('/feebalances','SchoolFeeController@feebalances')->name('feebalances');
+
+Route::get('/zeroBalances','SchoolFeeController@zeroBalances')->name('zeroBalances');
+
+
 Route::post('/feevotehead/store','SchoolFeeController@saveVotehead');
 Route::get('/feevotehead/{votehead}/edit','SchoolFeeController@editvotehead');
 Route::get('/feevotehead/{votehead}/destroy','SchoolFeeController@destroyvotehead');

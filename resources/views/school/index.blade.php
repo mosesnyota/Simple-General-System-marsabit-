@@ -86,7 +86,10 @@ $lastyear = 2020;
                     <div>
                         
                     <a href="{{URL::to('/')}}/feebalances" target = "_target" class="btn btn-warning btn-sm"   role="button"><b class="fas fa-print"> Print Balances </b></a>
-                    </div>
+                    <a href="{{URL::to('/')}}/zeroBalances" target = "_target" class="btn btn-warning btn-sm"   role="button"><b class="fas fa-print"> No Balance </b></a>
+                    
+                    
+                </div>
                 </div>
                 
             </div>
