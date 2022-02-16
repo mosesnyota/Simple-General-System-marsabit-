@@ -116,6 +116,10 @@ class SmsController extends Controller
             $myurl = "https://client.airtouch.co.ke:9012/sms/api/?issn=DONBOSCOMBT&msisdn=$msisdn&text=$messages&username=donbosco&password=b28630c1a54cce60c3b89d4e72909387";
             curl_setopt($ch, CURLOPT_URL,  $myurl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+
             $output = curl_exec($ch);
             curl_close($ch);
             $json = json_decode($output);
