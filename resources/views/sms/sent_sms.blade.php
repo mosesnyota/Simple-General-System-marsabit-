@@ -37,6 +37,7 @@
                    <div id="sidebar-menu">
                      <ul>
                         <li><a href="{{URL::to('/')}}/smscommunication"><b class="fa fa-sms" style="color:green" aria-hidden="true"> Send SMS </b></a></li>
+                        <li><a href="{{URL::to('/')}}/smsspecificno"><b class="fa fa-sms" style="color:green" aria-hidden="true"> Send One SMS </b></a></li>
                         <li><a href="{{URL::to('/')}}/smscommunication/sentsms"><b class="fa fa-sms" style="color:green" aria-hidden="true"> SMS Logs</b></a></li>
                      </ul>
                     </div>   

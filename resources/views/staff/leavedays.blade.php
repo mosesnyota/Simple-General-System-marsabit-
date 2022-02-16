@@ -61,7 +61,7 @@
                                             <th width="10%">#</th>
                                             <th>Name</th>
                                             <th>Available Leave Days</th>
-                                            <th>Schedule</th>
+                                            
                                             
                                             <th></th>
 
@@ -75,8 +75,8 @@
                                                 <tr>
                                                     <td>{{ $counter }}</td>
                                                     <td>{{ $staff->firstname.' '.$staff->othernames }}</td>
-                                                    <td>{{ $staff->name }}</td>
-                                                    <td>{{ $staff->phone }}</td>
+                                                    <td>{{ $staff->days }}</td>
+                                                   
                                                     
 
                                                     <td>

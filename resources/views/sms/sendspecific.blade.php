@@ -48,26 +48,19 @@
                   <div class="card">
                     <!-- /.card-header -->
                  <div class="card-body">
-          <form class="form-horizontal" method="post" action="smscommunication/sendsms" enctype="multipart/form-data" >
+          <form class="form-horizontal" method="post" action="smsspecificno/sendsms2" enctype="multipart/form-data" >
                   {{ csrf_field() }}
                 <div class="card-body"> 
                   <div class="form-group row">
-                    <label for="targetgroup" class="col-sm-2 col-form-label">Target Group: </label>
+                    <label for="targetgroup" class="col-sm-2 col-form-label">Phone No: </label>
                     <div class="col-sm-10">
-                    <select class="form-control select2" name="targetgroup" style="width: 100%;"  required>
-                                  <option value="">----Group to Send to-----</option>
-                                  <option value="students">All Students</option>
-                                  <option value="staff">All Staff</option>
-                                  <option value="alumni">Alumni</option>
-                                  <option value="customers">Registered Customers</option>
-                                  
-                            </select>
+                    <input class="form-control"  id="phone" required name="phone" placeholder="Phone e.g 254722000000"></input>
                     </div>
                     </div>
                     <div class="form-group row">
                     <label for="project_name" class="col-sm-2 col-form-label">Message: </label>
                     <div class="col-sm-10">
-                    <textarea class="form-control" rows="5" name="messages" id="messages" placeholder="Message"></textarea>
+                    <textarea class="form-control" required rows="5" name="messages" id="messages" placeholder="Message"></textarea>
                     </div>
                   </div>
 

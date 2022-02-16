@@ -9,94 +9,100 @@ use App\FeePayment;
 use App\SentSMSLog;
 
 class SmsController extends Controller
-{
+ {
 
     public function __construct()
-    {
-        $this->middleware('auth');
+ {
+        $this->middleware( 'auth' );
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+
     public function index()
-    {
-        return view('sms.smsindex');
+ {
+        return view( 'sms.smsindex' );
     }
 
-    public function sendsms(Request $request){
+    public function sendsms( Request $request ) {
         $input = $request->all();
-        $target = $input['targetgroup'];
-        $mymessage = $input['messages'];
-        $sqlQuery = "";
-        if($target == 'students'){
+        $target = $input[ 'targetgroup' ];
+        $mymessage = $input[ 'messages' ];
+        $sqlQuery = '';
+        if ( $target == 'students' ) {
             $sqlQuery = "SELECT `student_id`,`student_no`,`first_name`,`middle_name`,`surname`,`phone`, cur_status, CHAR_LENGTH(phone) FROM `students`
             WHERE `deleted_at` IS NULL AND cur_status = 'Active' AND phone IS NOT NULL AND phone != '0' 
             AND (CHAR_LENGTH(phone) > 8 AND CHAR_LENGTH(phone) < 13 AND phone REGEXP '[0-9]' )  ";
-    
-            $toSendTo =  DB::select( DB::raw($sqlQuery));
-            foreach($toSendTo as $cst){ 
+
+            $toSendTo =  DB::select( DB::raw( $sqlQuery ) );
+            foreach ( $toSendTo as $cst ) {
+
                 $phone = $cst ->phone;
-                $name = $cst ->first_name." ".$cst ->middle_name." ".$cst ->surname;
-                
-                $this->sendSMS2($phone,$mymessage,$target, $name );
+                $name = $cst ->first_name.' '.$cst ->middle_name.' '.$cst ->surname;
 
-            }//end foreach
+                $this->sendSMS2( $phone, $mymessage, $target, $name );
 
+            }
+            //end foreach
 
-    }else if($target == 'staff'){
+        } else if ( $target == 'staff' ) {
             $sqlQuery = "SELECT `firstname`,`othernames`, `phone` FROM `staff`
             WHERE `deleted_at` IS NULL AND phone IS NOT NULL AND phone != '0' 
             AND (CHAR_LENGTH(phone) > 8 AND CHAR_LENGTH(phone) < 13 AND phone REGEXP '[0-9]' )";
-            $toSendTo =  DB::select( DB::raw($sqlQuery));
-            foreach($toSendTo as $cst){ 
-                $phone = $cst ->phone;
-                $name = $cst ->firstname." ".$cst ->othernames;
-                
-                $this->sendSMS2($phone,$mymessage,$target, $name );
+            $toSendTo =  DB::select( DB::raw( $sqlQuery ) );
+            foreach ( $toSendTo as $cst ) {
 
-            }//end foreach
-        }else if($target == 'alumni'){
+                $phone = $cst ->phone;
+                $name = $cst ->firstname.' '.$cst ->othernames;
+
+                $this->sendSMS2( $phone, $mymessage, $target, $name );
+
+            }
+            //end foreach
+        } else if ( $target == 'alumni' ) {
             $sqlQuery = "SELECT `student_id`,`student_no`,`first_name`,`middle_name`,`surname`,`phone`, cur_status, CHAR_LENGTH(phone) FROM `students`
             WHERE `deleted_at` IS NULL AND cur_status != 'Active' AND phone IS NOT NULL AND phone != '0' 
             AND (CHAR_LENGTH(phone) > 8 AND CHAR_LENGTH(phone) < 13 AND phone REGEXP '[0-9]' )  ";
-            $toSendTo =  DB::select( DB::raw($sqlQuery));
-            foreach($toSendTo as $cst){ 
-                $phone = $cst ->phone;
-                $name = $cst ->first_name." ".$cst ->middle_name." ".$cst ->surname;
-                
-                $this->sendSMS2($phone,$mymessage,$target, $name );
+            $toSendTo =  DB::select( DB::raw( $sqlQuery ) );
+            foreach ( $toSendTo as $cst ) {
 
-            }//end foreach
-        }else if($target == 'customers'){
+                $phone = $cst ->phone;
+                $name = $cst ->first_name.' '.$cst ->middle_name.' '.$cst ->surname;
+
+                $this->sendSMS2( $phone, $mymessage, $target, $name );
+
+            }
+            //end foreach
+        } else if ( $target == 'customers' ) {
             $sqlQuery = "SELECT `customer_names`,`phone` FROM `customers`
             WHERE `deleted_at` IS NULL AND phone IS NOT NULL AND phone != '0' 
             AND (CHAR_LENGTH(phone) > 8 AND CHAR_LENGTH(phone) < 13 AND phone REGEXP '[0-9]' )";
-            $toSendTo =  DB::select( DB::raw($sqlQuery));
-            foreach($toSendTo as $cst){ 
+            $toSendTo =  DB::select( DB::raw( $sqlQuery ) );
+            foreach ( $toSendTo as $cst ) {
+
                 $phone = $cst ->phone;
                 $name = $cst ->customer_names;
-                
-                $this->sendSMS2($phone,$mymessage,$target, $name );
 
-            }//end foreach
+                $this->sendSMS2( $phone, $mymessage, $target, $name );
+
+            }
+            //end foreach
         }
-
-        
 
         return redirect()->action(
             'SmsController@index'
         );
 
-        
     }
 
+    public function sendSMS2( $phone, $mymessage, $target, $name ) {
+        $pattern = '/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/';
 
-    public function sendSMS2($phone,$mymessage,$target, $name ){
-         //this eliminates phones with characters or special characters
-         if (preg_match('/[A-Za-z]/', $phone) || preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $phone) )
+        //this eliminates phones with characters or special characters
+        if ( preg_match( '[A-Za-z]', $phone ) || preg_match( $pattern, $phone) )
             { 
                 //Data cleaning to eliminate phone numbers with characters
                 //echo   $phone . '    Contains at least one letter and one number'. "<br>";
@@ -142,9 +148,9 @@ class SmsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function smsspecificno()
     {
-        //
+        return view('sms.sendspecific');
     }
 
     /**
@@ -153,9 +159,17 @@ class SmsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function sendspecific(Request $request)
     {
-        //
+        $input = $request->all();
+        $phone = $input[ 'phone' ];
+        $mymessage = $input[ 'messages' ];
+        $this->sendSMS2( $phone, $mymessage, 'Single SMS',$phone);
+
+        return redirect()->action(
+            'SmsController@index'
+        );
+        
     }
 
     /**
@@ -204,6 +218,6 @@ class SmsController extends Controller
     }
 
     public function smscomm(){
-        return view('school.smsindex');
+        return view('school.smsindex' );
+        }
     }
-}

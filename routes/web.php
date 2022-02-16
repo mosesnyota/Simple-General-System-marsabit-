@@ -429,6 +429,8 @@ Route::post('smscommunication/sendsms','SmsController@sendsms');
 Route::get('smscommunication/sentsms','SmsController@sentsms');
 
 Route::get('/staffleavedays','StaffsController@leavedays');
+Route::get('smsspecificno','SmsController@smsspecificno');
+Route::post('smsspecificno/sendsms2','SmsController@sendspecific');
 
 
 
