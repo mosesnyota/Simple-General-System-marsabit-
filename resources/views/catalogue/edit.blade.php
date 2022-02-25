@@ -50,16 +50,10 @@
                                 {{ csrf_field() }}
                                 <div class="box-body"> 
                                     
-                                    
-                    <div class="form-group row">
-                        <label for="barcode" class="col-sm-2 col-form-label">Asset Tag:</label>
-                        <div class="col-sm-10">
-                            <input type="text" autocomplete="off" class="form-control" value="{{$product->serial_no}}" name="serial_no">
-                        </div>
-                    </div>
+                        
 
                     <div class="form-group row">
-                        <label for="barcode" class="col-sm-2 col-form-label">Barcode:</label>
+                        <label for="barcode" class="col-sm-2 col-form-label">Barcode/Asset Tag:</label>
                         <div class="col-sm-10">
                             <input type="text" autocomplete="off" class="form-control" value="{{$product->barcode}}" name="barcode">
                         </div>
@@ -73,24 +67,9 @@
                   </div>
 
 
-                  
-
-              <div class="form-group row">
-                <label for="buying_price" class="col-sm-2 col-form-label">Purchase Price:</label>
-                <div class="col-sm-10">
-                    <input type="number" autocomplete="off" class="form-control" value="{{$product->price}}" name="price">
-                </div>
-              </div>
+             
   
-              <div class="form-group row">
-                            <label for="manufacture_date" class="col-sm-2 col-form-label">Manufacture Date:</label>
-                            <div class="col-sm-10">
-                              <div class="input-group">
-                                <input type="text" class="form-control" autocomplete="off" value="{{ date('m/d/Y', strtotime( $product ->manufacture_date)) }}"  id="datepicker-autoclose" name="manufacture_date" >
-                                <div class="input-group-append bg-custom b-0"><span class="input-group-text"><i class="mdi mdi-calendar"></i></span></div>
-                            </div><!-- input-group -->
-                            </div>
-                        </div>
+              
                   
         
             
@@ -113,23 +92,7 @@
                                   </div>
                               </div>
                 
-                              <div class="form-group row">
-                                <label for="location_id" class="col-sm-2 col-form-label">Store/Location</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control select2" name="location_id" style="width: 100%;">
-                                        <option value=""></option>
-                                        @foreach ($locations as $location)
-                                        @if ($location ->store_id == $product ->location_id)
-                                        <option selected value="{{$location ->store_id}}">{{$location ->store_name}}</option>
-                                        @else
-                                        <option value="{{$location ->store_id}}">{{$location ->store_name}}</option>
-                                        @endif
-                                          
-                                        @endforeach
-                                        
-                                    </select>
-                                </div>
-                            </div>       
+                              
                 
                                 </div>
                                 <!-- /.card-body -->

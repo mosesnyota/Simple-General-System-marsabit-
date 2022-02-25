@@ -32,7 +32,7 @@ class CatalogueController extends Controller {
      */
     public function index()
     {
-        $assets =  DB::select('SELECT catalogue.asset_id,`asset_name`, asset_category,
+        $assets =  DB::select('SELECT catalogue.asset_id,`asset_name`,barcode, asset_category,
         COUNT(asset_copy.`asset_id`) AS totalassets, COUNT( `issued_id` ) AS issued 
         FROM `asset_categories` JOIN catalogue ON `asset_categories`.`category_id` = catalogue.`category_id`
         LEFT JOIN `asset_copy` ON catalogue.`asset_id`  = asset_copy.`asset_id` 
@@ -53,7 +53,7 @@ class CatalogueController extends Controller {
                 $amntissued = $issd->givend;
                 $dd = $issd->asset_id;
                 if($idd == $dd  ){
-                    $issuedd ->issued =  $amntissued ;
+                    $issuedd ->issued =  $issuedd->totalassets - $amntissued ;
                 }
             }
 
@@ -663,14 +663,17 @@ class CatalogueController extends Controller {
         $input = $request->all();
         $product ->barcode = $input['barcode'];
         $product ->asset_name = $input['asset_name'];
-       
-        $product ->manufacture_date = date('Y-m-d', strtotime($input['manufacture_date']));
-
         $product ->category_id = $input['category_id'];
-        $product ->location_id = $input['location_id'];
+        
 
+       try {
+          $product->save();
+       } catch (\Throwable $th) {
+        return redirect()->action(
+            'CatalogueController@index'
+        );
+       }
        
-        $product->save();
         return redirect()->action(
             'CatalogueController@index'
         );

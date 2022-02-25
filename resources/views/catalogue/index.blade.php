@@ -119,10 +119,10 @@
                                     <thead>
                                         <tr >
                                             <th style="width: 6%">#</th>
-                                            <th>Category</th>
-                                            <th >Asset </th>
+                                            <th>Barcode</th>
+                                            <th >Asset Name </th>
                                             <th style="width: 10%">Copies</th>
-                                            <th style="width: 15%">Assigned</th>
+                                            <th style="width: 15%">Available</th>
                                             <th style="width: 25%"></th>
                                            
                                         </tr>
@@ -133,7 +133,7 @@
                                                 <tr id="{{$asset ->asset_id}}">
                                                     <td style="line-height: 10px;">{{ $counter }}</td>
                                                    
-                                                    <td>{{ $asset->asset_category }}</td>
+                                                    <td>{{ $asset->barcode }}</td>
                                                     <td data-target="asset_name">{{ $asset->asset_name }}</td>
                                                    
                                                     <td>{{ $asset->totalassets }}</td>

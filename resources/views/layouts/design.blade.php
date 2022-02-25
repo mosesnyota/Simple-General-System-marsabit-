@@ -332,6 +332,16 @@ function getValues() {
 <!-- page script -->
 <script>
 
+
+
+
+$( document ).ready(function() {
+  $("div.dataTables_filter input").focus();
+});
+
+
+  
+
 $( document ).ready(function() {
     $("#wrapper").toggleClass("toggle");
 });
@@ -755,8 +765,8 @@ $(function () {
 $(document).ready(function() {
 
   var tbl = $('#mytable');
+
   
- 
  
 
 var settings={dom: 'Bfrtip',
