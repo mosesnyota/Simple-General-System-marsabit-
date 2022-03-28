@@ -169,9 +169,9 @@
                                                     <td style="width: 15%" >{{$issued->cur_status}}</td>
                                                    
                                                     
-                                            
+                                             
                                                     <td>
-                                                        <button type="button" class="btn btn-success btn-sm mr-1 delete-confirm"  href="1"> <a  data-role="deletepetty"> <i class="fa fa-undo" > Return Item</i></a>  </button>  
+                                                        <button type="button" class="btn btn-success btn-sm mr-1 accept-return"  href="return/{{$issued->issued_id}}"> <a  data-role="deletepetty"> <i class="fa fa-undo" > Return Item</i></a>  </button>  
                                                     </td>
                                                    
                                                     <?php $counter += 1; ?>

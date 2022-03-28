@@ -1081,6 +1081,26 @@ $('.accept-confirm').on('click', function (event) {
 </script>
 
 
+<script>
+$('.accept-return').on('click', function (event) {
+    event.preventDefault();
+    const url = $(this).attr('href');
+    swal({
+        title: 'Return This Item',
+        text: 'Confirm the Staff Member has returned the item',
+        icon: 'success',
+        buttons: ["Cancel", "Yes!"],
+    }).then(function(value) {
+        if (value) {
+            window.location.href = url;
+        }
+    });
+});
+</script>
+
+
+
+
 
 <script>
   jQuery('#datepicker-deadline').datepicker({

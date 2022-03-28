@@ -615,7 +615,7 @@ class CatalogueController extends Controller {
          $assetname = Catalogue::find($id)->asset_name;
 
          return view('catalogue.viewassetcopies',compact('assetcopies','assetname'));
-    }
+    } 
 
     public function showIssuedAssets($staffid){
             $id = $staffid;
@@ -626,13 +626,13 @@ class CatalogueController extends Controller {
             ->get();
             $staff = $staffd->first();
 
-            $issuedAssets =  DB::select("SELECT catalogue.asset_id,`asset_name`, barcode,`serial_no`,`staffid`,`issue_date`,`cur_status`
+            $issuedAssets =  DB::select("SELECT catalogue.asset_id,issued_id, `asset_name`, barcode,`serial_no`,`staffid`,`issue_date`,`cur_status`
             FROM  catalogue 
             LEFT JOIN `asset_copy` ON catalogue.`asset_id`  = asset_copy.`asset_id` 
             LEFT JOIN `issued_assets` ON `asset_copy`.`asset_copy_id` = `issued_assets`.`asset_copy_id`
             WHERE catalogue.`deleted_at` IS NULL AND
             asset_copy.`deleted_at` IS NULL
-            AND `staffid` = $staffid ");
+            AND `staffid` = $staffid and cur_status = 'issued'");
             return view('catalogue.viewsissuedassetstostaff', compact('staff','issuedAssets'));
     }
 
@@ -648,6 +648,17 @@ class CatalogueController extends Controller {
         $categories = AssetCategories::All();
         $product =  Catalogue::find($id) ;
         return view('catalogue.edit', compact('product','locations','categories')); 
+    }
+
+
+    public function returnItem($staffid,$issueid){
+        //marsabit/staff/12/return/37
+        $record = IssueAsset::find($issueid);
+        //echo $record->cur_status;
+        $record->cur_status = 'returned';
+        $record->save();
+        //echo $record->cur_status;
+        return redirect()->back();
     }
 
     /**

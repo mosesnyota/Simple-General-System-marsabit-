@@ -11,7 +11,7 @@
 <div class="wrapper fadeInDown">
   <div id="formContent">
     <!-- Tabs Titles -->
-    <h2 class="active"> Don Bosco ERP </h2>
+    <h2 class="active"> DON ERP </h2>
 
     <!-- Login Form -->
     <form method="POST" action="{{ route('login') }}">
