@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use DB;
 use App\Student;
 use App\FeePayment;
+use App\Course;
+
+use App\MyPDF;
+use App\MyPDFPortrait;
 
 class SchoolController extends Controller {
 
@@ -105,7 +109,9 @@ class SchoolController extends Controller {
         $studentDetails[ 'paid' ] = $totalFeePaid;
         $studentDetails[ 'unpaid' ] = $unpaidfees;
 
-        return view( 'school.index', compact( 'students', 'studentDetails', 'payments' ) );
+        $courses = Course::all();
+
+        return view( 'school.index', compact( 'students', 'studentDetails', 'courses', 'payments' ) );
     }
 
     /**
@@ -125,6 +131,103 @@ class SchoolController extends Controller {
     * @return \Illuminate\Http\Response
     */
 
+    public function printclasslist(Request $request){
+        $input = $request->all();
+        $id = $input['course_id'];
+        $course = Course::find($id);
+            $pdf = new MyPDFPortrait();
+            $pdf-> SetWidths( 7 );
+            $pdf->AddPage();
+            $pdf->SetFont( 'Times', '', 11 );
+    
+            //Table with 20 rows and 4 columns
+            $pdf->SetX( 5 );
+            $pdf->SetFillColor( 237, 228, 226 );
+            $pdf->Ln( 7 );
+            $pdf-> Cell( 190, 10, 'Active Students in '. $course->course_name . " as at date : ".   date( 'd-m-Y h:i:sa' ), 0, 0, 'C', 1, '' );
+            $pdf->Ln( 15 );
+            $pdf->SetX( 10 );
+    
+            $pdf->SetFont( 'Times', '', 11 );
+    
+            //table header
+            $pdf->SetFillColor( 157, 245, 183 );
+            $pdf->setFont( 'times', '', '11' );
+    
+            $pdf->Cell( 105, 7, $course->course_name, 1, 0, 'C', 1 );
+            $pdf->SetFillColor( 224, 235, 255 );
+            $pdf->Ln();
+            $pdf->Cell( 10, 7, '#', 1, 0, 'L', 1 );
+            $pdf->Cell( 30, 7, 'Admn', 1, 0, 'C', 1 );
+            $pdf->Cell( 70, 7, 'Name', 1, 0, 'C', 1 );
+            $pdf->Cell( 40, 7, 'Status', 1, 0, 'C', 1 );
+            $pdf->Cell( 30, 7, 'Balance', 1, 0, 'C', 1 );
+    
+            $pdf->Ln();
+            $counter = 1;
+    
+            $y = $pdf->GetY();
+            $x = 10;
+            $fill = 0;
+    
+            $pdf->SetWidths( array( 10, 30, 70, 40, 30 ) );
+            $aligns = array( 'R', 'C', 'L', 'L', 'R' );
+            $pdf->SetAligns( $aligns );
+            $pdf->SetFillColor( 224, 235, 255 );
+    
+            $invoices =  DB::select( DB::raw( "SELECT students.`student_id`,`student_no`,`first_name`,`middle_name`,
+            `surname`,`cur_status`,comment, SUM(amount) AS invoice FROM `students`
+            JOIN `fees_invoice` ON `students`.`student_id` = `fees_invoice`.`student_id`
+            where fees_invoice.deleted_at is null and students.deleted_at is null
+            AND students.course_id = $id
+            GROUP BY student_id  HAVING invoice > 0" ) );
+    
+            $payments =  DB::select( DB::raw( "SELECT `student_id`, SUM(amount) AS paid FROM `fee_payments`
+            where fee_payments.deleted_at is null GROUP BY student_id  " ) );
+    
+            $totalbalance = 0 ;
+            foreach ( $invoices as $invoice ) {
+    
+                $paid = 0 ;
+                $bal = 0 ;
+                $id =  $invoice->student_id;
+                foreach ( $payments as $payment ) {
+    
+                    if ( $payment->student_id == $id ) {
+                        $paid = $payment->paid;
+                    }
+                }
+    
+                $bal = $invoice ->invoice - $paid ;
+                $fill =  !$fill;
+                $type = '';
+    
+                
+                    $totalbalance += $invoice ->invoice - $paid;
+                    $pdf->Row( array(
+                        $counter,
+                        $invoice->student_no,
+                        $invoice->first_name.' '.$invoice->middle_name.' '. $invoice->surname,
+                        $invoice->cur_status.'/'.$invoice->comment,
+                        number_format( ( $invoice ->invoice - $paid ), 2 )
+                    ), $fill );
+    
+                    $counter++;
+                
+            }
+    
+            $pdf->Cell( 110, 7, 'Total Balance ', 1, 0, 'R', $fill );
+            $pdf->Cell( 70, 7, number_format( $totalbalance, 2 ), 1, 0, 'R', $fill );
+    
+            $pdf->Ln();
+    
+            $pdf->SetFillColor( 224, 235, 255 );
+            $pdf->setXY( $x, $y );
+            $pdf->Output( 'Students NO balance.pdf', 'I' );
+    
+            exit;
+        
+    }
     public function store( Request $request ) {
         //
     }

@@ -433,3 +433,5 @@ Route::get('smsspecificno','SmsController@smsspecificno');
 Route::post('smsspecificno/sendsms2','SmsController@sendspecific');
 
 Route::get('staff/{staff}/return/{issueID}','CatalogueController@returnItem');
+
+Route::post('printlclasslist','SchoolController@printclasslist');

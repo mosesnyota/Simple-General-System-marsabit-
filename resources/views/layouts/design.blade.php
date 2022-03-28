@@ -1098,6 +1098,24 @@ $('.accept-return').on('click', function (event) {
 });
 </script>
 
+ 
+<script>
+$('.printclassreport').on('click', function (event) {
+    event.preventDefault();
+    const url = $(this).attr('href');
+    swal({
+        title: 'Choose Course to print',
+        text: '',
+        icon: 'success',
+        buttons: ["Cancel", "Yes!"],
+    }).then(function(value) {
+        if (value) {
+            window.location.href = url;
+        }
+    });
+});
+</script>
+
 
 
 

@@ -17,14 +17,18 @@ $lastyear = 2020;
                     </div>
                     <div class="col-md-9">
                         <div class="float-right d-none d-md-block">
-                        <button type="button"  class="btn btn-warning btn-md  mr-1"  target="_blank"  data-toggle="modal" data-target="#modal-classlists" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Print Class List </b></button>
-                        
-                            <a href="{{URL::to('/')}}/students/old" class="btn btn-info btn-md"   role="button"><b class="fa fa-users"> OLD STUDENTS </b></a>
-                            <a href="{{URL::to('/')}}/academics" class="btn btn-warning btn-md"   role="button"><b class="fa fa-graduation-cap"> ACADEMICS </b></a>
+                        <a href="" class="btn btn-warning btn-md btn-rounded" data-toggle="modal" data-target="#modalLoginAvatar" class="mdi mdi-file-pdf"> Class List</a>
+
+
+                            <a href="{{URL::to('/')}}/students/old" class="btn btn-info btn-rounded btn-md"   role="button"><b class="fa fa-users"> OLD STUDENTS </b></a>
+                            <a href="{{URL::to('/')}}/academics" class="btn btn-warning btn-rounded btn-md"   role="button"><b class="fa fa-graduation-cap"> ACADEMICS </b></a>
                             @can('VIEW_SCHOOL_FEES')
-                            <a href="{{URL::to('/')}}/schoolfees" class="btn btn-info btn-md"   role="button"><b class="fas fa-dollar-sign">  FEES </b></a>
+                            <a href="{{URL::to('/')}}/schoolfees" class="btn btn-info btn-rounded btn-md"   role="button"><b class="fas fa-dollar-sign">  FEES </b></a>
                             @endcan
                         </div> 
+
+                       
+
                     </div>
                     <!-- end col -->
                 </div>
@@ -85,7 +89,7 @@ $lastyear = 2020;
                     </div>
                     <div>
                         
-                    <a href="{{URL::to('/')}}/feebalances" target = "_target" class="btn btn-warning btn-sm"   role="button"><b class="fas fa-print"> Print Balances </b></a>
+                    <a href="{{URL::to('/')}}/feebalances" target = "_target" class="btn btn-warning btn-sm"   role="button"><b class="fas fa-print"> Balances </b></a>
                     <a href="{{URL::to('/')}}/zeroBalances" target = "_target" class="btn btn-warning btn-sm"   role="button"><b class="fas fa-print"> No Balance </b></a>
                     
                     
@@ -183,4 +187,61 @@ $lastyear = 2020;
    <!-- end row -->
 </div><!-- container fluid -->
 </div> <!-- Page content Wrapper -->
+
+<!--Modal: Login with Avatar Form-->
+<div class="modal fade" id="modalLoginAvatar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog cascading-modal modal-avatar modal-md" role="document">
+    <!--Content-->
+    <div class="modal-content">
+
+      <!--Header-->
+      <div class="modal-header">
+                <h4 class="modal-title">Choose Course to Print Students List</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body text-center mb-1">
+
+      
+
+        <form class="form-horizontal" method="post" target="_blank" action="printlclasslist" enctype="multipart/form-data" >
+                  {{ csrf_field() }}
+
+                  <div class="form-group row">
+                    <label for="project_name" class="col-sm-2 col-form-label">Course: </label>
+                    <div class="col-sm-10">
+                           <select class="form-control select2" name="course_id" style="width: 100%;"  required>
+                                <option value="">----Select Course-----</option>
+                                @foreach ($courses as $course)
+                                  <option value="{{$course -> course_id}}">{{$course -> course_name}}</option>
+                                @endforeach
+                                
+                            </select>
+                    </div>
+
+
+                    <!-- /.card-body -->
+                    <div class="modal-footer text-center">
+                        <button type="submit" class="btn btn-primary">Print List</button>
+                      
+                    </div>
+
+        </form>
+
+      </div>
+
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!--Modal: Login with Avatar Form-->
+
+
+
+
+
+
 @endsection
