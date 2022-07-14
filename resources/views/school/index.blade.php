@@ -2,7 +2,7 @@
 @section('content')
 
 @php
-$lastyear = 2020;
+$lastyear = 2021;
 @endphp
 <div class="page-content-wrapper ">
 
@@ -25,10 +25,10 @@ $lastyear = 2020;
                             @can('VIEW_SCHOOL_FEES')
                             <a href="{{URL::to('/')}}/schoolfees" class="btn btn-info btn-rounded btn-md"   role="button"><b class="fas fa-dollar-sign">  FEES </b></a>
                             @endcan
+                            @can('VIEW_SCHOOL_FEES')
+                            <button type="button"  class="btn btn-primary btn-md float-right mr-1 btn-rounded"  target="_blank"  data-toggle="modal" data-target="#modal-report" data-backdrop="static" data-keyboard="false" href="#"> <b class="mdi mdi-file-pdf" aria-hidden="true"> Print Fee Invoices </b></button>
+                            @endcan
                         </div> 
-
-                       
-
                     </div>
                     <!-- end col -->
                 </div>
@@ -188,6 +188,72 @@ $lastyear = 2020;
 </div><!-- container fluid -->
 </div> <!-- Page content Wrapper -->
 
+
+
+
+
+
+
+
+
+<div class="modal fade bs-example-modal-lg" id="modal-report" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-info">
+                <h4 class="modal-title">PRINT FEE INVOICES</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form" method="post" action="bulkreports" enctype="multipart/form-data" >
+                    {{ csrf_field() }}
+                    <div class="box-body"> 
+                        
+
+                    <div class="form-group row">
+                        <label for="category_id" class="col-sm-2 col-form-label"> Term </label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" autocomplete="off" name="term" style="width: 100%;" required>
+                                <option value="">--SELECT TERM--</option>
+                                <option value="Term 1">Term 1</option>
+                                  <option value="Term 2">Term 2</option>
+                                  <option value="Term 3">Term 3</option>
+                                
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="paidto" class="col-sm-2 col-form-label"> Year </label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" autocomplete="off" name="year" style="width: 100%;" required>
+                                <option value="">--SELECT YEAR--</option>
+                                  <option value="2022">2022</option>
+                                  <option value="2021">2021</option>
+                                  <option value="2023">2023</option>
+                                  <option value="2023">2024</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">GET REPORT</button>
+                    </div>
+                </form>           
+            </div>
+  
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+
 <!--Modal: Login with Avatar Form-->
 <div class="modal fade" id="modalLoginAvatar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   aria-hidden="true">
@@ -238,8 +304,6 @@ $lastyear = 2020;
   </div>
 </div>
 <!--Modal: Login with Avatar Form-->
-
-
 
 
 

@@ -400,6 +400,8 @@ Route::get('/schoolfees/{student}/editfee/{id}/edit', 'SchoolFeeController@editF
 Route::post('/schoolfees/{student}/editfee/{invoice}/update', 'SchoolFeeController@updatefeeinvoice');
 Route::post('/schoolfees/{student_id}/viewinvoices/{year}/{term}/savenewfee', 'SchoolFeeController@savenewfee')->name('savenewfee');;
 
+Route::post('/bulkreports', 'SchoolFeeController@bulkreports');
+Route::get('/fees/printinvoices/{term}/{year}/print', 'SchoolFeeController@printAllInvoices');
 
 
 Route::post('/schoolfees/{student}/addfeeinvoice', 'SchoolFeeController@addfeeinvoice')->name('addfeeinvoice');;

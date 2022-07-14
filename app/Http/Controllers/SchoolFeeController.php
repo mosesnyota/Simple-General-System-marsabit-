@@ -264,6 +264,148 @@ class SchoolFeeController extends Controller {
 
     }
 
+    public function bulkreports(Request $request){
+        $inputs = $request->all();
+        $term =  $inputs['term'];
+        $year =  $inputs['year'];
+        return view('school.printreport',compact('inputs'));
+    }
+
+    public function printAllInvoices($term,$year){
+            
+
+            $invoicedStudents = DB::select( "SELECT `student_id` FROM `fees_invoice` WHERE `term` = 'Term 2' AND `inv_year` = '2022'");
+           
+            $pdf = new MyPDFPortrait();
+            $pdf-> SetWidths( 7 );
+           
+            foreach ( $invoicedStudents  as $student ) {
+
+                $student_id = $student->student_id;
+                $id = $student_id;
+            $PYS =  DB::select( "SELECT CONCAT(first_name,' ',middle_name,
+            '  Admn: ',student_no) AS studentname from students WHERE  student_id = '$student_id' " );
+    
+            $pt = null;
+            foreach ( $PYS  as $py ) {
+                $pt = $py;
+            }
+            $studentname = $pt->studentname;
+    
+            $payments =  DB::select( DB::raw( " SELECT `votehead`, fees_invoice.created_at as payment_date ,  `fee_invoice_id`,`term`,`inv_year`,`fees_invoice`.`amount`   FROM `fees_invoice`
+            JOIN `fees_voteheads` ON `fees_invoice`.`votehead_id` = `fees_voteheads`.`votehead_id` WHERE student_id = $student_id 
+            and term = '$term' and inv_year = '$year'" ) ); 
+    
+            $term = 0;
+            $year = 0;
+            $termyear = '';
+            foreach ( $payments  as $pd ) {
+                $term = $pd -> term;
+                $year = $pd -> inv_year;
+    
+            }
+            $termyear = $term.'  '.$year;
+            $voteheads  = FeeVotehead::all();
+    
+            $billed  = DB::select( DB::raw( " SELECT SUM( IFNULL(`amount`,0)) AS billed FROM students LEFT JOIN `fees_invoice`
+            ON students.`student_id` = fees_invoice.`student_id`  WHERE students.student_id = $id " ) );
+            $bill = 0 ;
+    
+            
+
+            foreach ( $billed as $bld ) {
+    
+                $bill = $bld-> billed;
+            }
+    
+            $paidld  = DB::select( DB::raw( " SELECT  SUM( IFNULL(`amount`,0)) AS paid FROM  
+            students LEFT JOIN `fee_payments`
+            ON students.`student_id` = fee_payments.`student_id` WHERE students.student_id = $id  AND fee_payments.deleted_at IS NULL" ) );
+            $paid = 0 ;
+    
+            foreach ( $paidld as $pdd ) {
+    
+                $paid = $pdd-> paid;
+            }
+    
+            $balance =  $bill  - $paid;
+    
+            
+            $pdf->AddPage();
+            $pdf->SetFont( 'Times', '', 11 );
+    
+            //Table with 20 rows and 4 columns
+            $pdf->SetX( 5 );
+            $pdf->SetFillColor( 237, 228, 226 );
+            $pdf->Ln( 7 );
+            $pdf-> Cell( 190, 10, 'FEE INVOICE '. $termyear . ' FOR : '.strtoupper( $studentname ).'        Printed On :'.   date( 'd-m-Y h:i:sa' ), 0, 0, 'C', 1, '' );
+            $pdf->Ln( 15 );
+            $pdf->SetX( 10 );
+            $pdf->SetFont( 'Times', '', 11 );
+    
+            //table header
+            $pdf->SetFillColor( 157, 245, 183 );
+            $pdf->setFont( 'times', '', '11' );
+    
+            $pdf->Cell( 105, 7, 'FEE STATEMENT', 1, 0, 'C', 1 );
+            $pdf->SetFillColor( 224, 235, 255 );
+            $pdf->Ln();
+            $pdf->Cell( 20, 7, '#', 1, 0, 'L', 1 );
+            $pdf->Cell( 85, 7, 'Votehead', 1, 0, 'C', 1 );
+            $pdf->Cell( 70, 7, 'Amount', 1, 0, 'C', 1 );
+    
+            $pdf->Ln();
+            $counter = 1;
+    
+            $y = $pdf->GetY();
+            $x = 10;
+            $fill = 0;
+    
+            $pdf->SetWidths( array( 20, 85, 70 ) );
+            $aligns = array( 'L', 'L', 'R' );
+            $pdf->SetAligns( $aligns );
+            $pdf->SetFillColor( 224, 235, 255 );
+    
+            $TOTALAMOUNT = 0 ;
+            foreach ( $payments as $payment ) {
+    
+                $fill =  !$fill;
+                $type = '';
+                $TOTALAMOUNT += $payment ->amount;
+                $pdf->Row( array(
+                    $counter,
+                    $payment->votehead,
+                    number_format( $payment ->amount, 2 )
+                ), $fill );
+    
+                $counter++;
+            }
+    
+            $pdf->Cell( 105, 7, 'Total for the term ', 1, 0, 'R', $fill );
+            $pdf->Cell( 70, 7, number_format( $TOTALAMOUNT, 2 ), 1, 0, 'R', $fill );
+    
+            $pdf->Ln();
+    
+            $pdf->Cell( 105, 7, 'Previous Balance or Overpayment', 1, 0, 'R', $fill );
+            $pdf->Cell( 70, 7, number_format( $balance - $TOTALAMOUNT  , 2 ), 1, 0, 'R', $fill );
+            $pdf->Ln();
+    
+            $pdf->Cell( 105, 7, 'BALANCE', 1, 0, 'R', $fill );
+            $pdf->Cell( 70, 7, number_format( $balance, 2 ), 1, 0, 'R', $fill );
+    
+            $pdf->SetFillColor( 224, 235, 255 );
+            $pdf->setXY( $x, $y );
+
+
+        }
+            $pdf->Output( 'Fee Invoices.pdf', 'I' );
+    
+            exit;
+    
+        }
+
+
+
     public function printStatement( $student_id, $year, $term ) {
         //schoolfees/6/viewinvoices/2021/Term%201/printstatement
         $id = $student_id;
@@ -278,7 +420,7 @@ class SchoolFeeController extends Controller {
 
         $payments =  DB::select( DB::raw( " SELECT `votehead`, fees_invoice.created_at as payment_date ,  `fee_invoice_id`,`term`,`inv_year`,`fees_invoice`.`amount`   FROM `fees_invoice`
         JOIN `fees_voteheads` ON `fees_invoice`.`votehead_id` = `fees_voteheads`.`votehead_id` WHERE student_id = $student_id 
-        and term = '$term' and inv_year = '$year'" ) );
+        and term = '$term' and inv_year = '$year'" ) ); 
 
         $term = 0;
         $year = 0;
@@ -369,11 +511,11 @@ class SchoolFeeController extends Controller {
 
         $pdf->Ln();
 
-        $pdf->Cell( 105, 7, '', 1, 0, 'R', $fill );
-        $pdf->Cell( 70, 7, '', 1, 0, 'R', $fill );
+        $pdf->Cell( 105, 7, 'Previous Balance or Overpayment', 1, 0, 'R', $fill );
+        $pdf->Cell( 70, 7, number_format( $balance - $TOTALAMOUNT  , 2 ), 1, 0, 'R', $fill );
         $pdf->Ln();
 
-        $pdf->Cell( 105, 7, 'Current Balance [ This includes previous balances/over payments', 1, 0, 'R', $fill );
+        $pdf->Cell( 105, 7, 'Current Fees Balance', 1, 0, 'R', $fill );
         $pdf->Cell( 70, 7, number_format( $balance, 2 ), 1, 0, 'R', $fill );
 
         $pdf->SetFillColor( 224, 235, 255 );
@@ -383,6 +525,14 @@ class SchoolFeeController extends Controller {
         exit;
 
     }
+
+
+
+
+
+
+
+
 
     public function printfeestatement( $id ) {
         $PYS =  DB::select( "SELECT CONCAT(first_name,' ',middle_name,
@@ -451,7 +601,7 @@ class SchoolFeeController extends Controller {
         $pdf->SetFillColor( 157, 245, 183 );
         $pdf->setFont( 'times', '', '11' );
 
-        $pdf->Cell( 105, 7, 'FEE STATEMENT', 1, 0, 'C', 1 );
+        $pdf->Cell( 105, 7, 'FEE STATEMENT: '.$term." ".$year, 1, 0, 'C', 1 );
         $pdf->SetFillColor( 224, 235, 255 );
         $pdf->Ln();
         $pdf->Cell( 20, 7, '#', 1, 0, 'L', 1 );
