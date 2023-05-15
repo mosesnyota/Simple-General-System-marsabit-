@@ -25,13 +25,14 @@
         <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css">
         <link href="{{asset('modalheader.css')}}" rel="stylesheet" type="text/css">
         
-        <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-        <script src="{{asset('sweetaleart/sweetalert.min.js')}}"></script>
+        
         <link href="{{asset('sweetaleart/sweetalert.min.css')}}" rel="stylesheet" type="text/css">
          <!-- Plugins css -->
          <link href="{{asset('plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')}}" rel="stylesheet">
          <link href="{{asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css')}}" rel="stylesheet">
          <link href="{{asset('plugins/bootstrap-touchspin/css/jquery.bootstrap-touchspin.min.css')}}" rel="stylesheet" />
+
+         <link href="{{asset('plugins/select2/css/select2.min.css')}}" rel="stylesheet" />
     
     <style>
         .form-group.required .control-label:after {
@@ -323,6 +324,11 @@ function getValues() {
         
         <!-- Plugins Init js -->
         <script src="{{asset('assets/pages/form-advanced.js')}}"></script>
+        <script src="{{asset('plugins/select2/js/select2.min.js')}}"></script> 
+         <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+        <script src="{{asset('sweetaleart/sweetalert.min.js')}}"></script>
+
+      
         
 
 <!-- Dropzone js -->
