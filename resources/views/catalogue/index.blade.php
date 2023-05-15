@@ -122,7 +122,7 @@
                                             <th>Barcode</th>
                                             <th >Asset Name </th>
                                             <th style="width: 10%">Copies</th>
-                                            <th style="width: 15%">Available</th>
+                                            
                                             <th style="width: 25%"></th>
                                            
                                         </tr>
@@ -137,7 +137,7 @@
                                                     <td data-target="asset_name">{{ $asset->asset_name }}</td>
                                                    
                                                     <td>{{ $asset->totalassets }}</td>
-                                                    <td>{{  $asset->issued }}</td>
+                                                    
                                                     
                                             
                                                     <td>

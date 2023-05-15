@@ -626,13 +626,9 @@ class CatalogueController extends Controller {
             ->get();
             $staff = $staffd->first();
 
-            $issuedAssets =  DB::select("SELECT catalogue.asset_id,issued_id, `asset_name`, barcode,`serial_no`,`staffid`,`issue_date`,`cur_status`
-            FROM  catalogue 
-            LEFT JOIN `asset_copy` ON catalogue.`asset_id`  = asset_copy.`asset_id` 
-            LEFT JOIN `issued_assets` ON `asset_copy`.`asset_copy_id` = `issued_assets`.`asset_copy_id`
-            WHERE catalogue.`deleted_at` IS NULL AND
-            asset_copy.`deleted_at` IS NULL
-            AND `staffid` = $staffid and cur_status = 'issued'");
+            $issuedAssets =  DB::select("SELECT catalogue.asset_id,issued_id, `asset_name`, barcode,`staffid`,`issue_date`,`cur_status`
+            FROM `catalogue` JOIN issued_assets  ON catalogue.`asset_id` = issued_assets.`asset_id`
+            WHERE catalogue.`deleted_at` IS NULL  AND `staffid` = $staffid AND cur_status = 'issued'");
             return view('catalogue.viewsissuedassetstostaff', compact('staff','issuedAssets'));
     }
 

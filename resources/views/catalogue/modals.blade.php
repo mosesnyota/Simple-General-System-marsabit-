@@ -53,7 +53,7 @@
                           @endforeach
                           
                       </select>
-                  </div>
+                  </div> 
               </div>
                   
 
@@ -73,6 +73,8 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
+
+  
 
 
 

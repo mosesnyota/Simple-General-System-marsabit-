@@ -637,6 +637,47 @@ $( document ).ready(function() {
       theme: 'bootstrap4'
     })
 
+
+    $('#mySelect2').select2({
+        dropdownParent: $('#modal-addasset')
+    })
+
+$('#modal-addasset .select2').each(function() {  
+   var $p = $(this).parent(); 
+   $(this).select2({  
+     dropdownParent: $p  
+   });  
+});
+
+
+
+$('#modal-receive .select2').each(function() {  
+   var $p = $(this).parent(); 
+   $(this).select2({  
+     dropdownParent: $p  
+   });  
+});
+
+
+$('#modal-issue .select2').each(function() {  
+   var $p = $(this).parent(); 
+   $(this).select2({  
+     dropdownParent: $p  
+   });  
+});
+
+
+
+$('#modal-addcopy .select2').each(function() {  
+   var $p = $(this).parent(); 
+   $(this).select2({  
+     dropdownParent: $p  
+   });  
+});
+
+
+
+
     //Datemask dd/mm/yyyy
     $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
     //Datemask2 mm/dd/yyyy

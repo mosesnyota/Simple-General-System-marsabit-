@@ -1,3 +1,5 @@
 2023-05-15 11:48:56 info: tempDirectory:c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.4\temp
 2023-05-15 11:48:56 info: Extraction complete for source: c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.4\resources\embold-scanner-archive.zip, destination: c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.4\temp
 2023-05-15 11:48:56 info: Congratulations, your extension "Embold" is now active!
+2023-05-15 11:55:33 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/cY0Ye8xwyoCCr9NJLhwxfMBKMDolnSfGKnzyCanS
+2023-05-15 11:55:33 error: SQLITE_ERROR: no such table: issues
