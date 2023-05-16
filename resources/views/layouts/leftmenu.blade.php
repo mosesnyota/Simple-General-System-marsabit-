@@ -34,15 +34,21 @@
                         <li><a href="{{URL::to('/')}}/courses"><b class="fa fa-chart-pie" aria-hidden="true"> Manage Courses </b></a></li>
                         <li><a href="{{URL::to('/')}}/students"><b class="fa fa-users" aria-hidden="true"> Manage Students </b></a></li>
                         <li><a href="{{URL::to('/')}}/students/create"><b class="fa fa-user" aria-hidden="true"> Add New Student </b></a></li>
-                        <li><a href="{{URL::to('/')}}/students"><b class="fa fa-users" aria-hidden="true"> Print Class Lists </b></a></li>
                         <li><a href="{{URL::to('/')}}/students/old"><b class="fa fa-users" aria-hidden="true"> Old Students </b></a></li>
 
+                    </ul>
+                </li> @endcan
+
+
+                @can('VIEW_SCHOOL')
+                <li class="has_sub">
+                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-view-thumb"></i><span> School Fees </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="list-unstyled">
+                        <li><a href="{{URL::to('/')}}/schoolfees"><b class="fa fa-chart-line" aria-hidden="true">  Fees Dashboard</b></a></li>
                         <li><a href="{{URL::to('/')}}/feevotehead"><b class="fa fa-print" aria-hidden="true"> Fee Voteheads </b></a></li>
-                        <li><a href="{{URL::to('/')}}/schoolfees"><b class="fa fa-chart-line" aria-hidden="true"> School Fees </b></a></li>
                         <li><a href="{{URL::to('/')}}/feereceipts"><b class="fa fa-print" aria-hidden="true"> View Receipts </b></a></li>
                         <li><a href="{{URL::to('/')}}/createfeeinvoice"><b class="fa fa-chart-bar" aria-hidden="true">Create Fee Invoices </b></a></li>
-                        <li><a href="{{URL::to('/')}}/feebalances"><b class="fa fa-chart-line" aria-hidden="true">Fee Balances </b></a></li>
-                        <li><a href="{{URL::to('/')}}/school/feereports"><b class="fa fa-chart-pie" aria-hidden="true">Fee Balance Reports </b></a></li>
+                        <li><a href="{{URL::to('/')}}/school/feereports"><b class="fa fa-chart-pie" aria-hidden="true">Fee Balances Reports </b></a></li>
                     </ul>
                 </li> @endcan
 
