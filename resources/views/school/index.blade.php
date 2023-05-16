@@ -17,11 +17,7 @@ $lastyear = 2021;
                     </div>
                     <div class="col-md-9">
                         <div class="float-right d-none d-md-block">
-                        <a href="" class="btn btn-warning btn-md btn-rounded" data-toggle="modal" data-target="#modalLoginAvatar" class="mdi mdi-file-pdf"> Class List</a>
-
-
                             <a href="{{URL::to('/')}}/students/old" class="btn btn-info btn-rounded btn-md"   role="button"><b class="fa fa-users"> OLD STUDENTS </b></a>
-                            <a href="{{URL::to('/')}}/academics" class="btn btn-warning btn-rounded btn-md"   role="button"><b class="fa fa-graduation-cap"> ACADEMICS </b></a>
                             @can('VIEW_SCHOOL_FEES')
                             <a href="{{URL::to('/')}}/schoolfees" class="btn btn-info btn-rounded btn-md"   role="button"><b class="fas fa-dollar-sign">  FEES </b></a>
                             @endcan

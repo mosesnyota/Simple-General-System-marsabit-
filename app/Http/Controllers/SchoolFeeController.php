@@ -42,6 +42,346 @@ class SchoolFeeController extends Controller {
 
     }
 
+
+    public function feereports(){
+        
+        $courses = Course::all();
+        return view( 'fee.fee_bal_reports',compact( 'courses' ));
+    }
+
+    public function getstudentfeeslist(Request $request){
+        $input = $request->all();
+        return view( 'fee.openreport', compact( 'input') );
+
+    }
+
+
+
+   
+    public function getFeeBalNew($course_id,$students_type,$gender){
+       
+        $invoices  = null;
+
+        $filter_course = '';
+        $filter_students_type= $students_type;
+        $filter_gender = $gender;
+
+        if( $course_id  == 'All'){
+            $filter_course = 'All';
+        }else{
+
+            $filter_course =  Course::find($course_id)->course_name;
+
+        }
+
+
+
+
+
+        if( $course_id  == 'All'){//get for all courses
+
+            if( $students_type == 'All' &&  $gender == 'All'){
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type == 'All' &&  $gender == 'Male' ){
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Male'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type == 'All' &&  $gender == 'Female' ){
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Female'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type == 'Active' &&  $gender == 'All' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null  AND A.cur_status = 'Active'
+                GROUP BY A.student_id" ) );
+
+            }
+            else if( $students_type == 'Active' &&  $gender == 'Male' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Male' AND A.cur_status = 'Active'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type == 'Active' &&  $gender == 'Female' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Female' AND A.cur_status = 'Active'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type != 'Active' &&  $gender == 'All' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.cur_status != 'Active'
+                GROUP BY A.student_id" ) );
+
+            }
+            else if( $students_type != 'Active' &&  $gender == 'Male' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Male' AND A.cur_status != 'Active'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type != 'Active' &&  $gender == 'Female' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Female' AND A.cur_status != 'Active'
+                GROUP BY A.student_id" ) );
+
+            }
+
+
+            
+        }else{//get for specific course
+
+
+            if( $students_type == 'All' &&  $gender == 'All'){
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND B.course_id = '$course_id'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type == 'All' &&  $gender == 'Male' ){
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Male' AND B.course_id = '$course_id'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type == 'All' &&  $gender == 'Female' ){
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Female' AND B.course_id = '$course_id'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type == 'Active' &&  $gender == 'All' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null  AND A.cur_status = 'Active' AND B.course_id = '$course_id'
+                GROUP BY A.student_id" ) );
+
+            }
+            
+            else if( $students_type == 'Active' &&  $gender == 'Male' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Male' AND A.cur_status = 'Active' AND B.course_id = '$course_id'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type == 'Active' &&  $gender == 'Female' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Female' AND A.cur_status = 'Active' AND B.course_id = '$course_id'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type != 'Active' &&  $gender == 'All' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null  AND A.cur_status != 'Active' AND B.course_id = '$course_id'
+                GROUP BY A.student_id" ) );
+
+            }
+            else if( $students_type != 'Active' &&  $gender == 'Male' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Male' AND A.cur_status != 'Active' AND B.course_id = '$course_id'
+                GROUP BY A.student_id" ) );
+
+            }else if( $students_type != 'Active' &&  $gender == 'Female' ){
+
+                $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE A.deleted_at is null AND A.gender = 'Female' AND A.cur_status != 'Active' AND B.course_id = '$course_id'
+                GROUP BY A.student_id" ) );
+
+            }
+
+
+
+
+
+        }
+
+
+
+
+
+        $pdf = new MyPDFPortrait();
+        $pdf-> SetWidths( 7 );
+        $pdf->AddPage();
+        $pdf->SetFont( 'Times', '', 11 );
+
+        //Table with 20 rows and 4 columns
+        $pdf->SetX( 5 );
+        $pdf->SetFillColor( 237, 228, 226 );
+        $pdf->Ln( 7 );
+        $pdf-> Cell( 190, 10, ' FEE BALANCES  '.   date( 'd-m-Y h:i:sa' ), 0, 0, 'C', 1, '' );
+        $pdf->Ln( 15 );
+        $pdf->SetX( 10 );
+
+        $pdf->SetFont( 'Times', '', 11 );
+
+        //table header
+        $pdf->SetFillColor( 157, 245, 183 );
+        $pdf->setFont( 'times', '', '11' );
+
+        $pdf->Cell( 180, 7, 'FILTERS SET :: COURSE:  '.$filter_course ." ::   CATEGORY :  ".$filter_students_type . "   GENDER:  ".$filter_gender, 1, 0, 'C', 1 );
+        $pdf->SetFillColor( 224, 235, 255 );
+        $pdf->Ln();
+        $pdf->Cell( 10, 7, '#', 1, 0, 'L', 1 );
+        $pdf->Cell( 30, 7, 'Admn', 1, 0, 'C', 1 );
+        $pdf->Cell( 70, 7, 'Name', 1, 0, 'C', 1 );
+        $pdf->Cell( 50, 7, 'Course', 1, 0, 'C', 1 );
+        $pdf->Cell( 20, 7, 'Balance', 1, 0, 'C', 1 );
+
+        $pdf->Ln();
+        $counter = 1;
+
+        $y = $pdf->GetY();
+        $x = 10;
+        $fill = 0;
+
+        $pdf->SetWidths( array( 10, 30, 70, 50, 20 ) );
+        $aligns = array( 'R', 'C', 'L', 'L', 'R' );
+        $pdf->SetAligns( $aligns );
+        $pdf->SetFillColor( 224, 235, 255 );
+
+       
+
+        $totalbalance = 0 ;
+        foreach ( $invoices as $invoice ) {
+
+            $paid = 0 ;
+            $bal = 0 ;
+            $id =  $invoice->student_id;
+            
+
+            $bal = $invoice ->balance;
+            $fill =  !$fill;
+            $type = '';
+
+            $course = $invoice->department;
+            if($invoice->department == 'MOTOR VEHICLE MECHANIC'){
+                $course = 'MVM';
+            }
+
+            if ( $bal > 0 ) {
+                $totalbalance += $invoice->balance;
+                $pdf->Row( array(
+                    $counter,
+                    $invoice->student_no,
+                    strtoupper($invoice->first_name.' '.$invoice->middle_name.' '. $invoice->surname),
+                    $course,
+                    number_format( ( $invoice ->balance ), 2 )
+                ), $fill );
+
+                $counter++;
+            }
+        }
+
+        $pdf->Cell( 110, 7, 'Total Balance ', 1, 0, 'R', $fill );
+        $pdf->Cell( 70, 7, number_format( $totalbalance, 2 ), 1, 0, 'R', $fill );
+
+        $pdf->Ln();
+
+        $pdf->SetFillColor( 224, 235, 255 );
+        $pdf->setXY( $x, $y );
+        $pdf->Output( 'Students Balances.pdf', 'I' );
+
+        exit;
+
+
+
+
+
+        
+
+
+    }
+
+
+
+
+    
+
+
+    public function feevotehead(){
+        $voteheads = FeeVotehead::all();
+        return view( 'fee.voteheads', compact( 'voteheads' ) );
+    }
+
     public function feebalances() {
 
         $pdf = new MyPDFPortrait();

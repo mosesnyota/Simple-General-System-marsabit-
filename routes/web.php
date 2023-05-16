@@ -259,6 +259,12 @@ Route::post('/feevotehead/store','SchoolFeeController@saveVotehead');
 Route::get('/feevotehead/{votehead}/edit','SchoolFeeController@editvotehead');
 Route::get('/feevotehead/{votehead}/destroy','SchoolFeeController@destroyvotehead');
 Route::post('/feevotehead/{votehead}/update','SchoolFeeController@updatevotehead');
+Route::get('/feevotehead','SchoolFeeController@feevotehead');
+Route::post('/school/getstudentfeeslist','SchoolFeeController@getstudentfeeslist');
+
+Route::get('/school/getstudentfeeslist1','SchoolFeeController@getstudentfeeslist1');
+Route::get('school/report/{course}/{studenttype}/{gender}/print','SchoolFeeController@getFeeBalNew');
+
 
 
 Route::get('/schoolfees/{print}/printfeestatement','SchoolFeeController@printfeestatement');
@@ -437,3 +443,6 @@ Route::post('smsspecificno/sendsms2','SmsController@sendspecific');
 Route::get('staff/{staff}/return/{issueID}','CatalogueController@returnItem');
 
 Route::post('printlclasslist','SchoolController@printclasslist');
+
+
+Route::get('school/feereports','SchoolFeeController@feereports');
