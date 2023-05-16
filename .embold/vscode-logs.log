@@ -3,3 +3,15 @@
 2023-05-15 11:48:56 info: Congratulations, your extension "Embold" is now active!
 2023-05-15 11:55:33 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/cY0Ye8xwyoCCr9NJLhwxfMBKMDolnSfGKnzyCanS
 2023-05-15 11:55:33 error: SQLITE_ERROR: no such table: issues
+2023-05-15 11:55:36 info: file:///c%3A/wamp64/www/marsabit/.git/index.lock
+2023-05-15 11:55:36 error: SQLITE_ERROR: no such table: issues
+2023-05-15 11:55:37 info: file:///c%3A/wamp64/www/marsabit/.git/index.lock
+2023-05-15 11:55:37 error: SQLITE_ERROR: no such table: issues
+2023-05-15 11:57:36 info: file:///c%3A/wamp64/www/marsabit/storage/framework/cache/data/85/5f/855f92484c8c414d36c1b25cb24876e30229cbbf
+2023-05-15 11:57:36 error: SQLITE_ERROR: no such table: issues
+2023-05-15 13:11:05 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/Vhi3bF04ldRS6bKohSERprsIDtg6RiZGcYTDDmuC
+2023-05-15 13:11:05 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/WEsDp2zVYdCY0lGJMIcc5fBaMx6LsUrnOGKYbbFP
+2023-05-15 13:11:05 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/hd2i8FugemVlZzjvM2imjzzZzHNAxHTe2UJdxfst
+2023-05-15 13:11:05 error: SQLITE_ERROR: no such table: issues
+2023-05-15 13:11:05 error: SQLITE_ERROR: no such table: issues
+2023-05-15 13:11:05 error: SQLITE_ERROR: no such table: issues
