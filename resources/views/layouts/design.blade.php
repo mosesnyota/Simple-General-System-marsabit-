@@ -1107,7 +1107,44 @@ $('.remove-confirm').on('click', function (event) {
 });
 
 
+
+
+
+$('.delinksponsor').on('click', function (event) {
+    event.preventDefault();
+    const url = $(this).attr('href');
+    swal({
+        title: 'Remove Sponsorship?',
+        text: 'You are about to delete the sponsorship. The student record will remain without the sponsor',
+        icon: 'warning',
+        buttons: ["Cancel", "Yes!"],
+    }).then(function(value) {
+        if (value) {
+            window.location.href = url;
+        }
+    });
+});
+
+
+$('.select-confirm').on('click', function (event) {
+    event.preventDefault();
+    const url = $(this).attr('href');
+    swal({
+        title: 'SELECT SPONSOR',
+        text: 'You have selected to assign this sponsor to the student',
+        icon: 'success',
+        buttons: ["Cancel", "Yes!"],
+    }).then(function(value) {
+        if (value) {
+            window.location.href = url;
+        }
+    });
+});
+
+
+
 </script>
+
 
 
 <script>
@@ -1441,7 +1478,16 @@ function($) {
 </script>
 
 
+<script>
+    // Get the current URL
+    var currentUrl = window.location.href;
 
+    // Check if the current URL starts with '/sponsors'
+    if (currentUrl.startsWith('{{ URL::to('/') }}/sponsors')) {
+        // Expand the 'SPONSORSHIP' section by default
+        document.getElementById('sponsorship-menu').style.display = 'block';
+    }
+</script>
 
     </body>
 </html>

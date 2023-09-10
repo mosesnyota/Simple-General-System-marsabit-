@@ -29,6 +29,11 @@ class InvoicesController extends Controller
 
     public function index()
     {
+
+        $currentRoute = request()->route()->getName(); 
+
+        
+
         $invoice_details = [];
         $currDate = date("Y");
         $selectd =  DB::select("SELECT SUM(unit_cost * quantity) AS income 
@@ -123,6 +128,9 @@ class InvoicesController extends Controller
         $invoice_details['incomeLASTYEAR'] = $incomeLASTYEAR;
 
         
+        if($currentRoute == 'unpaid_invoices'){
+
+        
        $invoices  =  DB::table('invoices')
         ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
         ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
@@ -130,10 +138,26 @@ class InvoicesController extends Controller
         ->select(DB::raw('customers.*,invoices.*,course_name as department,SUM(unit_cost * quantity) AS amount'))
         ->where('invoices.deleted_at', '=', NULL)
         ->where('invoice_details.deleted_at', '=', NULL)
+        ->where('invoices.cur_status', '!=', 'Paid')
         ->groupBy('invoice_id')
         ->orderBy('cur_status','desc')
         ->orderBy('invoice_date','DESC')
         ->get();
+
+    }else{
+        $invoices  =  DB::table('invoices')
+        ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
+        ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
+        ->leftjoin('courses', 'invoices.course_id','=','courses.course_id')
+        ->select(DB::raw('customers.*,invoices.*,course_name as department,SUM(unit_cost * quantity) AS amount'))
+        ->where('invoices.deleted_at', '=', NULL)
+        ->where('invoice_details.deleted_at', '=', NULL)
+        ->where('invoices.cur_status', '=', 'Paid')
+        ->groupBy('invoice_id')
+        ->orderBy('cur_status','desc')
+        ->orderBy('invoice_date','DESC')
+        ->get();
+    }
 
 
  
@@ -146,12 +170,15 @@ class InvoicesController extends Controller
                 foreach($paymentsD as $pyd){
                     $paidVals[$pyd->invoice_id] = $pyd->paid;
                     
-                }
+                } 
 
 
         return view('invoices.index',compact('invoice_details','invoices','paidVals'));
     }
 
+
+
+   
 
     public function unpaidinvoices(){
         

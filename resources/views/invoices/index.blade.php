@@ -174,7 +174,7 @@
                       <tbody>
                       <?php $counter = 1 ; ?>
                       @foreach ($invoices as $invoice)
-                      <?php $percentused = 0; 
+                      <?php $percentused = 0;  
                      
                       $paid = 0 ;
                         if(array_key_exists($invoice->invoice_id, $paidVals)){

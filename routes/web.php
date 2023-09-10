@@ -36,19 +36,27 @@ Route::get('/staff/destroy/{staff}','StaffsController@destroy');
 Route::get('/staff/{staff}/view','StaffsController@show');
 
 
-
-
 Route::get('/sponsors','SponsorsController@index');
 Route::post('/sponsors/store','SponsorsController@store');
-Route::get('/editsponsor/{sponsor}','SponsorsController@edit');
-Route::post('/editsponsor/update/{sponsor}','SponsorsController@update');
-Route::get('/editsponsor/destroy/{sponsor}','SponsorsController@destroy');
+Route::get('/sponsors/editsponsor/{sponsor}','SponsorsController@edit');
+Route::post('/sponsors/editsponsor/update/{sponsor}','SponsorsController@update');
+Route::get('/sponsors/editsponsor/destroy/{sponsor}','SponsorsController@destroy');
 
-Route::get('/viewsponsor/{sponsor}/view','SponsorsController@show');
-Route::get('/viewsponsor/viewfundings/{sponsor}/view','SponsorsController@showfundings');
-Route::get('/viewsponsor/viewprojects/{sponsor}/view','SponsorsController@showprojects');
-Route::get('/viewsponsor/printsponsorprojects/{sponsor}/print','SponsorsController@printprojects');
-Route::get('/viewsponsor/printsponsorfundings/{sponsor}/print','SponsorsController@printfunds');
+Route::get('/sponsors/viewsponsor/{sponsor}/view','SponsorsController@show');
+Route::get('/sponsors/viewsponsor/viewfundings/{sponsor}/view','SponsorsController@showfundings');
+Route::get('/sponsors/viewsponsor/viewprojects/{sponsor}/view','SponsorsController@showprojects');
+Route::get('/sponsors/viewsponsor/printsponsorprojects/{sponsor}/print','SponsorsController@printprojects');
+Route::get('/sponsors/viewsponsor/printsponsorfundings/{sponsor}/print','SponsorsController@printfunds');
+Route::get('/sponsors/assignsponsor','SponsorsController@assignsponsor')->name('assignsponsor');
+Route::get('/sponsors/assignsponsor/{student_id}/assign','SponsorsController@student_to_sponsor');
+Route::get('/sponsors/assignsponsor/{student}/{sponsor}/selectsponsor','SponsorsController@selectedsponsor');
+Route::get('/sponsors/sponsorshipreports','SponsorsController@sponsorshipreports'); 
+Route::post('sponsors/assignsponsor/{student}/savesponsorship','SponsorsController@savesponsorship');
+
+
+Route::post('/sponsors/getsponsoredstudent','SponsorsController@opensponsorshipreport'); 
+Route::get('/sponsors/openreport/{type}','SponsorsController@getsponsoredstudent'); 
+
 
 
 
@@ -59,7 +67,6 @@ Route::post('/editproject/saveupdatedproject/{project}','ProjectsController@upda
 Route::get('/viewproject/editproject/{project}/edit','ProjectsController@edit');
 Route::get('/newproject','ProjectsController@create');
 Route::get('/viewproject/{project}','ProjectsController@show');
-
 Route::get('/viewproject/editdisbursment/{project}','DisbursmentController@edit');
 Route::post('/viewproject/editdisbursment/saveediteddisbursement/{project}','DisbursmentController@update');
 
@@ -222,8 +229,11 @@ Route::get('/customers/{customer}/view','CustomersController@show');
 Route::get('/customers/{customer}/viewpayments','CustomersController@viewpayments');
 Route::get('/customers/{customer}/viewinvoices','CustomersController@viewinvoices');
 
-Route::get('/production','InvoicesController@index'); 
+Route::get('/production','InvoicesController@index')->name('unpaid_invoices'); 
+Route::get('/production/all','InvoicesController@index')->name('allinvoices'); 
 Route::get('/unpaidinvoices','InvoicesController@unpaidinvoices'); 
+
+
 
 Route::get('/invoices','InvoicesController@invoice');
 Route::get('/invoice','InvoicesController@newinvoice');

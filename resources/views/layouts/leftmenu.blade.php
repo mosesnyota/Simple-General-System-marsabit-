@@ -20,14 +20,14 @@
                     <a href="{{URL::to('/')}}" class="waves-effect">
                         <i class="dripicons-home"></i>
                         
-                        <b> Dashboard </b>
+                        <B> DASHBOARD </B>
                     </a>
                 </li>
 
 
                 @can('VIEW_SCHOOL')
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-view-thumb"></i><span> School </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-graduation-cap"></i><span> <B>  SCHOOL </B></span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/school"><b class="fas fa-school" aria-hidden="true"> School Dashboard </b></a></li>
@@ -42,7 +42,7 @@
 
                 @can('VIEW_SCHOOL')
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-view-thumb"></i><span> School Fees </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-school"></i><span><B>  SCHOOL FEES </B></span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         <li><a href="{{URL::to('/')}}/schoolfees"><b class="fa fa-chart-line" aria-hidden="true">  Fees Dashboard</b></a></li>
                         <li><a href="{{URL::to('/')}}/feevotehead"><b class="fa fa-print" aria-hidden="true"> Fee Voteheads </b></a></li>
@@ -52,9 +52,29 @@
                     </ul>
                 </li> @endcan
 
+                @can('VIEW_SCHOOL')
+               
+
+                <li class="has_sub">
+                    <a href="javascript:void(0);" class="waves-effect">
+                        <i class="fa fa-users"></i><span><B>  SPONSORSHIP </B></span>
+                        <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span>
+                    </a>
+                    <ul class="list-unstyled" id="sponsorship-menu">
+                        <li><a href="{{ URL::to('/') }}/sponsors"><b class="fa fa-chart-line" aria-hidden="true">  List of Sponsors</b></a></li>
+                        <li><a href="{{ URL::to('/') }}/sponsors/assignsponsor"><b class="fa fa-print" aria-hidden="true"> Student to Sponsors </b></a></li>
+                        <li><a href="{{ URL::to('/') }}/sponsors/sponsorshipreports"><b class="fa fa-print" aria-hidden="true"> Sponsored Students List </b></a></li>
+                    </ul>
+                </li>
+                
+                
+                
+                @endcan
+
            
 
-                @can('VIEW_ASSETS')<li class="has_sub">
+                @can('VIEW_ASSETS')
+                <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-view-thumb"></i><span> Catalogue </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                     <li><a href="{{URL::to('/')}}/locations"><b class="fa fa-chart-line" aria-hidden="true"> Manage Stores </b></a></li>
@@ -62,7 +82,8 @@
                     <a href="{{URL::to('/')}}/catalogcategories" class="fa fa-chart-line"   ><b class="dripicons-view-thumb"> ASSET CATEGORY </b></a>
                   
                     </ul>
-                </li> @endcan  
+                </li> 
+                @endcan  
 
                 @can('VIEW_EXPENSES')
                 <li class="has_sub">
@@ -80,19 +101,21 @@
 
 
 
-                @can('VIEW_PRODUCTION')<li class="has_sub">
+                @can('VIEW_PRODUCTION')
+                <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-money-check-alt"  style="color:orange"></i> <span style="color:orange"> Production </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
-                        <li><a href="{{URL::to('/')}}/production"><b class="fas fa-money-check-alt" aria-hidden="true"> Manage Invoices </b></a></li>
+                        <li><a href="{{URL::to('/')}}/production"><b class="fas fa-money-check-alt" aria-hidden="true"> Unpaid Invoices </b></a></li>
+                        <li><a href="{{URL::to('/')}}/production/all"><b class="fas fa-money-check-alt" aria-hidden="true"> Paid Invoices </b></a></li>
                         <li><a href="{{URL::to('/')}}/quotations"><b class="fas fa-money-check-alt" aria-hidden="true"> Manage Quotations </b></a></li>
 
                     </ul>
                 </li>
-                @endcan
+                @endcan 
 
                 @can('VIEW_SCHOOL')
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-sms" style="color:green"></i><span style="color:green"> SMS Comm </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-sms" style="color:green"></i><span style="color:green"> <B> SMS COMM </B> </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
 
                         <li><a href="{{URL::to('/')}}/smscommunication"><b class="fa fa-sms" style="color:green" aria-hidden="true"> Send SMS </b></a></li>
@@ -103,30 +126,36 @@
 
 
 
-                @can('VIEW_STAFF')<li class="has_sub">
+                @can('VIEW_STAFF')
+                <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-user"></i> <span> Staff </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/staff"> <b class="fa fa-users" > Manage Staff </b></a></li>
                         <li><a href="{{URL::to('/')}}/staffleavedays"> <b class="fa fa-users" > Staff Leave Days </b></a></li>
                     </ul>
-                </li> @endcan
+                </li> 
+                @endcan
 
-                @can('VIEW_SUPPLIERS')<li class="has_sub">
+                @can('VIEW_SUPPLIERS')
+                <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-user"></i> <span> Suppliers </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/suppliers"> <b class="fa fa-users" > Manage Suppliers </b></a></li>
                     </ul>
-                </li> @endcan
+                </li> 
+                @endcan
 
-                @can('VIEW CUSTOMERS')<li class="has_sub">
+                @can('VIEW CUSTOMERS')
+                <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-user"></i> <span> Customers </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/customers"> <b class="fa fa-users" > Manage Customers </b></a></li>
                     </ul>
-                </li> @endcan
+                </li> 
+                @endcan
 
 
                

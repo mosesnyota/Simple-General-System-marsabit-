@@ -2,7 +2,8 @@
 @section('content')
 
 @php
-$lastyear = 2021;
+$currentYear = date("Y");
+$lastyear = $currentYear - 1 ;
 @endphp
 <div class="page-content-wrapper ">
 
@@ -16,9 +17,7 @@ $lastyear = 2021;
                                
                     </div>
                     <div class="col-md-9">
-                        <div class="float-right d-none d-md-block">
-                            <a href="{{URL::to('/')}}/students/old" class="btn btn-info btn-rounded btn-md"   role="button"><b class="fa fa-users"> OLD STUDENTS </b></a>
-                        </div> 
+                        
                     </div>
                     <!-- end col -->
                 </div>

@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Sponsor;
 use DB;
+use App\Student;
+use App\Course;
 use App\MyPDF;
+use App\Sponsorship;
+
+use App\ClassListPDF;
 
 class SponsorsController extends Controller
 {
@@ -44,8 +49,8 @@ class SponsorsController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $date = strtotime($input['startdate']); 
-        $input['startdate']  =  date('Y-m-d', $date);
+        $date = date('Y-m-d');
+        $input['startdate']  =  date('Y-m-d');
         Sponsor::create($input);
         return back()->withSuccessMessage('Successfully Added');
     }
@@ -194,24 +199,24 @@ class SponsorsController extends Controller
 
      
         //table header
-$pdf->SetFillColor(157, 245, 183);
-$pdf->setFont("times", "", "11");
+        $pdf->SetFillColor(157, 245, 183);
+        $pdf->setFont("times", "", "11");
 
-$pdf->Ln();
-$pdf->Cell(105, 7, "RECEIVED FUNDS", 1, 0, "C", 1);
-$pdf->SetFillColor(224, 235, 255);
-$pdf->Ln();
-$pdf->Cell(20, 7, "#", 1, 0, "L", 1);
-$pdf->Cell(65, 7, "Date", 1, 0, "C", 1);
-$pdf->Cell(50, 7, "Currency", 1, 0, "C", 1);
-$pdf->Cell(50, 7, "Amount", 1, 0, "C", 1);
-$pdf->Cell(40, 7, "Rate", 1, 0, "C", 1);
-$pdf->Cell(40, 7, "Amount [Local Cur]", 1, 0, "C", 1);
-$pdf->Ln();
-$counter = 1; 
-$y = $pdf->GetY();
-$x = 10;
-$fill = 0;
+        $pdf->Ln();
+        $pdf->Cell(105, 7, "RECEIVED FUNDS", 1, 0, "C", 1);
+        $pdf->SetFillColor(224, 235, 255);
+        $pdf->Ln();
+        $pdf->Cell(20, 7, "#", 1, 0, "L", 1);
+        $pdf->Cell(65, 7, "Date", 1, 0, "C", 1);
+        $pdf->Cell(50, 7, "Currency", 1, 0, "C", 1);
+        $pdf->Cell(50, 7, "Amount", 1, 0, "C", 1);
+        $pdf->Cell(40, 7, "Rate", 1, 0, "C", 1);
+        $pdf->Cell(40, 7, "Amount [Local Cur]", 1, 0, "C", 1);
+        $pdf->Ln();
+        $counter = 1; 
+        $y = $pdf->GetY();
+        $x = 10;
+        $fill = 0;
 
 foreach ($fundings as $funding){ 
     
@@ -376,10 +381,7 @@ exit;
         $sponsor ->address = $input['address'];
         
         $sponsor->save();
-        return redirect()->action(
-            'SponsorsController@index'
-        );
-
+        return redirect()->action('SponsorsController@index');
     }
 
     /**
@@ -394,5 +396,153 @@ exit;
         return redirect()->action(
             'SponsorsController@index'
         );
+    }
+
+
+    public function assignsponsor(){
+        $students =  DB::select("SELECT students.*, `sponsornames`,`sponsorshiptype`, sponsored_students.comment as sponsorship_comment FROM `students`
+        LEFT JOIN `sponsored_students` ON `sponsored_students`.`student_id` = `students`.`student_id`
+        LEFT JOIN `sponsors` ON `sponsored_students`.`sponsor_id` = `sponsors`.`sponsor_id`
+         WHERE students.deleted_at IS NULL AND cur_status = 'Active' ORDER BY first_name ASC ");
+
+
+        $sponsors = Sponsor::all();
+        return view('sponsors.assignstudents', compact('sponsors','students')); 
+    }
+
+
+
+    public function sponsorshipreports(){
+        return view('sponsors.select_report_type');
+    }
+
+
+    public function opensponsorshipreport(Request $request){
+        $input = $request->all();
+        return view('sponsors.openreport',compact('input'));
+    }
+
+
+
+    public function getsponsoredstudent($type){
+
+            $students =  DB::select("SELECT students.*, `sponsornames`,`sponsorshiptype`,`sponsored_students`.comment FROM `students`
+            LEFT JOIN `sponsored_students` ON `sponsored_students`.`student_id` = `students`.`student_id`
+            LEFT JOIN `sponsors` ON `sponsored_students`.`sponsor_id` = `sponsors`.`sponsor_id`
+             WHERE students.deleted_at IS NULL AND cur_status = 'Active' ORDER BY first_name ASC ");
+
+            if($type == 'Partial'){
+                $students =  DB::select("SELECT students.*, `sponsornames`,`sponsorshiptype`,`sponsored_students`.comment FROM `students`
+            LEFT JOIN `sponsored_students` ON `sponsored_students`.`student_id` = `students`.`student_id`
+            LEFT JOIN `sponsors` ON `sponsored_students`.`sponsor_id` = `sponsors`.`sponsor_id`
+             WHERE sponsorshiptype ='Partial' AND  students.deleted_at IS NULL AND cur_status = 'Active' ORDER BY first_name ASC ");
+
+            }else if($type == 'Full'){
+
+                $students =  DB::select("SELECT students.*, `sponsornames`,`sponsorshiptype`,`sponsored_students`.comment FROM `students`
+            LEFT JOIN `sponsored_students` ON `sponsored_students`.`student_id` = `students`.`student_id`
+            LEFT JOIN `sponsors` ON `sponsored_students`.`sponsor_id` = `sponsors`.`sponsor_id`
+             WHERE sponsorshiptype ='Full' AND students.deleted_at IS NULL AND cur_status = 'Active' ORDER BY first_name ASC ");
+
+            }
+            $pdf = new ClassListPDF();
+            
+            $pdf->AddPage();
+            $pdf->SetFont('Arial','',12);
+            //Table with 20 rows and 4 columns
+            $pdf->SetX(5);
+            $pdf->SetFillColor(237, 228, 226);
+            $cours = strtoupper('SPONSORED STUDENTS');
+            $pdf->Ln(7);
+            $pdf-> Cell(195, 10, "SPONSORED STUDENTS",0, 0, 'C', 1, '');
+            $pdf->Ln(15);
+            $pdf->SetX(10);
+            $pdf->SetFont('Times','',12);
+            $pdf->Cell(10, 10, "#",1, 0, 'C', 1, '');
+            $pdf->Cell(60, 10, "Full Names",1, 0, 'C', 1, '');
+            $pdf->Cell(40, 10, "Sponsorship Type",1, 0, 'C', 1, '');
+            $pdf->Cell(40, 10, "Current Balance",1, 0, 'C', 1, '');
+            $pdf->Cell(45, 10, "Comment",1, 0, 'C', 1, '');
+           
+           
+            $pdf->Ln();
+    
+            $counter = 1;
+            $pdf->SetWidths(array(10,60,40,40,45));
+            $aligns = array('L','L','L','L','L','L');
+            $pdf->SetAligns($aligns );
+            $pdf->SetFillColor(224, 235, 255);
+            
+          
+            $fill = 1 ;
+            foreach($students as $student){
+                $fill =  !$fill;
+                $pdf->Row(array( $counter,$student->first_name." ".$student->middle_name." ".$student->surname,$student->sponsorshiptype." Sponsorship",
+                '',$student->comment), $fill);
+                $counter++;
+                
+            }
+            $counter--;
+            $pdf-> Cell(110, 10, "",1, 0, 'C', 1, '');
+            $pdf-> Cell(85, 10, '',1, 0, 'R', 1, '');
+
+
+            // Send the appropriate headers to tell the browser to expect a PDF
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: inline; filename="Class_List_' . $cours . '.pdf"');
+
+
+            $pdf->Output("","Class_List_$cours.pdf");
+            exit;
+    
+        
+    }
+
+
+
+    public function savesponsorship(Request $request, $student_id){
+
+        $input = $request->all();
+        $input['student_id'] = $student_id;
+
+        $existing = Sponsorship::where('student_id',$student_id)->get();
+       
+      
+            $does_exist ="";
+            foreach($existing as $extng){
+                $does_exist =$extng;
+            }
+
+            if($does_exist){
+                $id = $does_exist->sp_id;
+                $spnship = Sponsorship::find( $id );
+                $spnship->sponsor_id = $input['sponsor_id'];
+                $spnship->comment = $input['comment'];
+                $spnship->sponsorshiptype = $input['sponsorshiptype'];
+                $spnship->save();
+                
+            }else{
+
+                $id =  Sponsorship::create($input)->sp_id;
+                
+                
+            }
+
+
+
+    return redirect()->route('assignsponsor');
+        
+    }
+
+    public function student_to_sponsor($id){
+       $student = Student::find($id);
+       $sponsors = Sponsor::all();
+       return view('sponsors.select_sponsor',compact('student','sponsors'));
+    }
+
+
+    public function selectedsponsor($student,$sponsor){
+        echo "Selected Sponsor";
+
     }
 }
