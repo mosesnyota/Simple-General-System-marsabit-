@@ -75,7 +75,7 @@
 
                 @can('VIEW_ASSETS')
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-view-thumb"></i><span> Catalogue </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-view-thumb"></i><span> CATALOGUE </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                     <li><a href="{{URL::to('/')}}/locations"><b class="fa fa-chart-line" aria-hidden="true"> Manage Stores </b></a></li>
                     <a href="{{URL::to('/')}}/catalogue" class="fa fa-chart-line"   ><b class="dripicons-view-thumb"> Catalogue </b></a>
@@ -87,7 +87,7 @@
 
                 @can('VIEW_EXPENSES')
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-money-check-alt"></i> <span> Expenses </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-money-check-alt"></i> <span> EXPENSES </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/expense"><b class="fa fa-dollar-sign" aria-hidden="true"> Manage Expenses </b></a></li>
@@ -103,7 +103,7 @@
 
                 @can('VIEW_PRODUCTION')
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-money-check-alt"  style="color:orange"></i> <span style="color:orange"> Production </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-money-check-alt"  style="color:orange"></i> <span style="color:orange"> PRODUCTION </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         <li><a href="{{URL::to('/')}}/production"><b class="fas fa-money-check-alt" aria-hidden="true"> Unpaid Invoices </b></a></li>
                         <li><a href="{{URL::to('/')}}/production/all"><b class="fas fa-money-check-alt" aria-hidden="true"> Paid Invoices </b></a></li>
@@ -128,7 +128,7 @@
 
                 @can('VIEW_STAFF')
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-user"></i> <span> Staff </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-user"></i> <span> STAFF </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/staff"> <b class="fa fa-users" > Manage Staff </b></a></li>
@@ -139,7 +139,7 @@
 
                 @can('VIEW_SUPPLIERS')
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-user"></i> <span> Suppliers </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-user"></i> <span> SUPPLIERS </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/suppliers"> <b class="fa fa-users" > Manage Suppliers </b></a></li>
@@ -149,7 +149,7 @@
 
                 @can('VIEW CUSTOMERS')
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-user"></i> <span> Customers </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-user"></i> <span> CUSTOMERS </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/customers"> <b class="fa fa-users" > Manage Customers </b></a></li>
@@ -166,7 +166,7 @@
                
 
                 @can('VIEW PETTY CASH')<li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-dollar-sign"></i> <span> Petty Cash </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-dollar-sign"></i> <span> PETTY CASH </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         
                         <li><a href="{{URL::to('/')}}/pettycash"> <b class="fas fa-dollar-sign" > Manage Transactions </b></a></li>
@@ -179,7 +179,7 @@
             
 
                 @can('IS ADMINISTRATOR')<li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-copy"></i><span> User Rights </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="dripicons-copy"></i><span> USERS RIGHTS </span> <span class="menu-arrow float-right"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="list-unstyled">
                         <li><a href="{{URL::to('/')}}/roles">Manage Roles</a></li>
                         <li><a href="{{URL::to('/')}}/permissions">Manage Permissions</a></li>

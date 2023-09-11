@@ -115,3 +115,17 @@
 2023-09-09 10:25:55 info: tempDirectory:c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.5\temp
 2023-09-09 10:25:55 info: Extraction complete for source: c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.5\resources\embold-scanner-archive.zip, destination: c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.5\temp
 2023-09-09 10:25:55 info: Congratulations, your extension "Embold" is now active!
+2023-09-09 10:26:03 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/yFDpXr6AiSgkT8tqcvCmSwTVl2P7I10YViqOLVzZ
+2023-09-09 10:26:03 error: SQLITE_ERROR: no such table: issues
+2023-09-09 12:00:43 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/cJJvKsjaxayKSbOEGsZubegX2Xv0K44nAvbFnXBH
+2023-09-09 12:00:43 error: SQLITE_ERROR: no such table: issues
+2023-09-09 12:00:54 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/GkpwR4u9w6RJvGB3Hj7xODYzQIkQDCyAzXxEwOMv
+2023-09-09 12:00:54 error: SQLITE_ERROR: no such table: issues
+2023-09-09 21:33:57 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/SzMX5yP2p726iVEMJEJL2YHcaqeNAxOACAUbnnwQ
+2023-09-09 21:33:57 error: SQLITE_ERROR: no such table: issues
+2023-09-09 21:33:57 info: file:///c%3A/wamp64/www/marsabit/storage/framework/cache/data/85/5f/855f92484c8c414d36c1b25cb24876e30229cbbf
+2023-09-09 21:33:57 error: SQLITE_ERROR: no such table: issues
+2023-09-10 09:45:19 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/g5KmOiqcNbQxU7O99C7qrzl8DHhRLfNmYH6ZYGI6
+2023-09-10 09:45:19 error: SQLITE_ERROR: no such table: issues
+2023-09-11 01:04:01 info: file:///c%3A/wamp64/www/marsabit/storage/framework/sessions/xLt1EzTEiK2Y4AAkUi2LPW06q2Y2TiVdnjU5gBXp
+2023-09-11 01:04:01 error: SQLITE_ERROR: no such table: issues
