@@ -514,7 +514,7 @@ public function destroyitem($invoice_id,$detailid){
         $pdf->Ln(20);
 
         $pdf->SetY(-55);
-        $pdf->RoundedRect(10, $pdf->getY(), 120, 30, 5,$corners = '1234', '');
+        $pdf->RoundedRect(10, $pdf->getY(), 180, 30, 5,$corners = '1234', '');
         $pdf->SetFont('Times','BU',10);
         $pdf-> Cell(120, 5, "Terms of Payment",0, 0, 'C', 0, '');
         $pdf->Ln();
@@ -523,7 +523,7 @@ public function destroyitem($invoice_id,$detailid){
         $pdf->Ln();
         $pdf-> Cell(120, 6, "    the order; Balance payment against delivery",0, 0, 'L', 0, '');
         $pdf->Ln();
-        $pdf-> Cell(120, 6, "2. Cheques to:  D.O.M CATHOLIC TECHNICAL SCHOOL",0, 0, 'L', 0, '');
+        $pdf-> Cell(120, 6, "2. Cheques to:  D.O.M CATHOLIC TECHNICAL SCHOOL or Direct deposit to Equity Bank A/c 1010294765217",0, 0, 'L', 0, '');
         $pdf->Ln();
         $pdf-> Cell(120, 6, "3. Prices indicated on the Quotation are valid for one month",0, 0, 'L', 0, '');
         $pdf->Output();

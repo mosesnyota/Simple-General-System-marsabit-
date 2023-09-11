@@ -27,12 +27,13 @@ class StaffsController extends Controller {
         $staffs = DB::table( 'staff' )
         ->leftJoin( 'roles', 'staff.staffcategory_id', '=', 'roles.id' )
         ->select( DB::raw( 'staff.*,roles.name' ) )
+        ->where('staff.deleted_at', '=', NULL)
         ->orderBy( 'firstname', 'ASC' )
         ->get();
 
         $roles = DB::table( 'roles' )
         ->select( 'roles.*' )
-        ->orderBy( 'name', 'ASC' )
+        ->orderBy( 'name', 'ASC' ) 
         ->get();
 
         return view( 'staff.index', compact( 'staffs', 'roles' ) );
@@ -42,6 +43,7 @@ class StaffsController extends Controller {
         $staffs = DB::table( 'staff' )
         ->leftJoin( 'leave_days', 'staff.staffid', '=', 'leave_days.staff_id' )
         ->select( DB::raw( 'staff.*,COALESCE(SUM(no_of_days),0) AS days' ) )
+        ->where('staff.deleted_at', '=', NULL)
         ->groupBy( 'staffid' )
         ->orderBy( 'firstname', 'ASC' )
         ->get();
@@ -59,6 +61,7 @@ class StaffsController extends Controller {
 
         $categories = DB::table( 'staff_categories' )
         ->select( 'staff_categories.*' )
+        ->where('staff_categories.deleted_at', '=', NULL)
         ->orderBy( 'categoryname', 'ASC' )
         ->get();
         return view( 'newstaff' )->with( 'categories', $categories );
@@ -103,6 +106,7 @@ class StaffsController extends Controller {
             $allprojects =  DB::table( 'projects' )
             ->select( DB::raw( 'count(*) AS total' ) )
             ->where( 'staff_id', '=', $id )
+            ->where('projects.deleted_at', '=', NULL)
             ->get();
 
             $total = 0 ;
@@ -120,6 +124,7 @@ class StaffsController extends Controller {
             ->select( DB::raw( 'count(*) AS projects' ) )
             ->where( 'staff_id', '=', $id )
             ->where( 'cur_status', '=', 'Active' )
+            ->where('projects.deleted_at', '=', NULL)
             ->get();
 
             $activeprojects  = 0;
@@ -133,6 +138,7 @@ class StaffsController extends Controller {
             ->join( 'roles', 'staff.staffcategory_id', '=', 'roles.id' )
             ->select( DB::raw( 'staff.*,roles.name' ) )
             ->where( 'staffid', '=', $id )
+            ->where('staff.deleted_at', '=', NULL)
             ->get();
             $staff = $staffd->first();
             return view( 'staff.view', compact( 'staff', 'details' ) );

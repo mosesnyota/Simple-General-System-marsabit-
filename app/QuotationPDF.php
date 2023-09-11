@@ -51,15 +51,15 @@ function Header()
 	$this->Ln(5);
 	
 	$this->Cell(40,0,'',0,0,'C');
-	$this->Cell(115,0,strtoupper($title),0,0,'L');
+	$this->Cell(110,0,strtoupper($title),0,0,'L');
 	$this-> Cell(45, 0, "Quotation No. : "."INV0".$invID,0, 0, 'L', 0, '');
 	$this->Ln(7);
 	$this->Cell(40,0,'',0,0,'C');
-	$this->Cell(115,0,strtoupper($address),0,0,'L');
+	$this->Cell(110,0,strtoupper($address),0,0,'L');
 	$this-> Cell(45, 0, "Date : ".date('d-m-Y', strtotime($invdate)),0, 0, 'L', 0, '');
 	$this->Ln(7);
 	$this->Cell(40,0,'',0,0,'C');
-	$this->Cell(115,0,strtolower($email),0,0,'L');
+	$this->Cell(110,0,strtolower($email),0,0,'L');
 	$this-> Cell(45, 0, "Amount : ".number_format($amount,2),0, 0, 'L', 0, '');
 	$this->Ln(7);
 	$this->Cell(40,0,'',0,0,'C');
