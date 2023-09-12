@@ -31,9 +31,6 @@ class InvoicesController extends Controller
     {
 
         $currentRoute = request()->route()->getName(); 
-
-        
-
         $invoice_details = [];
         $currDate = date("Y");
         $selectd =  DB::select("SELECT SUM(unit_cost * quantity) AS income 
@@ -128,9 +125,7 @@ class InvoicesController extends Controller
         $invoice_details['incomeLASTYEAR'] = $incomeLASTYEAR;
 
         
-        if($currentRoute == 'unpaid_invoices'){
-
-        
+if($currentRoute == 'unpaid_invoices'){
        $invoices  =  DB::table('invoices')
         ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
         ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
@@ -144,7 +139,7 @@ class InvoicesController extends Controller
         ->orderBy('invoice_date','DESC')
         ->get();
 
-    }else{
+}else{
         $invoices  =  DB::table('invoices')
         ->leftjoin('invoice_details', 'invoices.invoice_id', '=', 'invoice_details.invoice_id')
         ->leftjoin('customers', 'customers.customer_id', '=', 'invoices.customer_id')
@@ -178,6 +173,9 @@ class InvoicesController extends Controller
 
 
 
+    public function reroute(){
+
+    }
    
 
     public function unpaidinvoices(){

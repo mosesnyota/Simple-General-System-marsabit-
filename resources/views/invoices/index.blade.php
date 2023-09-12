@@ -203,9 +203,21 @@
                               <?php } ?>
                       </td>
                       <td>
-                     
-                     <a class="btn btn-info btn-sm" href="invoice/{{$invoice ->invoice_id}}/open"><i class="fas fa-eye"></i></a>
 
+                      @php
+
+                      $currentRoute = request()->route()->getName();
+
+                      @endphp
+                     
+                      @if($currentRoute == 'unpaid_invoices')
+                     <a class="btn btn-info btn-sm" href="invoice/{{$invoice ->invoice_id}}/open"><i class="fas fa-eye"></i></a>
+                      @else
+
+                      <a class="btn btn-info btn-sm" href="../invoice/{{$invoice ->invoice_id}}/open"><i class="fas fa-eye"></i></a>
+
+
+                      @endif
            
                  @if($bal != 0)
                      <button type="button" class="btn btn-secondary btn-sm"> <a  data-role="payinvoice"  data-id="{{$invoice ->invoice_id}}"> <i class="fa fa-euro-sign" > PAY </i></a>  </button>  
