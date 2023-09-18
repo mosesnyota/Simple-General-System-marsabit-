@@ -179,3 +179,10 @@
 2023-09-12 10:48:22 info: tempDirectory:c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.5\temp
 2023-09-12 10:48:22 info: Extraction complete for source: c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.5\resources\embold-scanner-archive.zip, destination: c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.5\temp
 2023-09-12 10:48:22 info: Congratulations, your extension "Embold" is now active!
+2023-09-12 11:17:23 info: file:///c%3A/wamp64/www/marsabit/.git/index.lock
+2023-09-12 11:17:23 error: SQLITE_ERROR: no such table: issues
+2023-09-12 11:17:37 info: file:///c%3A/wamp64/www/marsabit/.git/refs/remotes/origin/main.lock
+2023-09-12 11:17:37 error: SQLITE_ERROR: no such table: issues
+2023-09-18 11:27:11 info: tempDirectory:c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.5\temp
+2023-09-18 11:27:11 info: Extraction complete for source: c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.5\resources\embold-scanner-archive.zip, destination: c:\Users\user\.vscode\extensions\embold-vscode.embold-0.1.5\temp
+2023-09-18 11:27:11 info: Congratulations, your extension "Embold" is now active!

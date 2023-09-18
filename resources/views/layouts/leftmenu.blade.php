@@ -49,6 +49,7 @@
                         <li><a href="{{URL::to('/')}}/feereceipts"><b class="fa fa-print" aria-hidden="true"> View Receipts </b></a></li>
                         <li><a href="{{URL::to('/')}}/createfeeinvoice"><b class="fa fa-chart-bar" aria-hidden="true">Create Fee Invoices </b></a></li>
                         <li><a href="{{URL::to('/')}}/school/feereports"><b class="fa fa-chart-pie" aria-hidden="true">Fee Balances Reports </b></a></li>
+                        <li><a href="{{ URL::to('/') }}/sponsors/sponsorshipreports"><b class="fa fa-print" aria-hidden="true"> Balance Sponsored Students </b></a></li>
                     </ul>
                 </li> @endcan
 

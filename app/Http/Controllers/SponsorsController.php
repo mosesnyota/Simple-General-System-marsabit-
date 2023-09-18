@@ -469,7 +469,7 @@ exit;
     
             $counter = 1;
             $pdf->SetWidths(array(10,60,40,40,45));
-            $aligns = array('L','L','L','L','L','L');
+            $aligns = array('L','L','L','R','L');
             $pdf->SetAligns($aligns );
             $pdf->SetFillColor(224, 235, 255);
             
@@ -478,7 +478,7 @@ exit;
             foreach($students as $student){
                 $fill =  !$fill;
                 $pdf->Row(array( $counter,$student->first_name." ".$student->middle_name." ".$student->surname,$student->sponsorshiptype." Sponsorship",
-                '',$student->comment), $fill);
+                $this->getBalance($student->student_id), $student->comment), $fill);
                 $counter++;
                 
             }
@@ -493,9 +493,24 @@ exit;
 
 
             $pdf->Output("","Class_List_$cours.pdf");
-            exit;
+            exit; 
     
         
+    }
+
+
+    public function getBalance($student_id){
+       
+        $invoices  = DB::select( DB::raw( "SELECT A.*,course_name AS department,
+                ((SELECT COALESCE(SUM(fees_invoice.amount),0) FROM `fees_invoice` WHERE fees_invoice.`student_id` = A.student_id AND fees_invoice.deleted_at IS NULL)
+                -
+                (SELECT COALESCE(SUM(fee_payments.amount) , 0) FROM `fee_payments` WHERE fee_payments.`student_id` = A.student_id AND fee_payments.deleted_at IS NULL )) AS balance
+                FROM students A   JOIN courses B ON A.course_id = B.course_id
+                WHERE  A.student_id = '$student_id'
+                GROUP BY A.student_id" ) );
+            foreach ( $invoices as $invoice ) {
+                return number_format( ( $invoice ->balance ), 2 );
+            } 
     }
 
 
